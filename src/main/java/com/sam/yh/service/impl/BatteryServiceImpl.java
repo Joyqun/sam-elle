@@ -126,14 +126,14 @@ public class BatteryServiceImpl implements BatteryService {
 
         UserBattery userBattery = userBatteryService.fetchUserByBtyId(battery.getId());
         User user = userMapper.selectByPrimaryKey(userBattery.getUserId());
-        userCodeService.sendWarningMsg(user.getMobilePhone(), battery.getImei());
+        userCodeService.sendWarningMsg(user.getUserAccount(), battery.getImei());
     }
 
     private void sendMovingMsg(Battery battery) throws CrudException {
 
         UserBattery userBattery = userBatteryService.fetchUserByBtyId(battery.getId());
         User user = userMapper.selectByPrimaryKey(userBattery.getUserId());
-        userCodeService.sendMovingMsg(user.getMobilePhone(), battery.getImei());
+        userCodeService.sendMovingMsg(user.getUserAccount(), battery.getImei());
     }
 
     @Override

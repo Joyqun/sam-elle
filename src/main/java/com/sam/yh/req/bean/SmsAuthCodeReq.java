@@ -1,7 +1,13 @@
 package com.sam.yh.req.bean;
 
-public class SmsAuthCodeReq {
+import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+public class SmsAuthCodeReq implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private String userPhone;
     private String authType;
     // test
@@ -29,6 +35,11 @@ public class SmsAuthCodeReq {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
 }

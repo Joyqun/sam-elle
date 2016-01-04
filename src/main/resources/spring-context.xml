@@ -26,7 +26,7 @@
 	<bean id="smsEnable" class="java.lang.Boolean">
 		<constructor-arg value="${sms.enable}" />
 	</bean>
-	<bean id="adminPhones" class="java.lang.String">
+	<bean id="adminAccounts" class="java.lang.String">
 		<constructor-arg value="${admin.phone}" />
 	</bean>
 	<bean id="apkVersion" class="java.lang.String">

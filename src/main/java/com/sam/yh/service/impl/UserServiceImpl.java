@@ -28,6 +28,7 @@ import com.sam.yh.dao.UserBatteryMapper;
 import com.sam.yh.dao.UserFollowMapper;
 import com.sam.yh.dao.UserMapper;
 import com.sam.yh.enums.BatteryStatus;
+import com.sam.yh.enums.UserAccountType;
 import com.sam.yh.enums.UserCodeType;
 import com.sam.yh.enums.UserType;
 import com.sam.yh.model.Battery;
@@ -75,18 +76,18 @@ public class UserServiceImpl implements UserService {
     private ResellerMapper resellerMapper;
 
     @Resource
-    private String adminPhones;
+    private String adminAccounts;
 
     @Override
-    public User signup(String mobilePhone, String authCode, String hassPwd, String deviceInfo) throws CrudException {
+    public User signup(String userAccount, UserAccountType accountType, String authCode, String hassPwd, String deviceInfo) throws CrudException {
 
-        User user = fetchUserByPhone(mobilePhone);
+        User user = fetchUserByUserAccount(userAccount);
         if (user != null && !user.getLockStatus()) {
-            throw new UserSignupException("手机号码已使用");
+            throw new UserSignupException("用户账户已使用");
         }
-        boolean auth = userCodeService.verifyAuthCode(mobilePhone, UserCodeType.SIGNUP_CODE.getType(), authCode);
+        boolean auth = userCodeService.verifyAuthCode(userAccount, UserCodeType.SIGNUP_CODE.getType(), authCode);
         if (!auth) {
-            throw new UserSignupException("短信验证码错误");
+            throw new UserSignupException("注册验证码错误");
         }
         Date now = new Date();
         String uuid = UUID.randomUUID().toString();
@@ -95,12 +96,13 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             user = new User();
             user.setUuid(StringUtils.replace(uuid, "-", ""));
-            user.setUserName(mobilePhone);
+            user.setUserName(userAccount);
             user.setUserType(UserType.NORMAL_USER.getType());
             user.setSalt(salt);
 
-            user.setPassword(PwdUtils.genMd5Pwd(mobilePhone, salt, hassPwd));
-            user.setMobilePhone(mobilePhone);
+            user.setPassword(PwdUtils.genMd5Pwd(userAccount, salt, hassPwd));
+            user.setUserAccount(userAccount);
+            user.setAccountType(accountType.getType());
             user.setLockStatus(false);
             user.setDeviceInfo(deviceInfo);
             user.setCreateDate(now);
@@ -111,7 +113,7 @@ public class UserServiceImpl implements UserService {
             user.setSalt(salt);
 
             user.setUserType(UserType.NORMAL_USER.getType());
-            user.setPassword(PwdUtils.genMd5Pwd(mobilePhone, salt, hassPwd));
+            user.setPassword(PwdUtils.genMd5Pwd(userAccount, salt, hassPwd));
             user.setLockStatus(false);
             user.setDeviceInfo(deviceInfo);
             user.setLoginDate(now);
@@ -123,19 +125,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User signin(String mobilePhone, String hassPwd, String deviceInfo) throws CrudException {
+    public User signin(String userAccount, String hassPwd, String deviceInfo) throws CrudException {
 
-        User user = fetchUserByPhone(mobilePhone);
+        User user = fetchUserByUserAccount(userAccount);
         if (user == null || user.getLockStatus()) {
             throw new UserSignupException("用户不存在");
         }
 
-        if (!StringUtils.equals(user.getPassword(), PwdUtils.genMd5Pwd(mobilePhone, user.getSalt(), hassPwd))) {
+        if (!StringUtils.equals(user.getPassword(), PwdUtils.genMd5Pwd(userAccount, user.getSalt(), hassPwd))) {
             throw new UserSignupException("用户名或密码错误");
         }
 
-        if (!user.getUserType().equals(getUserType(mobilePhone))) {
-            user.setUserType(getUserType(mobilePhone));
+        if (!user.getUserType().equals(getUserType(userAccount))) {
+            user.setUserType(getUserType(userAccount));
         }
         user.setLoginDate(new Date());
         user.setDeviceInfo(deviceInfo);
@@ -146,7 +148,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User resetPwd(String mobilePhone, String authCode, String hassPwd, String deviceInfo) throws CrudException {
-        User user = fetchUserByPhone(mobilePhone);
+        User user = fetchUserByUserAccount(mobilePhone);
         if (user == null) {
             throw new PwdResetException("未注册的手机号码");
         }
@@ -168,7 +170,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<PubBatteryInfo> fetchSelfBtyInfo(String mobilePhone) {
-        User user = fetchUserByPhone(mobilePhone);
+        User user = fetchUserByUserAccount(mobilePhone);
         if (user == null) {
             return Collections.emptyList();
         }
@@ -180,7 +182,7 @@ public class UserServiceImpl implements UserService {
                 PubBatteryInfo pubInfo = new PubBatteryInfo(info);
                 pubInfo.setBtyPubSn(userBattery.getBtyPubSn());
                 pubInfo.setBytImei(userBattery.getBytImei());
-                pubInfo.setOwnerPhone(user.getMobilePhone());
+                pubInfo.setOwnerPhone(user.getUserAccount());
                 btyInfo.add(pubInfo);
             }
         }
@@ -190,7 +192,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<PubBatteryInfo> fetchFriendsBtyInfo(String mobilePhone) {
-        User user = fetchUserByPhone(mobilePhone);
+        User user = fetchUserByUserAccount(mobilePhone);
         if (user == null) {
             return Collections.emptyList();
         }
@@ -204,7 +206,7 @@ public class UserServiceImpl implements UserService {
                 PubBatteryInfo pubInfo = new PubBatteryInfo(info);
                 pubInfo.setBtyPubSn(userFollow.getBtyPubSn());
                 pubInfo.setBytImei(userFollow.getBytImei());
-                pubInfo.setOwnerPhone(owner.getMobilePhone());
+                pubInfo.setOwnerPhone(owner.getUserAccount());
                 btyInfo.add(pubInfo);
             }
         }
@@ -213,18 +215,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User fetchUserByPhone(String mobilePhone) {
-        return userMapper.selectByPhone(mobilePhone);
+    public User fetchUserByUserAccount(String userAccount) {
+        return userMapper.selectByUserAccount(userAccount);
     }
 
     @Override
     public void followBty(String mobilePhone, String btyPubSn, String btyOwnerPhone) throws CrudException {
-        User user = fetchUserByPhone(mobilePhone);
+        User user = fetchUserByUserAccount(mobilePhone);
         if (user == null) {
             throw new BtyFollowException("用户不存在");
         }
 
-        User btyOwner = fetchUserByPhone(btyOwnerPhone);
+        User btyOwner = fetchUserByUserAccount(btyOwnerPhone);
         if (btyOwner == null) {
             throw new BtyFollowException("用户不存在");
         }
@@ -257,12 +259,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void shareBty(String mobilePhone, String btyPubSn, String friendPhone) throws CrudException {
-        User owner = fetchUserByPhone(mobilePhone);
+        User owner = fetchUserByUserAccount(mobilePhone);
         if (owner == null) {
             throw new BtyFollowException("用户不存在");
         }
 
-        User shareUser = fetchUserByPhone(friendPhone);
+        User shareUser = fetchUserByUserAccount(friendPhone);
         if (shareUser == null) {
             throw new BtyFollowException("好友不存在");
         }
@@ -325,12 +327,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void unshareBty(String mobilePhone, String btyPubSn, String friendPhone) throws CrudException {
-        User owner = fetchUserByPhone(mobilePhone);
+        User owner = fetchUserByUserAccount(mobilePhone);
         if (owner == null) {
             throw new BtyFollowException("用户不存在");
         }
 
-        User shareUser = fetchUserByPhone(friendPhone);
+        User shareUser = fetchUserByUserAccount(friendPhone);
         if (shareUser == null) {
             throw new BtyFollowException("好友不存在");
         }
@@ -362,15 +364,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getUserType(String mobilePhone) throws CrudException {
-        String[] phones = StringUtils.split(adminPhones, ",");
+        String[] accounts = StringUtils.split(adminAccounts, ",");
 
-        Set<String> admins = Sets.newHashSet(phones);
+        Set<String> admins = Sets.newHashSet(accounts);
 
         if (admins.contains(mobilePhone)) {
             return UserType.ADMIN.getType();
         }
 
-        User user = userMapper.selectByPhone(mobilePhone);
+        User user = userMapper.selectByUserAccount(mobilePhone);
         if (user == null) {
             return UserType.NORMAL_USER.getType();
         }
@@ -386,7 +388,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void lockBty(String mobilePhone, String btyImei) throws CrudException {
-        User owner = fetchUserByPhone(mobilePhone);
+        User owner = fetchUserByUserAccount(mobilePhone);
         if (owner == null) {
             throw new BtyLockException("用户不存在");
         }
@@ -420,7 +422,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void unlockBty(String mobilePhone, String btyImei) throws CrudException {
-        User owner = fetchUserByPhone(mobilePhone);
+        User owner = fetchUserByUserAccount(mobilePhone);
         if (owner == null) {
             throw new BtyLockException("用户不存在");
         }

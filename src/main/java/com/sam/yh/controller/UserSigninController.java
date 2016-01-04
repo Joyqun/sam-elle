@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Sets;
+import com.sam.yh.common.EmailUtils;
 import com.sam.yh.common.IllegalParamsException;
 import com.sam.yh.common.MobilePhoneUtils;
 import com.sam.yh.common.PwdUtils;
 import com.sam.yh.crud.exception.CrudException;
 import com.sam.yh.crud.exception.UserSignupException;
+import com.sam.yh.enums.UserAccountType;
 import com.sam.yh.model.User;
 import com.sam.yh.req.bean.UserSigninReq;
 import com.sam.yh.resp.bean.ResponseUtils;
@@ -36,7 +38,7 @@ public class UserSigninController {
     UserService userService;
 
     @Resource
-    private String adminPhones;
+    private String adminAccounts;
 
     private static final Logger logger = LoggerFactory.getLogger(UserSigninController.class);
 
@@ -50,31 +52,47 @@ public class UserSigninController {
         try {
             validateSigninArgs(req);
 
-            User user = userService.signin(req.getUserPhone(), req.getPassword(), req.getDeviceInfo());
+            UserAccountType userAccountType = UserAccountType.getUserAccount(req.getAccountType());
+
+            User user = userService.signin(req.getUserAccount(), req.getPassword(), req.getDeviceInfo());
 
             UserInfoResp respData = new UserInfoResp();
             respData.setUserUid(user.getUuid());
             respData.setUserType(user.getUserType());
 
+            logger.info("user signin, req:{}, resp:{}", req, respData);
             return ResponseUtils.getNormalResp(respData);
         } catch (IllegalParamsException e) {
+            logger.error("signin exception", e);
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (CrudException e) {
-            logger.error("signin exception, " + req.getUserPhone(), e);
+            logger.error("signin exception", e);
             if (e instanceof UserSignupException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
             } else {
                 return ResponseUtils.getSysErrorResp();
             }
         } catch (Exception e) {
-            logger.error("signin exception, " + req.getUserPhone(), e);
+            logger.error("signin exception", e);
             return ResponseUtils.getSysErrorResp();
         }
     }
 
     private void validateSigninArgs(UserSigninReq userSigninReq) throws IllegalParamsException {
-        if (!MobilePhoneUtils.isValidPhone(userSigninReq.getUserPhone()) && !isAdminPhone(userSigninReq.getUserPhone())) {
-            throw new IllegalParamsException("请输入正确的手机号码");
+        if (StringUtils.isBlank(userSigninReq.getAccountType())) {
+            throw new IllegalParamsException("未知账户类型");
+        }
+        UserAccountType userAccountType = UserAccountType.getUserAccount(userSigninReq.getAccountType());
+        if (userAccountType == null) {
+            throw new IllegalParamsException("未知账户类型");
+        }
+        if (!isAdminAccount(userSigninReq.getUserAccount())) {
+            if (UserAccountType.MOBILE_PHONE.equals(userAccountType) && !MobilePhoneUtils.isValidPhone(userSigninReq.getUserAccount())) {
+                throw new IllegalParamsException("请输入正确的手机号码");
+            }
+            if (UserAccountType.EMAIL.equals(userAccountType) && !EmailUtils.isValidEmail(userSigninReq.getUserAccount())) {
+                throw new IllegalParamsException("请输入正确的电子邮箱");
+            }
         }
 
         if (!PwdUtils.isValidPwd(userSigninReq.getPassword())) {
@@ -83,12 +101,12 @@ public class UserSigninController {
 
     }
 
-    private boolean isAdminPhone(String userPhone) {
-        String[] phones = StringUtils.split(adminPhones, ",");
-        if (phones == null || phones.length == 0) {
-            logger.error("获取admin phone 失败");
+    private boolean isAdminAccount(String userAccount) {
+        String[] accounts = StringUtils.split(adminAccounts, ",");
+        if (accounts == null || accounts.length == 0) {
+            logger.error("获取admin account 失败");
         }
-        Set<String> admins = Sets.newHashSet(phones);
-        return admins.contains(userPhone);
+        Set<String> admins = Sets.newHashSet(accounts);
+        return admins.contains(userAccount);
     }
 }

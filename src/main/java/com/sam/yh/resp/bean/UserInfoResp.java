@@ -1,6 +1,13 @@
 package com.sam.yh.resp.bean;
 
-public class UserInfoResp {
+import java.io.Serializable;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+public class UserInfoResp implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String userUid;
 
@@ -20,6 +27,11 @@ public class UserInfoResp {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
 }

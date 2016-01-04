@@ -15,7 +15,9 @@ public class User {
 
     private String password;
 
-    private String mobilePhone;
+    private String userAccount;
+
+    private String accountType;
 
     private String passportNo;
 
@@ -75,12 +77,20 @@ public class User {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getMobilePhone() {
-        return mobilePhone;
+    public String getUserAccount() {
+        return userAccount;
     }
 
-    public void setMobilePhone(String mobilePhone) {
-        this.mobilePhone = mobilePhone == null ? null : mobilePhone.trim();
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount == null ? null : userAccount;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType == null ? null : accountType;
     }
 
     public String getPassportNo() {

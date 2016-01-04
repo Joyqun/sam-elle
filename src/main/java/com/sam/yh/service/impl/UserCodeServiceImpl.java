@@ -35,7 +35,7 @@ public class UserCodeServiceImpl implements UserCodeService {
 
     @Override
     public boolean sendSignupAuthCode(String mobilePhone) throws CrudException {
-        User user = userMapper.selectByPhone(mobilePhone);
+        User user = userMapper.selectByUserAccount(mobilePhone);
         if (user != null && !user.getLockStatus()) {
             throw new UserSignupException("手机号码已经注册");
         }
@@ -45,7 +45,7 @@ public class UserCodeServiceImpl implements UserCodeService {
 
     @Override
     public boolean sendResetPwdAuthCode(String mobilePhone) throws CrudException {
-        User user = userMapper.selectByPhone(mobilePhone);
+        User user = userMapper.selectByUserAccount(mobilePhone);
         if (user == null) {
             throw new UserSignupException("未注册的手机号码");
         }

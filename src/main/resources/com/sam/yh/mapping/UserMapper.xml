@@ -8,7 +8,8 @@
     <result column="user_type" property="userType" jdbcType="CHAR" />
     <result column="salt" property="salt" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="account_type" property="accountType" jdbcType="VARCHAR" />
     <result column="passport_no" property="passportNo" jdbcType="VARCHAR" />
     <result column="lock_status" property="lockStatus" jdbcType="BIT" />
     <result column="device_info" property="deviceInfo" jdbcType="VARCHAR" />
@@ -16,7 +17,7 @@
     <result column="login_date" property="loginDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    user_id, uuid, user_name, user_type, salt, password, mobile_phone, passport_no, lock_status, 
+    user_id, uuid, user_name, user_type, salt, password, user_account, account_type, passport_no, lock_status, 
     device_info, create_date, login_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -25,11 +26,11 @@
     from user
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
-  <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByUserAccount" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from user
-    where mobile_phone = #{mobilePhone,jdbcType=VARCHAR}
+    where user_account = #{userAccount,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user
@@ -37,11 +38,12 @@
   </delete>
   <insert id="insert" parameterType="com.sam.yh.model.User" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
     insert into user (uuid, user_name, user_type, 
-      salt, password, mobile_phone, 
+      salt, password, user_account, account_type, 
       passport_no, lock_status, device_info, 
       create_date, login_date)
     values (#{uuid,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userType,jdbcType=CHAR},
-      #{salt,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{mobilePhone,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, 
+      #{accountType, jdbcType=VARCHAR},
       #{passportNo,jdbcType=VARCHAR}, #{lockStatus,jdbcType=BIT}, #{deviceInfo,jdbcType=VARCHAR}, 
       #{createDate,jdbcType=TIMESTAMP}, #{loginDate,jdbcType=TIMESTAMP})
   </insert>
@@ -63,8 +65,11 @@
       <if test="password != null" >
         password,
       </if>
-      <if test="mobilePhone != null" >
-        mobile_phone,
+      <if test="userAccount != null" >
+        user_account,
+      </if>
+      <if test="accountType != null" >
+        account_type,
       </if>
       <if test="passportNo != null" >
         passport_no,
@@ -98,8 +103,11 @@
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="mobilePhone != null" >
-        #{mobilePhone,jdbcType=VARCHAR},
+      <if test="userAccount != null" >
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="accountType != null" >
+        #{accountType, jdbcType=VARCHAR}
       </if>
       <if test="passportNo != null" >
         #{passportNo,jdbcType=VARCHAR},
@@ -136,8 +144,11 @@
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="mobilePhone != null" >
-        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      <if test="userAccount != null" >
+        user_account = #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="accountType != null" >
+        account_type = #{accountType, jdbcType=VARCHAR}, 
       </if>
       <if test="passportNo != null" >
         passport_no = #{passportNo,jdbcType=VARCHAR},
@@ -164,7 +175,8 @@
       user_type = #{userType,jdbcType=CHAR},
       salt = #{salt,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      user_account = #{userAccount,jdbcType=VARCHAR},
+      account_type = #{accountType, jdbcType=VARCHAR},
       passport_no = #{passportNo,jdbcType=VARCHAR},
       lock_status = #{lockStatus,jdbcType=BIT},
       device_info = #{deviceInfo,jdbcType=VARCHAR},

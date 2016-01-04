@@ -24,6 +24,7 @@ import com.sam.yh.dao.UserBatteryMapper;
 import com.sam.yh.dao.UserMapper;
 import com.sam.yh.enums.BatteryStatus;
 import com.sam.yh.enums.ResellerStatus;
+import com.sam.yh.enums.UserAccountType;
 import com.sam.yh.enums.UserType;
 import com.sam.yh.model.Battery;
 import com.sam.yh.model.Reseller;
@@ -83,7 +84,7 @@ public class ResellerServiceImpl implements ResellerService {
 
         //
         String resellerPhone = submitBtySpecReq.getResellerPhone();
-        User resellerUser = userService.fetchUserByPhone(resellerPhone);
+        User resellerUser = userService.fetchUserByUserAccount(resellerPhone);
         if (resellerUser == null || StringUtils.equals(UserType.NORMAL_USER.getType(), resellerUser.getUserType())) {
             throw new SubmitBtySpecException("经销商不存在，请联系客服。");
         }
@@ -96,7 +97,7 @@ public class ResellerServiceImpl implements ResellerService {
         String iccid = unicomM2mService.activateSimCard(submitBtySpecReq.getBtySimNo());
 
         //
-        User user = userService.fetchUserByPhone(submitBtySpecReq.getUserPhone());
+        User user = userService.fetchUserByUserAccount(submitBtySpecReq.getUserPhone());
         if (user == null) {
             user = addLockedUserBySys(submitBtySpecReq.getUserName(), submitBtySpecReq.getUserPhone());
             userCodeService.sendSignupAuthCode(submitBtySpecReq.getUserPhone());
@@ -131,7 +132,8 @@ public class ResellerServiceImpl implements ResellerService {
         user.setSalt(salt);
 
         user.setPassword(PwdUtils.genMd5Pwd(mobilePhone, salt, initPwd));
-        user.setMobilePhone(mobilePhone);
+        user.setUserAccount(mobilePhone);
+        user.setAccountType(UserAccountType.MOBILE_PHONE.getType());
         user.setLockStatus(true);
         user.setCreateDate(now);
 
@@ -166,7 +168,7 @@ public class ResellerServiceImpl implements ResellerService {
         }
 
         String resellerPhone = logResellerReq.getResellerPhone();
-        User user = userService.fetchUserByPhone(resellerPhone);
+        User user = userService.fetchUserByUserAccount(resellerPhone);
 
         if (user != null) {
             String userType = userService.getUserType(resellerPhone);
@@ -202,7 +204,8 @@ public class ResellerServiceImpl implements ResellerService {
         user.setSalt(salt);
 
         user.setPassword(PwdUtils.genMd5Pwd(logResellerReq.getResellerPhone(), salt, initPwd));
-        user.setMobilePhone(logResellerReq.getResellerPhone());
+        user.setUserAccount(logResellerReq.getResellerPhone());
+        user.setAccountType(UserAccountType.MOBILE_PHONE.getType());
         user.setLockStatus(false);
         user.setCreateDate(now);
 
@@ -236,7 +239,7 @@ public class ResellerServiceImpl implements ResellerService {
     @Override
     public List<ResellerBtyInfo> fetchResellerBtyInfo(String resellerPhone, int start, int size) throws CrudException {
         // TODO Auto-generated method stub
-        User reseller = userService.fetchUserByPhone(resellerPhone);
+        User reseller = userService.fetchUserByUserAccount(resellerPhone);
 
         if (UserType.NORMAL_USER.getType().equals(reseller.getUserType())) {
             throw new CrudException("经销商不存在");
@@ -262,7 +265,7 @@ public class ResellerServiceImpl implements ResellerService {
 
     @Override
     public int countSoldBtys(String resellerPhone) throws CrudException {
-        User reseller = userService.fetchUserByPhone(resellerPhone);
+        User reseller = userService.fetchUserByUserAccount(resellerPhone);
         if (reseller == null) {
             throw new CrudException("经销商不存在");
         }
@@ -275,7 +278,7 @@ public class ResellerServiceImpl implements ResellerService {
 
     @Override
     public Reseller fetchReseller(String resellerPhone) throws CrudException {
-        User reseller = userService.fetchUserByPhone(resellerPhone);
+        User reseller = userService.fetchUserByUserAccount(resellerPhone);
 
         if (UserType.NORMAL_USER.getType().equals(reseller.getUserType())) {
             throw new FetchResellerException("经销商不存在");

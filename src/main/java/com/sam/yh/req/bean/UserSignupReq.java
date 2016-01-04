@@ -1,19 +1,36 @@
 package com.sam.yh.req.bean;
 
-public class UserSignupReq {
+import java.io.Serializable;
+import java.util.Map;
 
-    private String userPhone;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+public class UserSignupReq implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private String userAccount;
+    private String accountType;
     private String authCode;
     private String password1;
     private String password2;
     private String deviceInfo;
+    private Map<String, String> extensions;
 
-    public String getUserPhone() {
-        return userPhone;
+    public String getUserAccount() {
+        return userAccount;
     }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
     public String getAuthCode() {
@@ -46,6 +63,19 @@ public class UserSignupReq {
 
     public void setDeviceInfo(String deviceInfo) {
         this.deviceInfo = deviceInfo;
+    }
+
+    public Map<String, String> getExtensions() {
+        return extensions;
+    }
+
+    public void setExtensions(Map<String, String> extensions) {
+        this.extensions = extensions;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
 }

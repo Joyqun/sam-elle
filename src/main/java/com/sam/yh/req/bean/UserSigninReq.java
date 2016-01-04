@@ -1,16 +1,33 @@
 package com.sam.yh.req.bean;
 
-public class UserSigninReq {
-    private String userPhone;
+import java.io.Serializable;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+public class UserSigninReq implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private String userAccount;
+    private String accountType;
     private String password;
     private String deviceInfo;
 
-    public String getUserPhone() {
-        return userPhone;
+    public String getUserAccount() {
+        return userAccount;
     }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
     public String getPassword() {
@@ -27,6 +44,11 @@ public class UserSigninReq {
 
     public void setDeviceInfo(String deviceInfo) {
         this.deviceInfo = deviceInfo;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
 }
