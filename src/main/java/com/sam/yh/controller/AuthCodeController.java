@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.sam.yh.common.EmailUtils;
 import com.sam.yh.common.IllegalParamsException;
 import com.sam.yh.common.MobilePhoneUtils;
 import com.sam.yh.crud.exception.CrudException;
@@ -42,20 +43,20 @@ public class AuthCodeController {
             validateSmsArgs(req);
             int type = Integer.valueOf(req.getAuthType());
             if (type == UserCodeType.SIGNUP_CODE.getType()) {
-                if (userCodeService.sendSignupAuthCode(req.getUserPhone())) {
+                if (userCodeService.sendSignupAuthCode(req.getUserAccount())) {
                     return ResponseUtils.getNormalResp("短信已成功发送");
                 } else {
                     return ResponseUtils.getErrorResp("短信发送失败");
                 }
             } else if (type == UserCodeType.RESETPWD_CODE.getType()) {
-                if (userCodeService.sendResetPwdAuthCode(req.getUserPhone())) {
+                if (userCodeService.sendResetPwdAuthCode(req.getUserAccount())) {
                     return ResponseUtils.getNormalResp("短信已成功发送");
                 } else {
                     return ResponseUtils.getErrorResp("短信发送失败");
                 }
 
             } else if (type == UserCodeType.TEST_CODE.getType()) {
-                if (userCodeService.sendTestAuthCode(req.getUserPhone(), req.getContent())) {
+                if (userCodeService.sendTestAuthCode(req.getUserAccount(), req.getContent())) {
                     return ResponseUtils.getNormalResp("短信已成功发送");
                 } else {
                     return ResponseUtils.getErrorResp("短信发送失败");
@@ -66,23 +67,24 @@ public class AuthCodeController {
             }
 
         } catch (IllegalParamsException e) {
+        	logger.error("send sms exception, " + req.getUserAccount(), e);
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (CrudException e) {
-            logger.error("send sms exception, " + req.getUserPhone(), e);
+            logger.error("send sms exception, " + req.getUserAccount(), e);
             if (e instanceof UserSignupException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
             } else {
                 return ResponseUtils.getSysErrorResp();
             }
         } catch (Exception e) {
-            logger.error("send sms exception, " + req.getUserPhone(), e);
+            logger.error("send sms exception, " + req.getUserAccount(), e);
             return ResponseUtils.getSysErrorResp();
         }
     }
 
     private void validateSmsArgs(SmsAuthCodeReq smsAuthCodeReq) throws IllegalParamsException {
-        if (!MobilePhoneUtils.isValidPhone(smsAuthCodeReq.getUserPhone())) {
-            throw new IllegalParamsException("请输入正确的手机号码");
+        if (!MobilePhoneUtils.isValidPhone(smsAuthCodeReq.getUserAccount()) && !EmailUtils.isValidEmail(smsAuthCodeReq.getUserAccount())) {
+            throw new IllegalParamsException("请输入正确的账户");
         }
 
         if (!StringUtils.isNumeric(smsAuthCodeReq.getAuthType()) || !UserCodeType.isValidType(Integer.parseInt(smsAuthCodeReq.getAuthType()))) {

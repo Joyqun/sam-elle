@@ -8,20 +8,20 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class SmsAuthCodeReq implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private String userPhone;
+    private String userAccount;
     private String authType;
     // test
     private String content;
 
-    public String getUserPhone() {
-        return userPhone;
-    }
+    public String getUserAccount() {
+		return userAccount;
+	}
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
 
-    public String getAuthType() {
+	public String getAuthType() {
         return authType;
     }
 

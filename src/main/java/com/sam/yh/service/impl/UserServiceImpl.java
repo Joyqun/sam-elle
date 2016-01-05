@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     private String adminAccounts;
 
     @Override
-    public User signup(String userAccount, UserAccountType accountType, String authCode, String hassPwd, String deviceInfo) throws CrudException {
+    public User signup(String userName,String userAccount, UserAccountType accountType, String authCode, String hassPwd, String deviceInfo) throws CrudException {
 
         User user = fetchUserByUserAccount(userAccount);
         if (user != null && !user.getLockStatus()) {
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             user = new User();
             user.setUuid(StringUtils.replace(uuid, "-", ""));
-            user.setUserName(userAccount);
+            user.setUserName(userName);
             user.setUserType(UserType.NORMAL_USER.getType());
             user.setSalt(salt);
 
@@ -112,6 +112,7 @@ public class UserServiceImpl implements UserService {
         } else {
             user.setSalt(salt);
 
+            user.setUserName(userName);
             user.setUserType(UserType.NORMAL_USER.getType());
             user.setPassword(PwdUtils.genMd5Pwd(userAccount, salt, hassPwd));
             user.setLockStatus(false);

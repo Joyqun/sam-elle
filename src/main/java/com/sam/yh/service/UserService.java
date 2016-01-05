@@ -12,7 +12,7 @@ import com.sam.yh.model.User;
 public interface UserService {
 
     @Transactional
-    public User signup(String userAccount, UserAccountType accountType, String authCode, String hassPwd, String deviceInfo) throws CrudException;
+    public User signup(String userName, String userAccount, UserAccountType accountType, String authCode, String hassPwd, String deviceInfo) throws CrudException;
 
     @Transactional
     public User signin(String userAccount, String hassPwd, String deviceInfo) throws CrudException;

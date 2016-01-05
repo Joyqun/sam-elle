@@ -8,9 +8,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Service;
 
+import com.sam.yh.common.EmailUtils;
+import com.sam.yh.common.MobilePhoneUtils;
 import com.sam.yh.common.RandomCodeUtils;
 import com.sam.yh.common.SamConstants;
 import com.sam.yh.common.msg.DahantSmsService;
+import com.sam.yh.common.msg.EmailSendService;
 import com.sam.yh.crud.exception.AuthCodeSendException;
 import com.sam.yh.crud.exception.AuthCodeVerifyException;
 import com.sam.yh.crud.exception.CrudException;
@@ -32,15 +35,29 @@ public class UserCodeServiceImpl implements UserCodeService {
 
     @Resource
     private DahantSmsService dahantSmsService;
+    
+    @Resource
+    private EmailSendService emailSendService;
 
     @Override
-    public boolean sendSignupAuthCode(String mobilePhone) throws CrudException {
-        User user = userMapper.selectByUserAccount(mobilePhone);
+    public boolean sendSignupAuthCode(String userAccount) throws CrudException {
+        User user = userMapper.selectByUserAccount(userAccount);
         if (user != null && !user.getLockStatus()) {
             throw new UserSignupException("手机号码已经注册");
         }
-        String authCode = sendAndSaveSmsCode(mobilePhone, UserCodeType.SIGNUP_CODE.getType());
-        return dahantSmsService.sendSignupAuthCode(mobilePhone, authCode);
+        boolean result = false;
+        String authCode = sendAndSaveSmsCode(userAccount, UserCodeType.SIGNUP_CODE.getType());
+        
+        if(MobilePhoneUtils.isValidPhone(userAccount)){
+        	result =  dahantSmsService.sendSignupAuthCode(userAccount, authCode);
+        }else if(EmailUtils.isValidEmail(userAccount)) {
+        	//TODO
+        	emailSendService.sendEmail(userAccount, authCode);
+        	result = true;
+        }else {
+        	
+        }
+        return result;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class UserSignupController {
 
             UserAccountType userAccountType = UserAccountType.getUserAccount(req.getAccountType());
 
-            User user = userService.signup(req.getUserAccount(), userAccountType, req.getAuthCode(), req.getPassword1(), req.getDeviceInfo());
+            User user = userService.signup(req.getUserName(),req.getUserAccount(), userAccountType, req.getAuthCode(), req.getPassword1(), req.getDeviceInfo());
 
             UserInfoResp respData = new UserInfoResp();
             respData.setUserUid(user.getUuid());
@@ -76,6 +76,9 @@ public class UserSignupController {
     }
 
     private void validateSignupArgs(UserSignupReq userSignupReq) throws IllegalParamsException {
+    	if(StringUtils.isBlank(userSignupReq.getUserName())) {
+    		throw new IllegalParamsException("请输入用户名");
+    	}
         if (StringUtils.isBlank(userSignupReq.getAccountType())) {
             throw new IllegalParamsException("未知账户类型");
         }

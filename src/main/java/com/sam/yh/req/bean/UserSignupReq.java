@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class UserSignupReq implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private String userName;
     private String userAccount;
     private String accountType;
     private String authCode;
@@ -17,7 +18,16 @@ public class UserSignupReq implements Serializable {
     private String deviceInfo;
     private Map<String, String> extensions;
 
-    public String getUserAccount() {
+    
+    public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserAccount() {
         return userAccount;
     }
 
