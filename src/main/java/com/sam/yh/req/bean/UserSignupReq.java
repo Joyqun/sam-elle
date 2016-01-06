@@ -9,10 +9,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class UserSignupReq implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private String userName;
-    private String userAccount;
-    private String accountType;
-    private String authCode;
+    private String userName;//手机号
+    private String userAccount;//邮箱
+    private String accountType;//2
+    private String authCode;//验证码
     private String password1;
     private String password2;
     private String deviceInfo;

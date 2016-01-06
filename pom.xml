@@ -266,8 +266,7 @@
 			<artifactId>webservice</artifactId>
 			<version>0.0.1</version>
 			<scope>system</scope>
-			<!--本地jar的路径,相对或者绝对都可以 -->
-			<systemPath>${basedir}/WebContent/WEB-INF/lib/ctc-smscloud-xmlwebservice.jar</systemPath>
+			<systemPath>${project.basedir}/WebContent/WEB-INF/lib/ctc-smscloud-xmlwebservice.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>

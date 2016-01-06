@@ -10,12 +10,15 @@ import java.util.UUID;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Sets;
 import com.sam.yh.common.PwdUtils;
 import com.sam.yh.common.RandomCodeUtils;
 import com.sam.yh.common.SamConstants;
+import com.sam.yh.controller.UserSignupController;
 import com.sam.yh.crud.exception.BtyFollowException;
 import com.sam.yh.crud.exception.BtyLockException;
 import com.sam.yh.crud.exception.CrudException;
@@ -47,6 +50,7 @@ import com.sam.yh.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Resource
     private UserCodeService userCodeService;
@@ -99,12 +103,16 @@ public class UserServiceImpl implements UserService {
             user.setUserName(userName);
             user.setUserType(UserType.NORMAL_USER.getType());
             user.setSalt(salt);
-
-            user.setPassword(PwdUtils.genMd5Pwd(userAccount, salt, hassPwd));
-            user.setUserAccount(userAccount);
+            ///gaobo modify
+            //user.setPassword(PwdUtils.genMd5Pwd(userAccount, salt, hassPwd));
+            user.setPassword(PwdUtils.genMd5Pwd(userName, salt, hassPwd));
+           
+            user.setDeviceInfo(userAccount); 
+            user.setUserAccount(userName);  
+            //modify end
             user.setAccountType(accountType.getType());
             user.setLockStatus(false);
-            user.setDeviceInfo(deviceInfo);
+            //user.setDeviceInfo(deviceInfo); gaobo modify
             user.setCreateDate(now);
             user.setLoginDate(now);
 
@@ -132,10 +140,15 @@ public class UserServiceImpl implements UserService {
         if (user == null || user.getLockStatus()) {
             throw new UserSignupException("用户不存在");
         }
-
+        logger.info("user pwd, {}", user.getPassword());
+        logger.info("genmd5 pwd, {}", PwdUtils.genMd5Pwd(userAccount, user.getSalt(), hassPwd));
+        logger.info("genmd5 pwd, {}", user.getSalt());       
+        logger.info("genmd5 pwd, {}", hassPwd);
+        logger.info("genmd5 pwd, {}", userAccount);    
         if (!StringUtils.equals(user.getPassword(), PwdUtils.genMd5Pwd(userAccount, user.getSalt(), hassPwd))) {
             throw new UserSignupException("用户名或密码错误");
         }
+        
 
         if (!user.getUserType().equals(getUserType(userAccount))) {
             user.setUserType(getUserType(userAccount));

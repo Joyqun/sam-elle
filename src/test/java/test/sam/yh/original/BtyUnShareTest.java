@@ -18,54 +18,55 @@ import com.alibaba.fastjson.JSON;
 import com.sam.yh.req.bean.BtyShareReq;
 
 public class BtyUnShareTest {
-    private static final Logger logger = LoggerFactory.getLogger(BtyUnShareTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(BtyUnShareTest.class);
 
-    private static Server server;
-    private RestTemplate restTemplate = new RestTemplate();
+	private static Server server;
+	private RestTemplate restTemplate = new RestTemplate();
 
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-        // 创建一个server
-        server = new Server(8080);
-        WebAppContext context = new WebAppContext();
-        String webapp = "F:/github/asm/WebContent";
-        context.setDescriptor(webapp + "/WEB-INF/web.xml"); // 指定web.xml配置文件
-        context.setResourceBase(webapp); // 指定webapp目录
-        context.setContextPath("/");
-        context.setParentLoaderPriority(true);
+	@BeforeClass
+	public static void beforeClass() throws Exception {
+		// 创建一个server
+		server = new Server(8080);
+		WebAppContext context = new WebAppContext();
+		String webapp = "F:/github/asm/WebContent";
+		context.setDescriptor(webapp + "/WEB-INF/web.xml"); // 指定web.xml配置文件
+		context.setResourceBase(webapp); // 指定webapp目录
+		context.setContextPath("/");
+		context.setParentLoaderPriority(true);
 
-        server.setHandler(context);
-        server.start();
-    }
+		server.setHandler(context);
+		server.start();
+	}
 
-    @Test
-    public void testUnshareBtyService() {
+	@Test
+	public void testUnshareBtyService() {
 
-        BtyShareReq reqObj = new BtyShareReq();
-        // reqObj.setAppName("samyh");
-        // reqObj.setDeviceType("android");
-        // reqObj.setVersion("0.0.1");
-        reqObj.setUserPhone("15618672987");
-        reqObj.setBtyPubSn("A10001");
-        reqObj.setFriendPhone("13900000001");
-        String jsonReq = JSON.toJSONString(reqObj);
-        logger.info("Reuqest json String:" + jsonReq);
+		BtyShareReq reqObj = new BtyShareReq();
+		// reqObj.setAppName("samyh");
+		// reqObj.setDeviceType("android");
+		// reqObj.setVersion("0.0.1");
+		reqObj.setUserPhone("15618672987");
+		reqObj.setBtyPubSn("A10001");
+		reqObj.setFriendPhone("13900000001");
+		String jsonReq = JSON.toJSONString(reqObj);
+		logger.info("Reuqest json String:" + jsonReq);
 
-        String url = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/user/bty/unshare.json").build().toUriString();
+		String url = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/user/bty/unshare.json").build()
+				.toUriString();
 
-        logger.info("Request URL:" + url);
+		logger.info("Request URL:" + url);
 
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        params.add("jsonReq", jsonReq);
-        String resp = restTemplate.postForObject(url, params, String.class);
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+		params.add("jsonReq", jsonReq);
+		String resp = restTemplate.postForObject(url, params, String.class);
 
-        logger.info("Response:" + resp);
+		logger.info("Response:" + resp);
 
-        assertEquals("hello", resp);
-    }
+		assertEquals("hello", resp);
+	}
 
-    @AfterClass
-    public static void afterClass() throws Exception {
-        server.stop(); // 当测试结束时停止服务器
-    }
+	@AfterClass
+	public static void afterClass() throws Exception {
+		server.stop(); // 当测试结束时停止服务器
+	}
 }

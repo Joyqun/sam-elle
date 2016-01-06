@@ -51,8 +51,8 @@ public class UserSigninController {
 
         try {
             validateSigninArgs(req);
-
-            UserAccountType userAccountType = UserAccountType.getUserAccount(req.getAccountType());
+            //joy
+            //UserAccountType userAccountType = UserAccountType.getUserAccount(req.getAccountType());
 
             User user = userService.signin(req.getUserAccount(), req.getPassword(), req.getDeviceInfo());
 
@@ -79,9 +79,9 @@ public class UserSigninController {
     }
 
     private void validateSigninArgs(UserSigninReq userSigninReq) throws IllegalParamsException {
-        if (StringUtils.isBlank(userSigninReq.getAccountType())) {
+/*        if (StringUtils.isBlank(userSigninReq.getAccountType())) {
             throw new IllegalParamsException("未知账户类型");
-        }
+        }*/
         UserAccountType userAccountType = UserAccountType.getUserAccount(userSigninReq.getAccountType());
         if (userAccountType == null) {
             throw new IllegalParamsException("未知账户类型");
@@ -90,9 +90,9 @@ public class UserSigninController {
             if (UserAccountType.MOBILE_PHONE.equals(userAccountType) && !MobilePhoneUtils.isValidPhone(userSigninReq.getUserAccount())) {
                 throw new IllegalParamsException("请输入正确的手机号码");
             }
-            if (UserAccountType.EMAIL.equals(userAccountType) && !EmailUtils.isValidEmail(userSigninReq.getUserAccount())) {
+ /*           if (UserAccountType.EMAIL.equals(userAccountType) && !EmailUtils.isValidEmail(userSigninReq.getUserAccount())) {
                 throw new IllegalParamsException("请输入正确的电子邮箱");
-            }
+            }*/
         }
 
         if (!PwdUtils.isValidPwd(userSigninReq.getPassword())) {
