@@ -44,7 +44,7 @@ public class AuthCodeController {
             int type = Integer.valueOf(req.getAuthType());
             if (type == UserCodeType.SIGNUP_CODE.getType()) {
                 if (userCodeService.sendSignupAuthCode(req.getUserAccount(),req.getUserName())) {
-                    return ResponseUtils.getNormalResp("验证码已成功发送");
+                    return ResponseUtils.getNormalResp("验证码成功发送");
                 } else {
                     return ResponseUtils.getErrorResp("验证码发送失败");
                 }
