@@ -43,7 +43,7 @@ public class ListBtyFollowersController {
         try {
             validateUserBtyArgs(req);
 
-            List<BtyFollower> followers = userBatteryService.fetchBtyFollowers(req.getUserPhone().trim(), req.getBtyPubSn().trim());
+            List<BtyFollower> followers = userBatteryService.fetchBtyFollowers(req.getUserPhone().trim(), req.getDeviceImei().trim());
             BtyFollowersResp respData = new BtyFollowersResp();
             respData.setFollowers(followers);
 
@@ -67,7 +67,7 @@ public class ListBtyFollowersController {
         if (!MobilePhoneUtils.isValidPhone(listFollowersReq.getUserPhone())) {
             throw new IllegalParamsException("请输入正确的手机号码");
         }
-        if (StringUtils.isBlank(listFollowersReq.getBtyPubSn())) {
+        if (StringUtils.isBlank(listFollowersReq.getDeviceImei())) {
             throw new IllegalParamsException("不存在的电池");
         }
 

@@ -4,17 +4,17 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-	<properties resource="jdbc.properties" />
+	<!-- <properties resource="jdbc.properties" /> -->
 	<classPathEntry
-		location="C:/Users/nate/.m2/repository/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar" />
+		location="C:\Users\Joy\.m2\repository\mysql\mysql-connector-java\5.1.30\mysql-connector-java-5.1.30.jar" />
 	<context id="yhsamTest" targetRuntime="MyBatis3">
 		<commentGenerator>
 			<property name="suppressDate" value="true" />
 			<property name="suppressAllComments" value="true" />
 		</commentGenerator>
 
-		<jdbcConnection driverClass="${driver}" connectionURL="${url}"
-			userId="${username}" password="${password}" />
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/elle"
+			userId="elle" password="elle" />
 
 		<javaModelGenerator targetPackage="com.sam.yh.model"
 			targetProject="src/main/java">
@@ -32,7 +32,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="battery" domainObjectName="Battery"
+		<!-- <table tableName="battery" domainObjectName="Battery"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">
@@ -82,8 +82,13 @@
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">
 		</table>
-		<!-- example -->
 		<table tableName="user_t" domainObjectName="UserExample"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table> -->
+		
+		<table tableName="user_attribute" domainObjectName="UserAttribute"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">

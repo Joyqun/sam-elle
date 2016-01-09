@@ -74,12 +74,12 @@ public class UserBatteryServiceImpl implements UserBatteryService {
     }
 
     @Override
-    public List<BtyFollower> fetchBtyFollowers(String userName, String btyPubSn) throws CrudException {
+    public List<BtyFollower> fetchBtyFollowers(String userName, String deviceImei) throws CrudException {
         User user = userMapper.selectByUserAccount(userName);
         if (user == null) {
             throw new FetchFollowerException("用户不存在");
         }
-        Battery battery = batteryMapper.selectByPubSn(btyPubSn);
+        Battery battery = batteryMapper.selectByIMEI(deviceImei);
         if (battery == null) {
             throw new FetchFollowerException("电池不存在");
         }

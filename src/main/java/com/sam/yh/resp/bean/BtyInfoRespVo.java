@@ -1,6 +1,7 @@
 package com.sam.yh.resp.bean;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -12,6 +13,8 @@ public class BtyInfoRespVo implements Serializable {
     private String latitude;
     private String temperature;
     private String voltage;
+    private String lockStatus;
+    private Map<String, String> extension;
     private String lastestDate;
 
     public String getLongitude() {
@@ -53,8 +56,24 @@ public class BtyInfoRespVo implements Serializable {
     public void setLastestDate(String lastestDate) {
         this.lastestDate = lastestDate;
     }
+    
+    public String getLockStatus() {
+		return lockStatus;
+	}
 
-    @Override
+	public void setLockStatus(String lockStatus) {
+		this.lockStatus = lockStatus;
+	}
+
+	public Map<String, String> getExtension() {
+		return extension;
+	}
+
+	public void setExtension(Map<String, String> extension) {
+		this.extension = extension;
+	}
+
+	@Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }

@@ -46,36 +46,37 @@ public class SubmitBtySpecController {
         } catch (IllegalParamsException e) {
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (CrudException e) {
-            logger.error("signin exception, " + req.getUserPhone(), e);
+            logger.error("signin exception, " + req.getUserName(), e);
             if (e instanceof SubmitBtySpecException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
-            } else if (e instanceof M2mEditTermalException) {
-                return ResponseUtils.getServiceErrorResp("云电池Sim卡激活失败，请联系客服。");
+//            } else if (e instanceof M2mEditTermalException) {
+//                return ResponseUtils.getServiceErrorResp("云电池Sim卡激活失败，请联系客服。");
             } else {
                 return ResponseUtils.getSysErrorResp();
             }
         } catch (Exception e) {
-            logger.error("signin exception, " + req.getUserPhone(), e);
+            logger.error("signin exception, " + req.getUserName(), e);
             return ResponseUtils.getSysErrorResp();
         }
     }
 
     private void validateBtySpecArgs(SubmitBtySpecReq submitBtySpecReq) throws IllegalParamsException {
-        if (!MobilePhoneUtils.isValidPhone(submitBtySpecReq.getUserPhone())) {
-            throw new IllegalParamsException("请输入购买人正确的手机号码");
-        }
-        if (!MobilePhoneUtils.isValidPhone(submitBtySpecReq.getResellerPhone())) {
-            throw new IllegalParamsException("请输入经销商正确的手机号码");
-        }
-        if (StringUtils.isBlank(submitBtySpecReq.getBtySN())) {
-            throw new IllegalParamsException("请输入序列号");
-        }
-        if (StringUtils.isBlank(submitBtySpecReq.getBtyImei())) {
+//        if (!MobilePhoneUtils.isValidPhone(submitBtySpecReq.getUserPhone())) {
+//            throw new IllegalParamsException("请输入购买人正确的手机号码");
+//        }
+//        if (!MobilePhoneUtils.isValidPhone(submitBtySpecReq.getResellerPhone())) {
+//            throw new IllegalParamsException("请输入经销商正确的手机号码");
+//        }
+//        if (StringUtils.isBlank(submitBtySpecReq.getBtySN())) {
+//            throw new IllegalParamsException("请输入序列号");
+//        }
+//        if (StringUtils.isBlank(submitBtySpecReq.getBtySimNo())) {
+//            throw new IllegalParamsException("请输入sim卡号");
+//        }
+        if (StringUtils.isBlank(submitBtySpecReq.getDeviceImei())) {
             throw new IllegalParamsException("请输入IMEI");
         }
-        if (StringUtils.isBlank(submitBtySpecReq.getBtySimNo())) {
-            throw new IllegalParamsException("请输入sim卡号");
-        }
+
     }
 
 }

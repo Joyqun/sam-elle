@@ -15,10 +15,12 @@ public interface UserService {
     public User signup(String userName, String userAccount, UserAccountType accountType, String authCode, String hassPwd, String deviceInfo) throws CrudException;
 
     @Transactional
-    public User signin(String userAccount, String hassPwd, String deviceInfo) throws CrudException;
+    public User signin(String getUserSigninName, String hassPwd, String deviceInfo) throws CrudException;
 
+    
     @Transactional
-    public User resetPwd(String mobilePhone, String authCode, String hassPwd, String deviceInfo) throws CrudException;
+//    public User resetPwd(String mobilePhone, String authCode, String hassPwd, String deviceInfo) throws CrudException;
+    public User resetPwd(String mobilePhone, String authCode, String hassPwd) throws CrudException;
 
     @Transactional
     public List<PubBatteryInfo> fetchSelfBtyInfo(String mobilePhone);
@@ -30,13 +32,13 @@ public interface UserService {
     public User fetchUserByUserAccount(String mobilePhone);
 
     @Transactional
-    public void followBty(String mobilePhone, String btyPubSn, String btyOwnerPhone) throws CrudException;
+    public void followBty(String mobile_Phone, String deviceImei, String btyOwnerPhone) throws CrudException;
 
     @Transactional
-    public void shareBty(String mobilePhone, String btyPubSn, String friendPhone) throws CrudException;
+    public void shareBty(String mobilePhone, String deviceImei, String friendPhone) throws CrudException;
 
     @Transactional
-    public void unshareBty(String mobilePhone, String btyPubSn, String friendPhone) throws CrudException;
+    public void unshareBty(String mobilePhone, String deviceImei, String friendPhone) throws CrudException;
 
     @Transactional
     public void unfollowBty(String mobilePhone, String btyPubSn) throws CrudException;
@@ -48,4 +50,6 @@ public interface UserService {
     public void unlockBty(String mobilePhone, String btyImei) throws CrudException;
 
     public String getUserType(String mobilePhone) throws CrudException;
+    
+    public User selectByUserName(String userName) throws CrudException;
 }

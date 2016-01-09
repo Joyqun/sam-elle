@@ -14,6 +14,10 @@ public class BatteryInfo {
     private String temperature;
 
     private String voltage;
+    
+    private String lockStatus;
+    
+    private String extension;
 
     private String status;
 
@@ -68,8 +72,24 @@ public class BatteryInfo {
     public void setVoltage(String voltage) {
         this.voltage = voltage == null ? null : voltage.trim();
     }
+    
+    public String getLockStatus() {
+		return lockStatus;
+	}
 
-    public String getStatus() {
+	public void setLockStatus(String lockStatus) {
+		this.lockStatus = lockStatus == null ? lockStatus : lockStatus.trim();
+	}
+
+	public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension == null ? null : extension.trim();
+	}
+
+	public String getStatus() {
         return status;
     }
 

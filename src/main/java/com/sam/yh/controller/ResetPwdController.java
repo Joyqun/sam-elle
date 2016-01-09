@@ -42,7 +42,8 @@ public class ResetPwdController {
         try {
             validatePwdResetArgs(req);
 
-            userService.resetPwd(req.getUserPhone(), req.getAuthCode(), req.getPassword1(), req.getDeviceInfo());
+//            userService.resetPwd(req.getUserPhone(), req.getAuthCode(), req.getPassword1(), req.getDeviceInfo());
+            userService.resetPwd(req.getUserPhone(), req.getAuthCode(), req.getPassword1());
 
             return ResponseUtils.getNormalResp(StringUtils.EMPTY);
         } catch (IllegalParamsException e) {
@@ -64,9 +65,9 @@ public class ResetPwdController {
     }
 
     private void validatePwdResetArgs(UserPwdResetReq userPwdResetReq) throws IllegalParamsException {
-        if (!MobilePhoneUtils.isValidPhone(userPwdResetReq.getUserPhone())) {
+        /*if (!MobilePhoneUtils.isValidPhone(userPwdResetReq.getUserPhone())) {
             throw new IllegalParamsException("请输入正确的手机号码");
-        }
+        }*/
 
         if (StringUtils.isBlank(userPwdResetReq.getPassword1()) || StringUtils.isBlank(userPwdResetReq.getPassword2())) {
             throw new IllegalParamsException("密码不能为空");

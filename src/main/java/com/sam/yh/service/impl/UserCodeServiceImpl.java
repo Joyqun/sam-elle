@@ -6,10 +6,13 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.sam.yh.common.EmailUtils;
 import com.sam.yh.common.MobilePhoneUtils;
+import com.sam.yh.common.PwdUtils;
 import com.sam.yh.common.RandomCodeUtils;
 import com.sam.yh.common.SamConstants;
 import com.sam.yh.common.msg.DahantSmsService;
@@ -27,7 +30,7 @@ import com.sam.yh.service.UserCodeService;
 
 @Service
 public class UserCodeServiceImpl implements UserCodeService {
-
+    private static final Logger logger = LoggerFactory.getLogger(UserCodeServiceImpl.class);
     @Resource
     private UserMapper userMapper;
     @Resource
@@ -40,11 +43,22 @@ public class UserCodeServiceImpl implements UserCodeService {
     private EmailSendService emailSendService;
 
     @Override
-    public boolean sendSignupAuthCode(String userAccount) throws CrudException {
-        User user = userMapper.selectByUserAccount(userAccount);
-        if (user != null && !user.getLockStatus()) {
-            throw new UserSignupException("手机号码已经注册");
+    public boolean sendSignupAuthCode(String userAccount,String userName) throws CrudException {
+    	
+        User user1 = userMapper.selectByUserAccount(userAccount);
+         
+        User user2 = userMapper.selectByUserName(userName);
+        
+        if(user1!= null){
+        	  throw new UserSignupException("邮箱已经被注册");
         }
+        if(user2!= null){
+      	  throw new UserSignupException("该用户名已被注册");
+      }
+        
+//        if (user != null && !user.getLockStatus()) {
+//            throw new UserSignupException("手机号码已经注册");
+//        }
         boolean result = false;
         String authCode = sendAndSaveSmsCode(userAccount, UserCodeType.SIGNUP_CODE.getType());
         
@@ -60,14 +74,27 @@ public class UserCodeServiceImpl implements UserCodeService {
         return result;
     }
 
-    @Override
-    public boolean sendResetPwdAuthCode(String mobilePhone) throws CrudException {
-        User user = userMapper.selectByUserAccount(mobilePhone);
+    @Override//此时userAccount里面传过来的是邮箱。记录在数据表的device_info里面
+    public boolean sendResetPwdAuthCode(String userAccount) throws CrudException {
+        User user = userMapper.selectByUserDeviceInfo(userAccount);
         if (user == null) {
-            throw new UserSignupException("未注册的手机号码");
+            throw new UserSignupException("未注册的账号");
         }
-        String authCode = sendAndSaveSmsCode(mobilePhone, UserCodeType.RESETPWD_CODE.getType());
-        return dahantSmsService.sendResetPwdAuthCode(mobilePhone, authCode);
+//       String authCode = sendAndSaveSmsCode(mobilePhone, UserCodeType.RESETPWD_CODE.getType());
+//        return dahantSmsService.sendResetPwdAuthCode(mobilePhone, authCode);
+        boolean result = false;
+        String authCode = sendAndSaveSmsCode(userAccount, UserCodeType.RESETPWD_CODE.getType());
+        
+        if(MobilePhoneUtils.isValidPhone(userAccount)){
+        	result =  dahantSmsService.sendSignupAuthCode(userAccount, authCode);
+        }else if(EmailUtils.isValidEmail(userAccount)) {
+        	//TODO
+        	emailSendService.sendEmail(userAccount, authCode);
+        	result = true;
+        }else {
+        	
+        }
+        return result;
     }
 
     @Override
@@ -157,9 +184,24 @@ public class UserCodeServiceImpl implements UserCodeService {
 
     @Override
     public boolean verifyAuthCode(String mobilePhone, int type, String authCode) throws CrudException {
+        logger.info("verifyAuthCode pwd, {}", mobilePhone);
+        logger.info("verifyAuthCode pwd, {}", type);
         UserCode userCode = fetchByUserName(mobilePhone, type);
         Date now = new Date();
 
+//        if (userCode != null && userCode.getStatus() && now.before(userCode.getExpiryDate()) && StringUtils.equals(userCode.getDynamicCode(), authCode)) {
+//            userCode.setStatus(false);
+//            userCodeMapper.updateByPrimaryKey(userCode);
+//            return true;
+//        } else {
+//            throw new AuthCodeVerifyException("验证码错误");
+//        }
+        logger.info("verifyAuthCode pwd, {}", userCode);
+        logger.info("verifyAuthCode pwd, {}", userCode.getStatus());
+        logger.info("verifyAuthCode pwd, {}", now.before(userCode.getExpiryDate()));       
+        logger.info("verifyAuthCode pwd, {}", StringUtils.equals(userCode.getDynamicCode(), authCode));
+        logger.info("verifyAuthCode pwd, {}", userCode.getDynamicCode());     
+        logger.info("verifyAuthCode pwd, {}", authCode);  
         if (userCode != null && userCode.getStatus() && now.before(userCode.getExpiryDate()) && StringUtils.equals(userCode.getDynamicCode(), authCode)) {
             userCode.setStatus(false);
             userCodeMapper.updateByPrimaryKey(userCode);

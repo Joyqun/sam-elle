@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class UserSignupReq implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private String userName;//手机号
+    private String userName;
     private String userAccount;//邮箱
     private String accountType;//2
     private String authCode;//验证码

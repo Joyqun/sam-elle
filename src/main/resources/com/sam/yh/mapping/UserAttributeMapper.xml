@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sam.yh.dao.UserAttributeMapper" >
+  <resultMap id="BaseResultMap" type="com.sam.yh.model.UserAttribute" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <id column="attr_name" property="attrName" jdbcType="VARCHAR" />
+    <result column="attr_value" property="attrValue" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, attr_name, attr_value, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.sam.yh.model.UserAttributeKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_attribute
+    where user_id = #{userId,jdbcType=INTEGER}
+      and attr_name = #{attrName,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.sam.yh.model.UserAttributeKey" >
+    delete from user_attribute
+    where user_id = #{userId,jdbcType=INTEGER}
+      and attr_name = #{attrName,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sam.yh.model.UserAttribute" >
+    insert into user_attribute (user_id, attr_name, attr_value, 
+      create_time, update_time)
+    values (#{userId,jdbcType=INTEGER}, #{attrName,jdbcType=VARCHAR}, #{attrValue,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sam.yh.model.UserAttribute" >
+    insert into user_attribute
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="attrName != null" >
+        attr_name,
+      </if>
+      <if test="attrValue != null" >
+        attr_value,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="attrName != null" >
+        #{attrName,jdbcType=VARCHAR},
+      </if>
+      <if test="attrValue != null" >
+        #{attrValue,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sam.yh.model.UserAttribute" >
+    update user_attribute
+    <set >
+      <if test="attrValue != null" >
+        attr_value = #{attrValue,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+      and attr_name = #{attrName,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sam.yh.model.UserAttribute" >
+    update user_attribute
+    set attr_value = #{attrValue,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=INTEGER}
+      and attr_name = #{attrName,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,11 +1,13 @@
 package com.sam.yh.controller;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.sam.yh.common.IllegalParamsException;
 import com.sam.yh.common.MobilePhoneUtils;
 import com.sam.yh.crud.exception.CrudException;
@@ -52,18 +55,26 @@ public class RealNotifyDeviceController {
             // TODO
 
             // 发送实时命令
-            boolean hasConnect = deviceChatService.chat(request.getDeviceSimNo(), DeviceChatType.LASTEST_INFO.getChatType());
+ //         boolean hasConnect = deviceChatService.chat(request.getDeviceSimNo(), DeviceChatType.LASTEST_INFO.getChatType());
+ //Joy  modify 
+            boolean hasConnect = deviceChatService.chat(request.getDeviceImei(), DeviceChatType.LASTEST_INFO.getChatType());
 
             if (hasConnect) {
                 TimeUnit.SECONDS.sleep(maxWaitTime);
             }
 
-            BatteryInfo info = batteryService.fetchBtyInfo(request.getDeviceSimNo());
+            BatteryInfo info = batteryService.fetchBtyInfo(request.getDeviceImei());
             BtyInfoRespVo respData = new BtyInfoRespVo();
             respData.setLatitude(info.getLatitude());
             respData.setLongitude(info.getLongitude());
             respData.setTemperature(info.getTemperature());
             respData.setVoltage(info.getVoltage());
+            respData.setLockStatus(info.getLockStatus());
+            Map<String, String> ext = null;
+            if(StringUtils.isNotBlank(info.getExtension())){
+            	 ext = (Map<String, String>)JSON.parse(info.getExtension());
+            }
+            respData.setExtension(ext);
 
             respData.setLastestDate(DateFormatUtils.format(info.getReceiveDate(), "yyyy-MM-dd HH:mm:ss"));
 
@@ -74,23 +85,29 @@ public class RealNotifyDeviceController {
         } catch (IllegalParamsException e) {
             logger.error(ExceptionUtils.getStackTrace(e));
             return ResponseUtils.getParamsErrorResp(e.getMessage());
-        } catch (CrudException e) {
-            logger.error("fetch battery info exception, simNo:{}, exception:{}" + request.getDeviceSimNo(), ExceptionUtils.getStackTrace(e));
+        } catch (CrudException e) {                                                
+            logger.error("fetch battery info exception, ImeiNo:{}, exception:{}" + request.getDeviceImei(), ExceptionUtils.getStackTrace(e));
             if (e instanceof FetchBtyInfoException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
             } else {
                 return ResponseUtils.getSysErrorResp();
             }
-        } catch (Exception e) {
-            logger.error("fetch battery info exception, simNo:{}, exception:{}" + request.getDeviceSimNo(), ExceptionUtils.getStackTrace(e));
+        } catch (Exception e) {                                                     
+            logger.error("fetch battery info exception, ImeiNo:{}, exception:{}" + request.getDeviceImei(), ExceptionUtils.getStackTrace(e));
             return ResponseUtils.getSysErrorResp();
         }
     }
 
-    private void validateBtyArgs(DeviceInfoReq btyInfoReq) throws IllegalParamsException {
-        if (!MobilePhoneUtils.isValidM2MPhone(btyInfoReq.getDeviceSimNo())) {
-            throw new IllegalParamsException("请输入正确的电池sim卡号");
-        }
-    }
+//    private void validateBtyArgs(DeviceInfoReq btyInfoReq) throws IllegalParamsException {
+//        if (!MobilePhoneUtils.isValidM2MPhone(btyInfoReq.getDeviceSimNo())) {
+//            throw new IllegalParamsException("请输入正确的电池sim卡号");
+//        }
+//    }
+     private void validateBtyArgs(DeviceInfoReq btyInfoReq) throws IllegalParamsException {
+         if (StringUtils.isBlank(btyInfoReq.getDeviceImei())) {
+             throw new IllegalParamsException("请输入IMEI");
+         }
+     }
+
 
 }
