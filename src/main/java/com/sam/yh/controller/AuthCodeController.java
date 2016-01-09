@@ -43,7 +43,7 @@ public class AuthCodeController {
             validateSmsArgs(req);
             int type = Integer.valueOf(req.getAuthType());
             if (type == UserCodeType.SIGNUP_CODE.getType()) {
-                if (userCodeService.sendSignupAuthCode(req.getUserAccount(),req.getUserName())) {
+                if (userCodeService.sendSignupAuthCode(req.getUserAccount(), req.getUserName())) {
                     return ResponseUtils.getNormalResp("验证码成功发送");
                 } else {
                     return ResponseUtils.getErrorResp("验证码发送失败");
@@ -67,7 +67,7 @@ public class AuthCodeController {
             }
 
         } catch (IllegalParamsException e) {
-        	logger.error("send sms exception, " + req.getUserAccount(), e);
+            logger.error("send sms exception, " + req.getUserAccount(), e);
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (CrudException e) {
             logger.error("send sms exception, " + req.getUserAccount(), e);
@@ -83,11 +83,11 @@ public class AuthCodeController {
     }
 
     private void validateSmsArgs(SmsAuthCodeReq smsAuthCodeReq) throws IllegalParamsException {
-    	if(StringUtils.isBlank(smsAuthCodeReq.getUserName())) {
-    		throw new IllegalParamsException("请输入正确的用户名");
-    	}
+        if (StringUtils.isBlank(smsAuthCodeReq.getUserName())) {
+            throw new IllegalParamsException("请输入正确的用户名");
+        }
         if (!MobilePhoneUtils.isValidPhone(smsAuthCodeReq.getUserAccount()) && !EmailUtils.isValidEmail(smsAuthCodeReq.getUserAccount())) {
-            throw new IllegalParamsException("请输入正确的账户");
+            throw new IllegalParamsException("请输入正确的账户名");
         }
 
         if (!StringUtils.isNumeric(smsAuthCodeReq.getAuthType()) || !UserCodeType.isValidType(Integer.parseInt(smsAuthCodeReq.getAuthType()))) {
