@@ -16,54 +16,55 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 public class UploadBtyInfoTest {
-    private static final Logger logger = LoggerFactory.getLogger(UploadBtyInfoTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(UploadBtyInfoTest.class);
 
-    private static Server server;
-    private RestTemplate restTemplate = new RestTemplate();
+	private static Server server;
+	private RestTemplate restTemplate = new RestTemplate();
 
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-        // 创建一个server
-        server = new Server(8080);
-        WebAppContext context = new WebAppContext();
-        String webapp = "F:/github/asm/WebContent";
-        context.setDescriptor(webapp + "/WEB-INF/web.xml"); // 指定web.xml配置文件
-        context.setResourceBase(webapp); // 指定webapp目录
-        context.setContextPath("/");
-        context.setParentLoaderPriority(true);
+	@BeforeClass
+	public static void beforeClass() throws Exception {
+		// 创建一个server
+		server = new Server(8080);
+		WebAppContext context = new WebAppContext();
+		String webapp = "F:/github/asm/WebContent";
+		context.setDescriptor(webapp + "/WEB-INF/web.xml"); // 指定web.xml配置文件
+		context.setResourceBase(webapp); // 指定webapp目录
+		context.setContextPath("/");
+		context.setParentLoaderPriority(true);
 
-        server.setHandler(context);
-        server.start();
-    }
+		server.setHandler(context);
+		server.start();
+	}
 
-    @Test
-    public void testUploadBtyInfoService() {
+	@Test
+	public void testUploadBtyInfoService() {
 
-        String imei = "10001";
-        String longitude = "121.294400";
-        String latitude = "31.14400";
-        String temperature = "230";
-        String voltage = "220";
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        params.add("imei", imei);
-        params.add("longitude", longitude);
-        params.add("latitude", latitude);
-        params.add("temperature", temperature);
-        params.add("voltage", voltage);
+		String imei = "10001";
+		String longitude = "121.294400";
+		String latitude = "31.14400";
+		String temperature = "230";
+		String voltage = "220";
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+		params.add("imei", imei);
+		params.add("longitude", longitude);
+		params.add("latitude", latitude);
+		params.add("temperature", temperature);
+		params.add("voltage", voltage);
 
-        String url = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/upload/btyinfo.json").queryParams(params).build().toUriString();
+		String url = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/upload/btyinfo.json").queryParams(params)
+				.build().toUriString();
 
-        logger.info("Request URL:" + url);
+		logger.info("Request URL:" + url);
 
-        ResponseEntity<String> resp = restTemplate.getForEntity(url, String.class);
+		ResponseEntity<String> resp = restTemplate.getForEntity(url, String.class);
 
-        logger.info("ResponseBody:" + resp.getBody());
+		logger.info("ResponseBody:" + resp.getBody());
 
-        assertEquals("ok", resp.getBody());
-    }
+		assertEquals("ok", resp.getBody());
+	}
 
-    @AfterClass
-    public static void afterClass() throws Exception {
-        server.stop(); // 当测试结束时停止服务器
-    }
+	@AfterClass
+	public static void afterClass() throws Exception {
+		server.stop(); // 当测试结束时停止服务器
+	}
 }

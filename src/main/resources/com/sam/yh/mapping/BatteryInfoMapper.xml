@@ -8,12 +8,14 @@
     <result column="latitude" property="latitude" jdbcType="VARCHAR" />
     <result column="temperature" property="temperature" jdbcType="VARCHAR" />
     <result column="voltage" property="voltage" jdbcType="VARCHAR" />
+    <result column="lock_status" property="lockStatus" jdbcType="VARCHAR" />
+    <result column="extension" property="extension" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="CHAR" />
     <result column="receive_date" property="receiveDate" jdbcType="TIMESTAMP" />
     <result column="sample_date" property="sampleDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, battery_id, longitude, latitude, temperature, voltage, status, receive_date, 
+    id, battery_id, longitude, latitude, temperature, voltage, lock_status, extension, status, receive_date, 
     sample_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -49,11 +51,12 @@
   </delete>
   <insert id="insert" parameterType="com.sam.yh.model.BatteryInfo" >
     insert into battery_info (id, battery_id, longitude, 
-      latitude, temperature, voltage, 
+      latitude, temperature, voltage, lock_status, extension, 
       status, receive_date, sample_date
       )
     values (#{id,jdbcType=BIGINT}, #{batteryId,jdbcType=INTEGER}, #{longitude,jdbcType=VARCHAR}, 
       #{latitude,jdbcType=VARCHAR}, #{temperature,jdbcType=VARCHAR}, #{voltage,jdbcType=VARCHAR}, 
+      #{lockStatus,jdbcType=VARCHAR}, #{extension,jdbcType=VARCHAR},
       #{status,jdbcType=CHAR}, #{receiveDate,jdbcType=TIMESTAMP}, #{sampleDate,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -77,6 +80,12 @@
       </if>
       <if test="voltage != null" >
         voltage,
+      </if>
+      <if test="lock_status != null" >
+        lock_status,
+      </if>
+      <if test="extension != null" >
+        extension,
       </if>
       <if test="status != null" >
         status,
@@ -106,6 +115,12 @@
       </if>
       <if test="voltage != null" >
         #{voltage,jdbcType=VARCHAR},
+      </if>
+      <if test="lockStatus != null" >
+        #{lockStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="extension != null" >
+        #{extension,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         #{status,jdbcType=CHAR},

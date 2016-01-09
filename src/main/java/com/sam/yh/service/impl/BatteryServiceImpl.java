@@ -1,13 +1,16 @@
 package com.sam.yh.service.impl;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.sam.yh.common.DistanceUtils;
 import com.sam.yh.common.TempUtils;
 import com.sam.yh.crud.exception.CrudException;
@@ -73,6 +76,9 @@ public class BatteryServiceImpl implements BatteryService {
         info.setLatitude(batteryInfoReqVo.getLatitude());
         info.setTemperature(convertAdcToTemp(batteryInfoReqVo.getTemperature()));
         info.setVoltage(convertAdcToVo(batteryInfoReqVo.getVoltage()));
+        //joy
+        info.setLockStatus(batteryInfoReqVo.getLockstatus());
+        info.setExtension(batteryInfoReqVo.getExtension());
         // TODO
         // info.setSampleDate(batteryInfoReqVo.getSampleDate());
         info.setSampleDate(new Date());
@@ -172,9 +178,24 @@ public class BatteryServiceImpl implements BatteryService {
         return batteryMapper.countByCity(cityId);
     }
 
+//    @Override
+//    public BatteryInfo fetchBtyInfo(String btySimNo) throws CrudException {
+//        Battery battery = batteryMapper.selectBySimNo(btySimNo);
+//        if (battery == null) {
+//            throw new FetchBtyInfoException("电池不存在");
+//        }
+//
+//        BatteryInfo info = batteryInfoMapper.selectByBtyId(battery.getId());
+//
+//        if (info == null) {
+//            throw new FetchBtyInfoException("未接收到此电池发送的信息");
+//        }
+//
+//        return info;
+//    }
     @Override
-    public BatteryInfo fetchBtyInfo(String btySimNo) throws CrudException {
-        Battery battery = batteryMapper.selectBySimNo(btySimNo);
+    public BatteryInfo fetchBtyInfo(String deviceImei) throws CrudException {
+        Battery battery = batteryMapper.selectByIMEI(deviceImei);
         if (battery == null) {
             throw new FetchBtyInfoException("电池不存在");
         }

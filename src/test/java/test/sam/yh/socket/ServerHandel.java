@@ -7,27 +7,27 @@ import org.apache.commons.io.IOUtils;
 
 public class ServerHandel implements Runnable {
 
-    private Socket socket;
+	private Socket socket;
 
-    public ServerHandel(Socket socket) {
-        super();
-        this.socket = socket;
-    }
+	public ServerHandel(Socket socket) {
+		super();
+		this.socket = socket;
+	}
 
-    @Override
-    public void run() {
-        BufferedInputStream bis = null;
-        try {
-            bis = new BufferedInputStream(socket.getInputStream());
-            while (true) {
+	@Override
+	public void run() {
+		BufferedInputStream bis = null;
+		try {
+			bis = new BufferedInputStream(socket.getInputStream());
+			while (true) {
 
-            }
-        } catch (Exception e) {
+			}
+		} catch (Exception e) {
 
-        } finally {
-            IOUtils.closeQuietly(bis);
-            IOUtils.closeQuietly(socket);
-        }
-    }
+		} finally {
+			IOUtils.closeQuietly(bis);
+			IOUtils.closeQuietly(socket);
+		}
+	}
 
 }

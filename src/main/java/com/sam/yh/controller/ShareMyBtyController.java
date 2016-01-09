@@ -39,7 +39,7 @@ public class ShareMyBtyController {
         try {
             validateBtyShareArgs(req);
 
-            userService.shareBty(req.getUserPhone().trim(), req.getBtyPubSn().trim(), req.getFriendPhone().trim());
+            userService.shareBty(req.getUserPhone().trim(), req.getDeviceImei().trim(), req.getFriendPhone().trim());
 
             return ResponseUtils.getNormalResp(StringUtils.EMPTY);
         } catch (IllegalParamsException e) {
@@ -61,7 +61,7 @@ public class ShareMyBtyController {
         if (!MobilePhoneUtils.isValidPhone(btyShareReq.getUserPhone())) {
             throw new IllegalParamsException("请输入正确的手机号码");
         }
-        if (StringUtils.isBlank(btyShareReq.getBtyPubSn())) {
+        if (StringUtils.isBlank(btyShareReq.getDeviceImei())) {
             throw new IllegalParamsException("不存在的电池");
         }
         if (!MobilePhoneUtils.isValidPhone(btyShareReq.getFriendPhone())) {

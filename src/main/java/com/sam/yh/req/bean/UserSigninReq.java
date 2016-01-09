@@ -9,24 +9,37 @@ public class UserSigninReq implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String userAccount;
+//    private String userAccount;
     private String accountType;
     private String password;
     private String deviceInfo;
+    private String userSigninName;
 
-    public String getUserAccount() {
-        return userAccount;
-    }
+//    public String getUserAccount() {
+//        return userAccount;
+//    }
+//
+//    public void setUserAccount(String userAccount) {
+//        this.userAccount = userAccount;
+//    }
+    
 
-    public void setUserAccount(String userAccount) {
-        this.userAccount = userAccount;
-    }
+
+	public String getUserSigninName() {
+		return userSigninName;
+	}
+
+
+
+	public void setUserSigninName(String userSigninName) {
+		this.userSigninName = userSigninName;
+	}
 
     public String getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(String accountType) {
+	public void setAccountType(String accountType) {
         this.accountType = accountType;
     }
 

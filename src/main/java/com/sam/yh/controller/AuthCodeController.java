@@ -43,23 +43,23 @@ public class AuthCodeController {
             validateSmsArgs(req);
             int type = Integer.valueOf(req.getAuthType());
             if (type == UserCodeType.SIGNUP_CODE.getType()) {
-                if (userCodeService.sendSignupAuthCode(req.getUserAccount())) {
-                    return ResponseUtils.getNormalResp("短信已成功发送");
+                if (userCodeService.sendSignupAuthCode(req.getUserAccount(),req.getUserName())) {
+                    return ResponseUtils.getNormalResp("验证码成功发送");
                 } else {
-                    return ResponseUtils.getErrorResp("短信发送失败");
+                    return ResponseUtils.getErrorResp("验证码发送失败");
                 }
             } else if (type == UserCodeType.RESETPWD_CODE.getType()) {
                 if (userCodeService.sendResetPwdAuthCode(req.getUserAccount())) {
-                    return ResponseUtils.getNormalResp("短信已成功发送");
+                    return ResponseUtils.getNormalResp("验证码已成功发送");
                 } else {
-                    return ResponseUtils.getErrorResp("短信发送失败");
+                    return ResponseUtils.getErrorResp("验证码发送失败");
                 }
 
             } else if (type == UserCodeType.TEST_CODE.getType()) {
                 if (userCodeService.sendTestAuthCode(req.getUserAccount(), req.getContent())) {
-                    return ResponseUtils.getNormalResp("短信已成功发送");
+                    return ResponseUtils.getNormalResp("验证码已成功发送");
                 } else {
-                    return ResponseUtils.getErrorResp("短信发送失败");
+                    return ResponseUtils.getErrorResp("验证码发送失败");
                 }
 
             } else {
@@ -83,6 +83,9 @@ public class AuthCodeController {
     }
 
     private void validateSmsArgs(SmsAuthCodeReq smsAuthCodeReq) throws IllegalParamsException {
+    	if(StringUtils.isBlank(smsAuthCodeReq.getUserName())) {
+    		throw new IllegalParamsException("请输入正确的用户名");
+    	}
         if (!MobilePhoneUtils.isValidPhone(smsAuthCodeReq.getUserAccount()) && !EmailUtils.isValidEmail(smsAuthCodeReq.getUserAccount())) {
             throw new IllegalParamsException("请输入正确的账户");
         }

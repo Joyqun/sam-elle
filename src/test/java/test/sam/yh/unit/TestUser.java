@@ -16,22 +16,22 @@ import com.sam.yh.service.UserExampleService;
 // 表示继承了SpringJUnit4ClassRunner�?
 @ContextConfiguration(locations = { "classpath:spring-mybatis.xml" })
 public class TestUser {
-    private static Logger logger = Logger.getLogger(TestUser.class);
-    // private ApplicationContext ac = null;
-    @Resource
-    private UserExampleService userExampleService = null;
+	private static Logger logger = Logger.getLogger(TestUser.class);
+	// private ApplicationContext ac = null;
+	@Resource
+	private UserExampleService userExampleService = null;
 
-    // @Before
-    // public void before() {
-    // ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-    // userService = (IUserService) ac.getBean("userService");
-    // }
+	// @Before
+	// public void before() {
+	// ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+	// userService = (IUserService) ac.getBean("userService");
+	// }
 
-    @Test
-    public void test1() {
-        UserExample user = userExampleService.getUserById(1);
-        // System.out.println(user.getUserName());
-        // logger.info("值："+user.getUserName());
-        logger.info(JSON.toJSONString(user));
-    }
+	@Test
+	public void test1() {
+		UserExample user = userExampleService.getUserById(1);
+		// System.out.println(user.getUserName());
+		// logger.info("值："+user.getUserName());
+		logger.info(JSON.toJSONString(user));
+	}
 }

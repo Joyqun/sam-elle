@@ -28,5 +28,5 @@ public interface UserBatteryService {
     public List<PubBattery> fetchfriendBtys(String mobilePhone) throws CrudException;
 
     @Transactional
-    public List<BtyFollower> fetchBtyFollowers(String userName, String btyPubSn) throws CrudException;
+    public List<BtyFollower> fetchBtyFollowers(String userName, String deviceImei) throws CrudException;
 }

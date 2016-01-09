@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,7 @@ public class FetchBtyInfoController {
         try {
             validateBtyArgs(req);
 
-            BatteryInfo info = batteryService.fetchBtyInfo(req.getDeviceSimNo());
+            BatteryInfo info = batteryService.fetchBtyInfo(req.getDeviceImei());
             BtyInfoRespVo respData = new BtyInfoRespVo();
             respData.setLatitude(info.getLatitude());
             respData.setLongitude(info.getLongitude());
@@ -65,19 +66,19 @@ public class FetchBtyInfoController {
         } catch (IllegalParamsException e) {
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (CrudException e) {
-            logger.error("fetch battery info exception, " + req.getDeviceSimNo(), e);
+            logger.error("fetch battery info exception, " + req.getDeviceImei(), e);
             if (e instanceof FetchBtyInfoException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
             } else {
                 return ResponseUtils.getSysErrorResp();
             }
         } catch (Exception e) {
-            logger.error("fetch battery info exception, " + req.getDeviceSimNo(), e);
+            logger.error("fetch battery info exception, " + req.getDeviceImei(), e);
             return ResponseUtils.getSysErrorResp();
         }
     }
 
-    @RequestMapping(value = "/info/real", method = RequestMethod.POST)
+    @RequestMapping(value = "/info/real", method = RequestMethod.POST)//实时刷新采用的接口
     public SamResponse fetchBtyInfoReal(HttpServletRequest httpServletRequest, @RequestParam("jsonReq") String jsonReq) {
         logger.info("Request json String:" + jsonReq);
         DeviceInfoReq req = JSON.parseObject(jsonReq, DeviceInfoReq.class);
@@ -85,11 +86,11 @@ public class FetchBtyInfoController {
         try {
             validateBtyArgs(req);
 
-            sendReq(req.getDeviceSimNo());
+            sendReq(req.getDeviceImei());
 
             TimeUnit.SECONDS.sleep(SamConstants.MAX_WAIT_SECONDS);
 
-            BatteryInfo info = batteryService.fetchBtyInfo(req.getDeviceSimNo());
+            BatteryInfo info = batteryService.fetchBtyInfo(req.getDeviceImei());
             BtyInfoRespVo respData = new BtyInfoRespVo();
             respData.setLatitude(info.getLatitude());
             respData.setLongitude(info.getLongitude());
@@ -106,28 +107,63 @@ public class FetchBtyInfoController {
             logger.error(ExceptionUtils.getStackTrace(e));
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (CrudException e) {
-            logger.error("fetch battery info exception, " + req.getDeviceSimNo(), e);
+            logger.error("fetch battery info exception, " + req.getDeviceImei(), e);
             if (e instanceof FetchBtyInfoException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
             } else {
                 return ResponseUtils.getSysErrorResp();
             }
         } catch (Exception e) {
-            logger.error("fetch battery info exception, " + req.getDeviceSimNo(), e);
+            logger.error("fetch battery info exception, " + req.getDeviceImei(), e);
             return ResponseUtils.getSysErrorResp();
         }
     }
 
+//    private void validateBtyArgs(DeviceInfoReq btyInfoReq) throws IllegalParamsException {
+//        if (!MobilePhoneUtils.isValidM2MPhone(btyInfoReq.getDeviceSimNo())) {
+//            throw new IllegalParamsException("请输入正确的电池sim卡号");
+//        }
+//    }
     private void validateBtyArgs(DeviceInfoReq btyInfoReq) throws IllegalParamsException {
-        if (!MobilePhoneUtils.isValidM2MPhone(btyInfoReq.getDeviceSimNo())) {
-            throw new IllegalParamsException("请输入正确的电池sim卡号");
+        if (StringUtils.isBlank(btyInfoReq.getDeviceImei())) {
+            throw new IllegalParamsException("请输入IMEI");
         }
     }
 
-    private void sendReq(String simNo) {
-        Battery battery = batteryService.fetchBtyBySimNo(simNo);
+//    private void sendReq(String simNo) {
+//        Battery battery = batteryService.fetchBtyBySimNo(simNo);
+//        if (battery == null) {
+//            logger.error("电池不存在, " + simNo);
+//            return;
+//        }
+//        boolean hasConn = false;
+//        ChannelGroup channelGroup = SamBtyDataHandler.getChannels();
+//        for (Channel c : channelGroup) {
+//            String imei = (String) c.attr(AttributeKey.valueOf("IMEI")).get();
+//            logger.info("已经连接的imei：" + imei);
+//            if (imei != null && imei.equals(battery.getImei())) {
+//                c.writeAndFlush("tellme" + imei + "\n");
+//                hasConn = true;
+//            }
+//
+//        }
+//        if (!hasConn) {
+//            logger.error("未获取到长连接, " + simNo);
+//        }
+//
+//        // ConcurrentHashMap<String, Channel> map =
+//        // SamBtyDataHandler.getChannelMap();
+//        // Channel channel = map.get(battery.getImei());
+//        // if (channel == null) {
+//        // logger.error("未获取到长连接, " + simNo);
+//        // }
+//        //
+//        // channel.writeAndFlush("tellme\r\n");
+//    }
+    private void sendReq(String Imei) {
+        Battery battery = batteryService.fetchBtyByIMEI(Imei);
         if (battery == null) {
-            logger.error("电池不存在, " + simNo);
+            logger.error("电池不存在, " + Imei);
             return;
         }
         boolean hasConn = false;
@@ -142,7 +178,7 @@ public class FetchBtyInfoController {
 
         }
         if (!hasConn) {
-            logger.error("未获取到长连接, " + simNo);
+            logger.error("未获取到长连接, " + Imei);
         }
 
         // ConcurrentHashMap<String, Channel> map =

@@ -51,10 +51,10 @@ public class UserSigninController {
 
         try {
             validateSigninArgs(req);
+            //joy
+            //UserAccountType userAccountType = UserAccountType.getUserAccount(req.getAccountType());
 
-            UserAccountType userAccountType = UserAccountType.getUserAccount(req.getAccountType());
-
-            User user = userService.signin(req.getUserAccount(), req.getPassword(), req.getDeviceInfo());
+            User user = userService.signin(req.getUserSigninName(), req.getPassword(), req.getDeviceInfo());
 
             UserInfoResp respData = new UserInfoResp();
             respData.setUserUid(user.getUuid());
@@ -79,21 +79,21 @@ public class UserSigninController {
     }
 
     private void validateSigninArgs(UserSigninReq userSigninReq) throws IllegalParamsException {
-        if (StringUtils.isBlank(userSigninReq.getAccountType())) {
+/*        if (StringUtils.isBlank(userSigninReq.getAccountType())) {
             throw new IllegalParamsException("未知账户类型");
-        }
+        }*/
         UserAccountType userAccountType = UserAccountType.getUserAccount(userSigninReq.getAccountType());
         if (userAccountType == null) {
             throw new IllegalParamsException("未知账户类型");
         }
-        if (!isAdminAccount(userSigninReq.getUserAccount())) {
-            if (UserAccountType.MOBILE_PHONE.equals(userAccountType) && !MobilePhoneUtils.isValidPhone(userSigninReq.getUserAccount())) {
-                throw new IllegalParamsException("请输入正确的手机号码");
-            }
-            if (UserAccountType.EMAIL.equals(userAccountType) && !EmailUtils.isValidEmail(userSigninReq.getUserAccount())) {
-                throw new IllegalParamsException("请输入正确的电子邮箱");
-            }
-        }
+//        if (!isAdminAccount(userSigninReq.getUserAccount())) {
+//            if (UserAccountType.MOBILE_PHONE.equals(userAccountType) && !MobilePhoneUtils.isValidPhone(userSigninReq.getUserAccount())) {
+//                throw new IllegalParamsException("请输入正确的手机号码");
+//            }
+// /*           if (UserAccountType.EMAIL.equals(userAccountType) && !EmailUtils.isValidEmail(userSigninReq.getUserAccount())) {
+//                throw new IllegalParamsException("请输入正确的电子邮箱");
+//            }*/
+//        }
 
         if (!PwdUtils.isValidPwd(userSigninReq.getPassword())) {
             throw new IllegalParamsException("密码长度为8-20位字符");

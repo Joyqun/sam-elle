@@ -72,42 +72,44 @@ public class ResellerServiceImpl implements ResellerService {
 
     @Override
     public void submitBtySpec(SubmitBtySpecReq submitBtySpecReq) throws CrudException {
-        if (batteryService.fetchBtyByIMEI(submitBtySpecReq.getBtyImei()) != null) {
-            throw new SubmitBtySpecException("请检查电池IMEI号");
+        if (batteryService.fetchBtyByIMEI(submitBtySpecReq.getDeviceImei()) != null) {
+            throw new SubmitBtySpecException("请检查电池IMEI号");//该IMEI号在数据库里已存在
         }
-        if (batteryService.fetchBtyBySimNo(submitBtySpecReq.getBtySimNo()) != null) {
-            throw new SubmitBtySpecException("请检查电池sim卡号");
-        }
-        if (batteryService.fetchBtyBySN(submitBtySpecReq.getBtySN()) != null) {
-            throw new SubmitBtySpecException("请检查电池序列号");
-        }
+//        if (batteryService.fetchBtyBySimNo(submitBtySpecReq.getBtySimNo()) != null) {
+//            throw new SubmitBtySpecException("请检查电池sim卡号");
+//        }
+//        if (batteryService.fetchBtyBySN(submitBtySpecReq.getBtySN()) != null) {
+//            throw new SubmitBtySpecException("请检查电池序列号");
+//        }
 
-        //
-        String resellerPhone = submitBtySpecReq.getResellerPhone();
-        User resellerUser = userService.fetchUserByUserAccount(resellerPhone);
-        if (resellerUser == null || StringUtils.equals(UserType.NORMAL_USER.getType(), resellerUser.getUserType())) {
-            throw new SubmitBtySpecException("经销商不存在，请联系客服。");
-        }
+        
+//        String resellerPhone = submitBtySpecReq.getResellerPhone();
+//        User resellerUser = userService.fetchUserByUserAccount(resellerPhone);
+//        if (resellerUser == null || StringUtils.equals(UserType.NORMAL_USER.getType(), resellerUser.getUserType())) {
+//            throw new SubmitBtySpecException("经销商不存在，请联系客服。");
+//        }
+//
+//        Reseller reseller = resellerMapper.selectByPrimaryKey(resellerUser.getUserId());
+//        if (reseller == null) {
+//            throw new SubmitBtySpecException("经销商信息未添加");
+//        }
 
-        Reseller reseller = resellerMapper.selectByPrimaryKey(resellerUser.getUserId());
-        if (reseller == null) {
-            throw new SubmitBtySpecException("经销商信息未添加");
-        }
-
-        String iccid = unicomM2mService.activateSimCard(submitBtySpecReq.getBtySimNo());
-
-        //
-        User user = userService.fetchUserByUserAccount(submitBtySpecReq.getUserPhone());
+//        String iccid = unicomM2mService.activateSimCard(submitBtySpecReq.getBtySimNo());
+//
+//        
+        User user = userService.fetchUserByUserAccount(submitBtySpecReq.getUserName());
         if (user == null) {
-            user = addLockedUserBySys(submitBtySpecReq.getUserName(), submitBtySpecReq.getUserPhone());
-            userCodeService.sendSignupAuthCode(submitBtySpecReq.getUserPhone());
+            user = addLockedUserBySys(submitBtySpecReq.getUserName(), submitBtySpecReq.getUserName());
+            userCodeService.sendSignupAuthCode(submitBtySpecReq.getUserName(),submitBtySpecReq.getUserName());
         }
 
         //
         boolean isCloudBty = true;
-        Battery battery = addBattery(submitBtySpecReq.getBtySN(), submitBtySpecReq.getBtyImei(), submitBtySpecReq.getBtySimNo(), iccid, isCloudBty,
-                reseller.getUserId(), reseller.getCityId());
-
+                                        //   (String btySn,             String imei,               String simNo,             iccid, isCloudBty, resellerId,               cityId)
+//        Battery battery = addBattery(submitBtySpecReq.getBtySN(), submitBtySpecReq.getBtyImei(), submitBtySpecReq.getSimNo(), iccid, isCloudBty, reseller.getUserId(), reseller.getCityId());
+//          Battery battery = addBattery("sn",                          submitBtySpecReq.getDeviceImei(), "simno",              "iccid", isCloudBty, 0,0);
+        Battery battery = addBattery(submitBtySpecReq.getDeviceImei(),submitBtySpecReq.getDeviceImei(),submitBtySpecReq.getDeviceImei(),submitBtySpecReq.getDeviceImei(),isCloudBty,0,0);
+       
         //
         UserBattery userBattery = new UserBattery();
         userBattery.setBatteryId(battery.getId());
@@ -116,7 +118,7 @@ public class ResellerServiceImpl implements ResellerService {
 
         userBatteryMapper.insert(userBattery);
 
-        dahantSmsService.sendBuyInfo(submitBtySpecReq.getUserPhone());
+        dahantSmsService.sendBuyInfo(submitBtySpecReq.getUserName());
 
     }
 

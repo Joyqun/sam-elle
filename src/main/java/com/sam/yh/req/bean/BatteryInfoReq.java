@@ -12,8 +12,28 @@ public class BatteryInfoReq implements Serializable {
     private String latitude;
     private String temperature;
     private String voltage;
+    private String lockstatus;
+    private String extension;
 
-    public String getImei() {
+
+
+	public String getLockstatus() {
+		return lockstatus;
+	}
+
+	public void setLockstatus(String lockstatus) {
+		this.lockstatus = lockstatus;
+	}
+
+	public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+
+	public String getImei() {
         return imei;
     }
 

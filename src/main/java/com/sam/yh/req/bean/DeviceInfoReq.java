@@ -9,18 +9,30 @@ public class DeviceInfoReq implements Serializable {
 
 	private static final long serialVersionUID = 5375037727343932182L;
 
-	private String deviceSimNo;
+
+//	private String deviceSimNo;
 
 	private String chatType;
+	
+	private String deviceImei;
+	
 
-	public String getDeviceSimNo() {
-		return deviceSimNo;
+//	public String getDeviceSimNo() {
+//		return deviceSimNo;
+//	}
+//
+//	public void setDeviceSimNo(String deviceSimNo) {
+//		this.deviceSimNo = deviceSimNo;
+//	}
+
+	public String getDeviceImei() {
+		return deviceImei;
 	}
 
-	public void setDeviceSimNo(String deviceSimNo) {
-		this.deviceSimNo = deviceSimNo;
+	public void setDeviceImei(String deviceImei) {
+		this.deviceImei = deviceImei;
 	}
-
+	
 	public String getChatType() {
 		return chatType;
 	}
