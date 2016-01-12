@@ -5,7 +5,7 @@ import java.util.Date;
 public class UserCode {
     private Integer id;
 
-    private String mobilephone;
+    private String userAccount;
 
     private String dynamicCode;
 
@@ -28,12 +28,12 @@ public class UserCode {
     }
 
 
-	public String getMobilephone() {
-		return mobilephone;
+	public String getUserAccount() {
+		return userAccount;
 	}
 
-	public void setMobilephone(String mobilephone) {
-		this.mobilephone = mobilephone;
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
 	}
 
 	public String getDynamicCode() {

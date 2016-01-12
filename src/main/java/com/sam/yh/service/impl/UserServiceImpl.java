@@ -228,7 +228,7 @@ public class UserServiceImpl implements UserService {
         }
         boolean auth = userCodeService.verifyAuthCode(userAccount, UserCodeType.RESETPWD_CODE.getType(), authCode);
         if (!auth) {
-            throw new PwdResetException("短信验证码错误");
+            throw new PwdResetException("验证码错误");
         }
         Date now = new Date();
         String salt = user.getSalt();

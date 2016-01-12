@@ -103,13 +103,13 @@ public class UserCodeServiceImpl implements UserCodeService {
     }
 
     @Override
-    public String genAndSaveUserSalt(String mobilePhone, int type) {
-        UserCode userCode = fetchByUserName(mobilePhone, UserCodeType.USER_SALT.getType());
+    public String genAndSaveUserSalt(String userAccount, int type) {
+        UserCode userCode = fetchByUserName(userAccount, UserCodeType.USER_SALT.getType());
         String salt = RandomCodeUtils.genSalt();
         Date now = new Date();
         if (userCode == null) {
             userCode = new UserCode();
-            userCode.setMobilephone(mobilePhone);
+            userCode.setUserAccount(userAccount);
             userCode.setCodeType(UserCodeType.USER_SALT.getType());
             userCode.setDynamicCode(salt);
             userCode.setSendTimes(1);
@@ -141,7 +141,7 @@ public class UserCodeServiceImpl implements UserCodeService {
         Date now = new Date();
         if (userCode == null) {
             userCode = new UserCode();
-            userCode.setMobilephone(userAccount);
+            userCode.setUserAccount(userAccount);
             userCode.setCodeType(type);
             userCode.setDynamicCode(smsCode);
             userCode.setSendTimes(1);
@@ -183,8 +183,8 @@ public class UserCodeServiceImpl implements UserCodeService {
 //        return userCodeMapper.selectByUserNameAndType(mobilePhone, type);
 //    }
     @Override
-    public UserCode fetchByUserName(String mobilePhone, int codeType) {
-        return userCodeMapper.selectByUserNameAndType(mobilePhone, codeType);
+    public UserCode fetchByUserName(String userAccount, int codeType) {
+        return userCodeMapper.selectByUserNameAndType(userAccount, codeType);
     }
     
     
@@ -241,7 +241,7 @@ public class UserCodeServiceImpl implements UserCodeService {
         Date now = new Date();
         if (userCode == null) {
             userCode = new UserCode();
-            userCode.setMobilephone(btyImei);
+            userCode.setUserAccount(btyImei);
             userCode.setCodeType(type);
             userCode.setDynamicCode(mobilePhone);
             userCode.setSendTimes(1);

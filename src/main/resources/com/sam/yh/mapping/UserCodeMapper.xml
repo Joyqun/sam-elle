@@ -3,7 +3,7 @@
 <mapper namespace="com.sam.yh.dao.UserCodeMapper" >
   <resultMap id="BaseResultMap" type="com.sam.yh.model.UserCode" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
     <result column="dynamic_code" property="dynamicCode" jdbcType="VARCHAR" />
     <result column="code_type" property="codeType" jdbcType="INTEGER" />
     <result column="send_times" property="sendTimes" jdbcType="INTEGER" />
@@ -12,7 +12,7 @@
     <result column="expiry_date" property="expiryDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, mobile_phone, dynamic_code, code_type, send_times, status, send_date, expiry_date
+    id, user_account, dynamic_code, code_type, send_times, status, send_date, expiry_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -24,17 +24,17 @@
     select 
     <include refid="Base_Column_List" />
     from user_code
-    where mobile_phone = #{0,jdbcType=VARCHAR} and code_type = #{1,jdbcType=INTEGER}
+    where user_account = #{0,jdbcType=VARCHAR} and code_type = #{1,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user_code
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.sam.yh.model.UserCode" >
-    insert into user_code (id, mobile_phone, dynamic_code, 
+    insert into user_code (id, user_account, dynamic_code, 
       code_type, send_times, status, 
       send_date, expiry_date)
-    values (#{id,jdbcType=INTEGER}, #{mobilePhone,jdbcType=VARCHAR}, #{dynamicCode,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{userAccount,jdbcType=VARCHAR}, #{dynamicCode,jdbcType=VARCHAR}, 
       #{codeType,jdbcType=INTEGER}, #{sendTimes,jdbcType=INTEGER}, #{status,jdbcType=BIT}, 
       #{sendDate,jdbcType=TIMESTAMP}, #{expiryDate,jdbcType=TIMESTAMP})
   </insert>
@@ -44,8 +44,8 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="mobilePhone != null" >
-        mobile_phone,
+      <if test="userAccount != null" >
+        user_account,
       </if>
       <if test="dynamicCode != null" >
         dynamic_code,
@@ -70,8 +70,8 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="mobilePhone != null" >
-        #{mobilePhone,jdbcType=VARCHAR},
+      <if test="userAccount != null" >
+        #{userAccount,jdbcType=VARCHAR},
       </if>
       <if test="dynamicCode != null" >
         #{dynamicCode,jdbcType=VARCHAR},
@@ -97,7 +97,7 @@
     update user_code
     <set >
       <if test="mobilePhone != null" >
-        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+        user_account = #{userAccount,jdbcType=VARCHAR},
       </if>
       <if test="dynamicCode != null" >
         dynamic_code = #{dynamicCode,jdbcType=VARCHAR},
@@ -122,7 +122,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sam.yh.model.UserCode" >
     update user_code
-    set mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+    set user_account = #{userAccount,jdbcType=VARCHAR},
       dynamic_code = #{dynamicCode,jdbcType=VARCHAR},
       code_type = #{codeType,jdbcType=INTEGER},
       send_times = #{sendTimes,jdbcType=INTEGER},
