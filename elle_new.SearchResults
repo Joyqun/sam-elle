@@ -1,0 +1,524 @@
+---- kitImei Matches (8 in 3 files) ----
+AddUserService.java (src\main\java\com\sam\yh\service):	public User signup(String kitImei, String mobilePhone, String hassPwd ,String mailadd)  throws CrudException;
+AddUserServiceImpl.java (src\main\java\com\sam\yh\service\impl):	public User signup(String kitImei, String mobilePhone, String hassPwd ,String mailadd) throws CrudException {
+AddUserServiceImpl.java (src\main\java\com\sam\yh\service\impl):			user.setUserName(kitImei);
+AddUserSignupReq.java (src\main\java\com\sam\yh\req\bean):	private String kitImei;
+AddUserSignupReq.java (src\main\java\com\sam\yh\req\bean):		return kitImei;
+AddUserSignupReq.java (src\main\java\com\sam\yh\req\bean):    public void setkitImei(String kitImei) {
+AddUserSignupReq.java (src\main\java\com\sam\yh\req\bean):		this.kitImei = kitImei;
+---- submitBtySpec Matches (5 in 4 files) ----
+ListCityBtysController.java (src\main\java\com\sam\yh\controller):	public SamResponse submitBtySpec(HttpServletRequest httpServletRequest, @RequestParam("jsonReq") String jsonReq) {
+ResellerService.java (src\main\java\com\sam\yh\service):	public void submitBtySpec(SubmitBtySpecReq submitBtySpecReq) throws CrudException;
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):	public void submitBtySpec(SubmitBtySpecReq submitBtySpecReq) throws CrudException {
+SubmitBtySpecController.java (src\main\java\com\sam\yh\controller):	public SamResponse submitBtySpec(HttpServletRequest httpServletRequest, @RequestParam("jsonReq") String jsonReq) {
+SubmitBtySpecController.java (src\main\java\com\sam\yh\controller):			resellerService.submitBtySpec(req);
+---- btyImei Matches (42 in 11 files) ----
+AddUserService.java (src\main\java\com\sam\yh\service):	public void lockBty(String mobilePhone, String btyImei) throws CrudException;
+AddUserService.java (src\main\java\com\sam\yh\service):	public void unlockBty(String mobilePhone, String btyImei) throws CrudException;
+AddUserServiceImpl.java (src\main\java\com\sam\yh\service\impl):	public void lockBty(String mobilePhone, String btyImei) throws CrudException {
+AddUserServiceImpl.java (src\main\java\com\sam\yh\service\impl):		Battery battery = batteryService.fetchBtyByIMEI(btyImei);
+AddUserServiceImpl.java (src\main\java\com\sam\yh\service\impl):	public void unlockBty(String mobilePhone, String btyImei) throws CrudException {
+AddUserServiceImpl.java (src\main\java\com\sam\yh\service\impl):		Battery battery = batteryService.fetchBtyByIMEI(btyImei);
+BtyLockReq.java (src\main\java\com\sam\yh\req\bean):	private String btyImei;
+BtyLockReq.java (src\main\java\com\sam\yh\req\bean):		return btyImei;
+BtyLockReq.java (src\main\java\com\sam\yh\req\bean):	public void setBtyImei(String btyImei) {
+BtyLockReq.java (src\main\java\com\sam\yh\req\bean):		this.btyImei = btyImei;
+DahantSmsService.java (src\main\java\com\sam\yh\common\msg):	public boolean sendWarningMsg(String mobilePhone, String btyImei);
+DahantSmsService.java (src\main\java\com\sam\yh\common\msg):	public boolean sendMovingMsg(String mobilePhone, String btyImei);
+DahantSmsServiceImpl.java (src\main\java\com\sam\yh\common\msg):	public boolean sendWarningMsg(String mobilePhone, String btyImei) {
+DahantSmsServiceImpl.java (src\main\java\com\sam\yh\common\msg):		String content = "您的电池IMEI" + btyImei + "温度或电压出现异常，请登录APP查看。";
+DahantSmsServiceImpl.java (src\main\java\com\sam\yh\common\msg):	public boolean sendMovingMsg(String mobilePhone, String btyImei) {
+DahantSmsServiceImpl.java (src\main\java\com\sam\yh\common\msg):		String content = "您的电池IMEI" + btyImei + "设置位置锁定后发生异常移动，请登录APP查看最新地点。";
+SubmitBtySpecReq.java (src\main\java\com\sam\yh\req\bean):	private String btyImei;
+SubmitBtySpecReq.java (src\main\java\com\sam\yh\req\bean):		return btyImei;
+SubmitBtySpecReq.java (src\main\java\com\sam\yh\req\bean):	public void setBtyImei(String btyImei) {
+SubmitBtySpecReq.java (src\main\java\com\sam\yh\req\bean):		this.btyImei = btyImei;
+UserBtyInfo.java (src\main\java\com\sam\yh\resp\bean):	private String btyImei;
+UserBtyInfo.java (src\main\java\com\sam\yh\resp\bean):		return btyImei;
+UserBtyInfo.java (src\main\java\com\sam\yh\resp\bean):	public void setBtyImei(String btyImei) {
+UserBtyInfo.java (src\main\java\com\sam\yh\resp\bean):		this.btyImei = btyImei;
+UserCodeService.java (src\main\java\com\sam\yh\service):	public boolean sendWarningMsg(String mobilePhone, String btyImei) throws CrudException;
+UserCodeService.java (src\main\java\com\sam\yh\service):	public boolean sendMovingMsg(String mobilePhone, String btyImei) throws CrudException;
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):	public boolean sendWarningMsg(String mobilePhone, String btyImei) throws CrudException {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):		boolean send = needToSendMsg(mobilePhone, btyImei, type);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):			dahantSmsService.sendWarningMsg(mobilePhone, btyImei);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):	public boolean sendMovingMsg(String mobilePhone, String btyImei) throws CrudException {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):		boolean send = needToSendMsg(mobilePhone, btyImei, type);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):			dahantSmsService.sendMovingMsg(mobilePhone, btyImei);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):	private boolean needToSendMsg(String mobilePhone, String btyImei, int type) {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):		UserCode userCode = fetchByUserName(btyImei, type);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):			userCode.setMobilePhone(btyImei);
+UserService.java (src\main\java\com\sam\yh\service):	public void lockBty(String mobilePhone, String btyImei) throws CrudException;
+UserService.java (src\main\java\com\sam\yh\service):	public void unlockBty(String mobilePhone, String btyImei) throws CrudException;
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):	public void lockBty(String mobilePhone, String btyImei) throws CrudException {
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):		Battery battery = batteryService.fetchBtyByIMEI(btyImei);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):	public void unlockBty(String mobilePhone, String btyImei) throws CrudException {
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):		Battery battery = batteryService.fetchBtyByIMEI(btyImei);
+---- 10099 Matches (1 in 1 files) ----
+ResponseUtils.java (src\main\java\com\sam\yh\resp\bean):	public static final String RESCODE_UNKNOW_EXCEPTION = "10099";
+---- RESCODE_UNKNOW_EXCEPTION Matches (2 in 1 files) ----
+ResponseUtils.java (src\main\java\com\sam\yh\resp\bean):	public static final String RESCODE_UNKNOW_EXCEPTION = "10099";
+ResponseUtils.java (src\main\java\com\sam\yh\resp\bean):		resp.setResCode(RESCODE_UNKNOW_EXCEPTION);
+---- device_info Matches (18 in 3 files) ----
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):    <result column="device_info" property="deviceInfo" jdbcType="VARCHAR" />
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):    device_info, create_date, login_date
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):      passport_no, lock_status, device_info, 
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):        device_info,
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):        device_info = #{deviceInfo,jdbcType=VARCHAR},
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):      device_info = #{deviceInfo,jdbcType=VARCHAR},
+UserMapper.xml (target\classes\com\sam\yh\mapping):    <result column="device_info" property="deviceInfo" jdbcType="VARCHAR" />
+UserMapper.xml (target\classes\com\sam\yh\mapping):    device_info, create_date, login_date
+UserMapper.xml (target\classes\com\sam\yh\mapping):      passport_no, lock_status, device_info, 
+UserMapper.xml (target\classes\com\sam\yh\mapping):        device_info,
+UserMapper.xml (target\classes\com\sam\yh\mapping):        device_info = #{deviceInfo,jdbcType=VARCHAR},
+UserMapper.xml (target\classes\com\sam\yh\mapping):      device_info = #{deviceInfo,jdbcType=VARCHAR},
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    <result column="device_info" property="deviceInfo" jdbcType="VARCHAR" />
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    device_info, create_date, login_date
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):      passport_no, lock_status, device_info, 
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):        device_info,
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):        device_info = #{deviceInfo,jdbcType=VARCHAR},
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):      device_info = #{deviceInfo,jdbcType=VARCHAR},
+---- fetchSelfBtyInfo Matches (5 in 3 files) ----
+UserBtyInfoController.java (src\main\java\com\sam\yh\controller):            List<PubBatteryInfo> selfBtys = userService.fetchSelfBtyInfo(req.getUserPhone());
+UserBtyInfoController.java (src\main\java\com\sam\yh\controller):            for (PubBatteryInfo batteryInfo : userService.fetchSelfBtyInfo(req.getUserPhone())) {
+UserBtyInfoController.java (src\main\java\com\sam\yh\controller):            List<PubBatteryInfo> selfBtys = userService.fetchSelfBtyInfo(req.getUserPhone());
+UserService.java (src\main\java\com\sam\yh\service):    public List<PubBatteryInfo> fetchSelfBtyInfo(String mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public List<PubBatteryInfo> fetchSelfBtyInfo(String mobilePhone) {
+---- selectByUserAccount Matches (10 in 6 files) ----
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(userName);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(userAccount);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+UserMapper.java (src\main\java\com\sam\yh\dao):    User selectByUserAccount(String mobilePhone);
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectByUserAccount" resultMap="BaseResultMap" parameterType="java.lang.String" >
+UserMapper.xml (target\classes\com\sam\yh\mapping):  <select id="selectByUserAccount" resultMap="BaseResultMap" parameterType="java.lang.String" >
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        return userMapper.selectByUserAccount(userAccount);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+---- setUserAccount Matches (9 in 8 files) ----
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        user.setUserAccount(mobilePhone);
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        user.setUserAccount(logResellerReq.getResellerPhone());
+SendAuthCodeTest.java (src\test\java\test\sam\yh\original):		reqObj.setUserAccount("13900000013");
+SignupTest.java (src\test\java\test\sam\yh\original):		reqObj.setUserAccount("xiequn0830@163.com");
+SmsAuthCodeReq.java (src\main\java\com\sam\yh\req\bean):	public void setUserAccount(String userAccount) {
+User.java (src\main\java\com\sam\yh\model):    public void setUserAccount(String userAccount) {
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):            user.setUserAccount(userAccount);
+UserSigninReq.java (src\main\java\com\sam\yh\req\bean):    public void setUserAccount(String userAccount) {
+UserSignupReq.java (src\main\java\com\sam\yh\req\bean):    public void setUserAccount(String userAccount) {
+---- sendSmsCode Matches (1 in 1 files) ----
+AuthCodeController.java (src\main\java\com\sam\yh\controller):    public SamResponse sendSmsCode(HttpServletRequest httpServletRequest, @RequestParam("jsonReq") String jsonReq) {
+---- Request json String Matches (23 in 21 files) ----
+AppVersionController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+AuthCodeController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+FetchBtyInfoController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+FetchBtyInfoController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+FetchResellersController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+FetchResellerSiteController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+FollowUserBtyController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+ListBtyFollowersController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+ListCityBtysController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+ListUserBtysController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+LockBtyController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+LogResellerController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+RealNotifyDeviceController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:{}" + request);
+RemoveFollowerController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+ResellerBtyInfoController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+ResetPwdController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+ShareMyBtyController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+SubmitBtySpecController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+UnlockBtyController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+UserBtyInfoController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+UserBtyInfoController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+UserSigninController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String:" + jsonReq);
+UserSignupController.java (src\main\java\com\sam\yh\controller):        logger.info("Request json String, {}", jsonReq);
+---- selectByUserAccount Matches (10 in 6 files) ----
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(userName);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(userAccount);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+UserMapper.java (src\main\java\com\sam\yh\dao):    User selectByUserAccount(String mobilePhone);
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectByUserAccount" resultMap="BaseResultMap" parameterType="java.lang.String" >
+UserMapper.xml (target\classes\com\sam\yh\mapping):  <select id="selectByUserAccount" resultMap="BaseResultMap" parameterType="java.lang.String" >
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        return userMapper.selectByUserAccount(userAccount);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+---- selectByDeviceInfo Matches (2 in 2 files) ----
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectByDeviceInfo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+UserMapper.xml (target\classes\com\sam\yh\mapping):  <select id="selectByDeviceInfo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+---- selectByUserAccount Matches (8 in 5 files) ----
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(userName);
+UserMapper.java (src\main\java\com\sam\yh\dao):    User selectByUserAccount(String mobilePhone);
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectByUserAccount" resultMap="BaseResultMap" parameterType="java.lang.String" >
+UserMapper.xml (target\classes\com\sam\yh\mapping):  <select id="selectByUserAccount" resultMap="BaseResultMap" parameterType="java.lang.String" >
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        return userMapper.selectByUserAccount(userAccount);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+---- selectByUserDeviceInfo Matches (3 in 2 files) ----
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserDeviceInfo(userAccount);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserDeviceInfo(userAccount);
+UserMapper.java (src\main\java\com\sam\yh\dao):    User selectByUserDeviceInfo(String mobilePhone);//Joy modify
+---- selectByUserDeviceInfo Matches (4 in 3 files) ----
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserDeviceInfo(userAccount);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserDeviceInfo(userAccount);
+UserMapper.java (src\main\java\com\sam\yh\dao):    User selectByUserDeviceInfo(String mobilePhone);//Joy modify
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectByUserDeviceInfo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+---- getStatus Matches (21 in 12 files) ----
+AppVersionController.java (src\main\java\com\sam\yh\controller):            if (StringUtils.equals(AppVersionStatus.FORCE_UPDATE.getStatus(), verStatus.getStatus())) {
+AppVersionController.java (src\main\java\com\sam\yh\controller):            } else if (StringUtils.equals(AppVersionStatus.OPTIONAL_UPDATE.getStatus(), verStatus.getStatus())) {
+AppVersionStatus.java (src\main\java\com\sam\yh\enums):    public String getStatus() {
+Battery.java (src\main\java\com\sam\yh\model):    public String getStatus() {
+BatteryInfo.java (src\main\java\com\sam\yh\model):    public String getStatus() {
+BatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        info.setStatus(status.getStatus());
+BatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        if (BatteryStatus.T_ABNORMAL.getStatus().equals(status.getStatus()) || BatteryStatus.V_ABNORMAL.getStatus().equals(status.getStatus())) {
+BatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        if (BatteryStatus.LOCKED.getStatus().equals(battery.getStatus())) {
+BatteryStatus.java (src\main\java\com\sam\yh\enums):    public String getStatus() {
+PubBatteryInfo.java (src\main\java\com\sam\yh\model):        this.status = batteryInfo.getStatus();
+PubBatteryInfo.java (src\main\java\com\sam\yh\model):    public String getStatus() {
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        battery.setStatus(BatteryStatus.NORMAL.getStatus());
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        reseller.setVerifyStatus(ResellerStatus.VERIFIED.getStatus());
+ResellerStatus.java (src\main\java\com\sam\yh\enums):    public int getStatus() {
+UserCode.java (src\main\java\com\sam\yh\model):    public Boolean getStatus() {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        if (!userCode.getStatus() || now.after(userCode.getExpiryDate())) {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        if (userCode != null && userCode.getStatus() && now.before(userCode.getExpiryDate()) && StringUtils.equals(userCode.getDynamicCode(), authCode)) {
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        if (BatteryStatus.LOCKED.getStatus().equals(battery.getStatus())) {
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        battery.setStatus(BatteryStatus.LOCKED.getStatus());
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        battery.setStatus(BatteryStatus.NORMAL.getStatus());
+---- setStatus Matches (19 in 12 files) ----
+AppVersionStatus.java (src\main\java\com\sam\yh\enums):    public void setStatus(String status) {
+Battery.java (src\main\java\com\sam\yh\model):    public void setStatus(String status) {
+BatteryInfo.java (src\main\java\com\sam\yh\model):    public void setStatus(String status) {
+BatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        info.setStatus(status.getStatus());
+BatteryStatus.java (src\main\java\com\sam\yh\enums):    public void setStatus(String status) {
+PubBatteryInfo.java (src\main\java\com\sam\yh\model):    public void setStatus(String status) {
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        battery.setStatus(BatteryStatus.NORMAL.getStatus());
+ResellerStatus.java (src\main\java\com\sam\yh\enums):    public void setStatus(int status) {
+StatelessAuthcFilter.java (src\main\java\com\sam\yh\filter):        httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+UserCode.java (src\main\java\com\sam\yh\model):    public void setStatus(Boolean status) {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):            userCode.setStatus(true);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):            userCode.setStatus(true);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):            userCode.setStatus(true);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):            userCode.setStatus(true);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl)://            userCode.setStatus(false);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):            userCode.setStatus(false);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):            userCode.setStatus(true);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        battery.setStatus(BatteryStatus.LOCKED.getStatus());
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        battery.setStatus(BatteryStatus.NORMAL.getStatus());
+---- verifyAuthCode Matches (10 in 3 files) ----
+UserCodeService.java (src\main\java\com\sam\yh\service):    public boolean verifyAuthCode(String mobilePhone, int type, String authCode) throws CrudException;
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public boolean verifyAuthCode(String mobilePhone, int type, String authCode) throws CrudException {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", userCode);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", userCode.getStatus());
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", now.before(userCode.getExpiryDate()));       
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", StringUtils.equals(userCode.getDynamicCode(), authCode));
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", userCode.getDynamicCode());     
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", authCode);  
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        boolean auth = userCodeService.verifyAuthCode(userAccount, UserCodeType.SIGNUP_CODE.getType(), authCode);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        boolean auth = userCodeService.verifyAuthCode(mobilePhone, UserCodeType.RESETPWD_CODE.getType(), authCode);
+---- selectByUserNameAndType Matches (5 in 5 files) ----
+UserCodeMapper.java (src\main\java\com\sam\yh\dao):    UserCode selectByUserNameAndType(String mobilePhone, int type);
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        return userCodeMapper.selectByUserNameAndType(mobilePhone, type);
+---- resetPwd Matches (6 in 3 files) ----
+ResetPwdController.java (src\main\java\com\sam\yh\controller)://            userService.resetPwd(req.getUserPhone(), req.getAuthCode(), req.getPassword1(), req.getDeviceInfo());
+ResetPwdController.java (src\main\java\com\sam\yh\controller):            userService.resetPwd(req.getUserPhone(), req.getAuthCode(), req.getPassword1());
+UserService.java (src\main\java\com\sam\yh\service)://    public User resetPwd(String mobilePhone, String authCode, String hassPwd, String deviceInfo) throws CrudException;
+UserService.java (src\main\java\com\sam\yh\service):    public User resetPwd(String mobilePhone, String authCode, String hassPwd) throws CrudException;
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl): //   public User resetPwd(String mobilePhone, String authCode, String hassPwd, String deviceInfo) throws CrudException {
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public User resetPwd(String mobilePhone, String authCode, String hassPwd) throws CrudException {
+---- fetchUserByUserAccount Matches (22 in 3 files) ----
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl)://        User resellerUser = userService.fetchUserByUserAccount(resellerPhone);
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userService.fetchUserByUserAccount(submitBtySpecReq.getUserName());
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userService.fetchUserByUserAccount(resellerPhone);
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User reseller = userService.fetchUserByUserAccount(resellerPhone);
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User reseller = userService.fetchUserByUserAccount(resellerPhone);
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User reseller = userService.fetchUserByUserAccount(resellerPhone);
+UserService.java (src\main\java\com\sam\yh\service):    public User fetchUserByUserAccount(String mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl): //       User user = fetchUserByUserAccount(userAccount);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = fetchUserByUserAccount(userName);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = fetchUserByUserAccount(userAccount);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public User fetchUserByUserAccount(String userAccount) {
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User btyOwner = fetchUserByUserAccount(btyOwnerPhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User owner = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User shareUser = fetchUserByUserAccount(friendPhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User owner = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User shareUser = fetchUserByUserAccount(friendPhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User owner = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User owner = fetchUserByUserAccount(mobilePhone);
+---- selectByUserAccount Matches (8 in 5 files) ----
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(userName);
+UserMapper.java (src\main\java\com\sam\yh\dao):    User selectByUserAccount(String mobilePhone);
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectByUserAccount" resultMap="BaseResultMap" parameterType="java.lang.String" >
+UserMapper.xml (target\classes\com\sam\yh\mapping):  <select id="selectByUserAccount" resultMap="BaseResultMap" parameterType="java.lang.String" >
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        return userMapper.selectByUserAccount(userAccount);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserAccount(mobilePhone);
+---- selectByUserDeviceInfo Matches (5 in 4 files) ----
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserDeviceInfo(userAccount);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserDeviceInfo(userAccount);
+UserMapper.java (src\main\java\com\sam\yh\dao):    User selectByUserDeviceInfo(String mobilePhone);//Joy modify
+UserMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectByUserDeviceInfo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+UserMapper.xml (target\classes\com\sam\yh\mapping):  <select id="selectByUserDeviceInfo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+---- fetchUserByUserAccount Matches (22 in 3 files) ----
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl)://        User resellerUser = userService.fetchUserByUserAccount(resellerPhone);
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userService.fetchUserByUserAccount(submitBtySpecReq.getUserName());
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userService.fetchUserByUserAccount(resellerPhone);
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User reseller = userService.fetchUserByUserAccount(resellerPhone);
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User reseller = userService.fetchUserByUserAccount(resellerPhone);
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User reseller = userService.fetchUserByUserAccount(resellerPhone);
+UserService.java (src\main\java\com\sam\yh\service):    public User fetchUserByUserAccount(String mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl): //       User user = fetchUserByUserAccount(userAccount);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = fetchUserByUserAccount(userName);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = fetchUserByUserAccount(userAccount);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = userMapper.selectByUserDeviceInfo(mobilePhone); //fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public User fetchUserByUserAccount(String userAccount) {
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User user = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User btyOwner = fetchUserByUserAccount(btyOwnerPhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User owner = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User shareUser = fetchUserByUserAccount(friendPhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User owner = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User shareUser = fetchUserByUserAccount(friendPhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User owner = fetchUserByUserAccount(mobilePhone);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        User owner = fetchUserByUserAccount(mobilePhone);
+---- mobile_phone Matches (34 in 10 files) ----
+ResellerMapper.xml (src\main\resources\com\sam\yh\mapping):		u.mobile_phone as resellerPhone,
+ResellerMapper.xml (target\classes\com\sam\yh\mapping):		u.mobile_phone as resellerPhone,
+ResellerMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):		u.mobile_phone as resellerPhone,
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):    id, mobile_phone, dynamic_code, code_type, send_times, status, send_date, expiry_date
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):    where mobile_phone = #{0,jdbcType=VARCHAR} and code_type = #{1,jdbcType=INTEGER}
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):    insert into user_code (id, mobile_phone, dynamic_code, 
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):        mobile_phone,
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):    set mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):    id, mobile_phone, dynamic_code, code_type, send_times, status, send_date, expiry_date
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):    where mobile_phone = #{0,jdbcType=VARCHAR} and code_type = #{1,jdbcType=INTEGER}
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):    insert into user_code (id, mobile_phone, dynamic_code, 
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):        mobile_phone,
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):    set mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    id, mobile_phone, dynamic_code, code_type, send_times, status, send_date, expiry_date
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    where mobile_phone = #{0,jdbcType=VARCHAR} and code_type = #{1,jdbcType=INTEGER}
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    insert into user_code (id, mobile_phone, dynamic_code, 
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):        mobile_phone,
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    set mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserFollowMapper.xml (src\main\resources\com\sam\yh\mapping):    u.mobile_phone as followerPhone
+UserFollowMapper.xml (target\classes\com\sam\yh\mapping):    u.mobile_phone as followerPhone
+UserFollowMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    u.mobile_phone as followerPhone
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    user_id, uuid, user_name, user_type, salt, password, mobile_phone, passport_no, lock_status, 
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    where mobile_phone = #{mobilePhone,jdbcType=VARCHAR}
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):      salt, password, mobile_phone, 
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):        mobile_phone,
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):      mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+---- selectBtyFollowers Matches (5 in 5 files) ----
+UserBatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):        return userFollowMapper.selectBtyFollowers(battery.getId());
+UserFollowMapper.java (src\main\java\com\sam\yh\dao):    List<BtyFollower> selectBtyFollowers(Integer batteryId);
+UserFollowMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectBtyFollowers" resultType="com.sam.yh.resp.bean.BtyFollower" parameterType="java.lang.Integer" >
+UserFollowMapper.xml (target\classes\com\sam\yh\mapping):  <select id="selectBtyFollowers" resultType="com.sam.yh.resp.bean.BtyFollower" parameterType="java.lang.Integer" >
+UserFollowMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):  <select id="selectBtyFollowers" resultType="com.sam.yh.resp.bean.BtyFollower" parameterType="java.lang.Integer" >
+---- AddDeviceController Matches (2 in 1 files) ----
+AddDeviceController.java (src\main\java\com\sam\yh\controller):public class AddDeviceController {
+AddDeviceController.java (src\main\java\com\sam\yh\controller):    public static final Logger logger = LoggerFactory.getLogger(AddDeviceController.class);
+---- addDevice Matches (3 in 3 files) ----
+AddDeviceController.java (src\main\java\com\sam\yh\controller):            userService.addDevice(req);
+UserService.java (src\main\java\com\sam\yh\service):    public void addDevice(AddDeviceReq addDeviceReq) throws CrudException;
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public void addDevice(AddDeviceReq addDeviceReq) throws CrudException {
+---- UserService Matches (28 in 14 files) ----
+AddDeviceController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.UserService;
+AddDeviceController.java (src\main\java\com\sam\yh\controller):    UserService userService;
+BindMobilePhoneController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.UserService;
+BindMobilePhoneController.java (src\main\java\com\sam\yh\controller):    UserService userService;
+FollowUserBtyController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.UserService;
+FollowUserBtyController.java (src\main\java\com\sam\yh\controller):    UserService userService;
+LockBtyController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.UserService;
+LockBtyController.java (src\main\java\com\sam\yh\controller):    UserService userService;
+RemoveFollowerController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.UserService;
+RemoveFollowerController.java (src\main\java\com\sam\yh\controller):    UserService userService;
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):import com.sam.yh.service.UserService;
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):    UserService userService;
+ResetPwdController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.UserService;
+ResetPwdController.java (src\main\java\com\sam\yh\controller):    UserService userService;
+ShareMyBtyController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.UserService;
+ShareMyBtyController.java (src\main\java\com\sam\yh\controller):    UserService userService;
+UnlockBtyController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.UserService;
+UnlockBtyController.java (src\main\java\com\sam\yh\controller):    UserService userService;
+UserBtyInfoController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.UserService;
+UserBtyInfoController.java (src\main\java\com\sam\yh\controller):    private UserService userService;
+UserService.java (src\main\java\com\sam\yh\service):public interface UserService {
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):import com.sam.yh.service.UserService;
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):public class UserServiceImpl implements UserService {
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):    UserService userService;
+UserSigninController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.UserService;
+UserSigninController.java (src\main\java\com\sam\yh\controller):    UserService userService;
+UserSignupController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.UserService;
+UserSignupController.java (src\main\java\com\sam\yh\controller):    UserService userService;
+---- lockBty Matches (5 in 4 files) ----
+LockBtyController.java (src\main\java\com\sam\yh\controller):    public SamResponse lockBty(HttpServletRequest httpServletRequest, @RequestParam("jsonReq") String jsonReq) {
+LockBtyController.java (src\main\java\com\sam\yh\controller):            userService.lockBty(req.getUserPhone().trim(), req.getBtyImei().trim());
+UnlockBtyController.java (src\main\java\com\sam\yh\controller):    public SamResponse lockBty(HttpServletRequest httpServletRequest, @RequestParam("jsonReq") String jsonReq) {
+UserService.java (src\main\java\com\sam\yh\service):    public void lockBty(String mobilePhone, String btyImei) throws CrudException;
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public void lockBty(String mobilePhone, String btyImei) throws CrudException {
+---- addDevice Matches (3 in 3 files) ----
+AddDeviceController.java (src\main\java\com\sam\yh\controller):            userService.addDevice(req);
+UserService.java (src\main\java\com\sam\yh\service):    public void addDevice(AddDeviceReq addDeviceReq) throws CrudException;
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public void addDevice(AddDeviceReq addDeviceReq) throws CrudException {
+---- BatteryService Matches (23 in 12 files) ----
+BatteryService.java (src\main\java\com\sam\yh\service):public interface BatteryService {
+BatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):import com.sam.yh.service.BatteryService;
+BatteryServiceImpl.java (src\main\java\com\sam\yh\service\impl):public class BatteryServiceImpl implements BatteryService {
+DeviceChatServiceImpl.java (src\main\java\com\sam\yh\service\impl):import com.sam.yh.service.BatteryService;
+DeviceChatServiceImpl.java (src\main\java\com\sam\yh\service\impl):    private BatteryService batteryService;
+FetchBtyInfoController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.BatteryService;
+FetchBtyInfoController.java (src\main\java\com\sam\yh\controller):    BatteryService batteryService;
+FetchResellersController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.BatteryService;
+FetchResellersController.java (src\main\java\com\sam\yh\controller):    BatteryService batteryService;
+ListCityBtysController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.BatteryService;
+ListCityBtysController.java (src\main\java\com\sam\yh\controller):    BatteryService batteryService;
+RealNotifyDeviceController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.BatteryService;
+RealNotifyDeviceController.java (src\main\java\com\sam\yh\controller):    BatteryService batteryService;
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):import com.sam.yh.service.BatteryService;
+ResellerServiceImpl.java (src\main\java\com\sam\yh\service\impl):    BatteryService batteryService;
+SamBtyDataHandler.java (src\main\java\com\sam\yh\service\socket):import com.sam.yh.service.BatteryService;
+SamBtyDataHandler.java (src\main\java\com\sam\yh\service\socket):    BatteryService batteryService;
+UploadBtyInfoController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.BatteryService;
+UploadBtyInfoController.java (src\main\java\com\sam\yh\controller):    BatteryService batteryService;
+UserBtyInfoController.java (src\main\java\com\sam\yh\controller):import com.sam.yh.service.BatteryService;
+UserBtyInfoController.java (src\main\java\com\sam\yh\controller):    BatteryService batteryService;
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):import com.sam.yh.service.BatteryService;
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):    BatteryService batteryService;
+---- fetchByUserName Matches (6 in 2 files) ----
+UserCodeService.java (src\main\java\com\sam\yh\service):    public UserCode fetchByUserName(String mobilePhone, int type);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        UserCode userCode = fetchByUserName(mobilePhone, UserCodeType.USER_SALT.getType());
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        UserCode userCode = fetchByUserName(mobilePhone, type);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public UserCode fetchByUserName(String mobilePhone, int type) {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        UserCode userCode = fetchByUserName(userAccount, type);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        UserCode userCode = fetchByUserName(btyImei, type);
+---- selectByUserNameAndType Matches (5 in 5 files) ----
+UserCodeMapper.java (src\main\java\com\sam\yh\dao):    UserCode selectByUserNameAndType(String mobilePhone, int type);
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        return userCodeMapper.selectByUserNameAndType(mobilePhone, type);
+---- verifyAuthCode Matches (12 in 3 files) ----
+UserCodeService.java (src\main\java\com\sam\yh\service):    public boolean verifyAuthCode(String userAccount, int type, String authCode) throws CrudException;
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public boolean verifyAuthCode(String userAccount, int type, String authCode) throws CrudException {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", userAccount);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", type);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", userCode);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", userCode.getStatus());
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", now.before(userCode.getExpiryDate()));       
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", StringUtils.equals(userCode.getDynamicCode(), authCode));
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", userCode.getDynamicCode());     
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", authCode);  
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        boolean auth = userCodeService.verifyAuthCode(userAccount, UserCodeType.SIGNUP_CODE.getType(), authCode);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        boolean auth = userCodeService.verifyAuthCode(userAccount, UserCodeType.RESETPWD_CODE.getType(), authCode);
+---- mobilephone Matches (5 in 1 files) ----
+UserCode.java (src\main\java\com\sam\yh\model):    private String mobilephone;
+UserCode.java (src\main\java\com\sam\yh\model):		return mobilephone;
+UserCode.java (src\main\java\com\sam\yh\model):	public void setMobilephone(String mobilephone) {
+UserCode.java (src\main\java\com\sam\yh\model):		this.mobilephone = mobilephone;
+---- setMobilephone Matches (4 in 2 files) ----
+UserCode.java (src\main\java\com\sam\yh\model):	public void setMobilephone(String mobilephone) {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):            userCode.setMobilephone(mobilePhone);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):            userCode.setMobilephone(mobilePhone);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):            userCode.setMobilephone(btyImei);
+---- setMobilephone Matches (4 in 2 files) ----
+UserCode.java (src\main\java\com\sam\yh\model):	public void setMobilephone(String mobilephone) {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):            userCode.setMobilephone(mobilePhone);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):            userCode.setMobilephone(mobilePhone);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):            userCode.setMobilephone(btyImei);
+---- verifyAuthCode Matches (12 in 3 files) ----
+UserCodeService.java (src\main\java\com\sam\yh\service):    public boolean verifyAuthCode(String userAccount, int type, String authCode) throws CrudException;
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public boolean verifyAuthCode(String userAccount, int type, String authCode) throws CrudException {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", userAccount);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", type);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", userCode);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", userCode.getStatus());
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", now.before(userCode.getExpiryDate()));       
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", StringUtils.equals(userCode.getDynamicCode(), authCode));
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", userCode.getDynamicCode());     
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        logger.info("verifyAuthCode pwd, {}", authCode);  
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        boolean auth = userCodeService.verifyAuthCode(userAccount, UserCodeType.SIGNUP_CODE.getType(), authCode);
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):        boolean auth = userCodeService.verifyAuthCode(userAccount, UserCodeType.RESETPWD_CODE.getType(), authCode);
+---- resetPwd Matches (6 in 3 files) ----
+ResetPwdController.java (src\main\java\com\sam\yh\controller)://            userService.resetPwd(req.getUserPhone(), req.getAuthCode(), req.getPassword1(), req.getDeviceInfo());
+ResetPwdController.java (src\main\java\com\sam\yh\controller):            userService.resetPwd(req.getUserAccount(), req.getAuthCode(), req.getPassword1());
+UserService.java (src\main\java\com\sam\yh\service):    public User resetPwd(String userAccount, String authCode, String hassPwd) throws CrudException;
+UserService.java (src\main\java\com\sam\yh\service)://  public User resetPwd(String mobilePhone, String authCode, String hassPwd, String deviceInfo) throws CrudException;
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public User resetPwd(String userAccount, String authCode, String hassPwd) throws CrudException {
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl)://  public User resetPwd(String mobilePhone, String authCode, String hassPwd, String deviceInfo) throws CrudException {
+---- sendAndSaveSmsCode Matches (4 in 1 files) ----
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        String authCode = sendAndSaveSmsCode(userAccount, UserCodeType.SIGNUP_CODE.getType());
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl)://       String authCode = sendAndSaveSmsCode(mobilePhone, UserCodeType.RESETPWD_CODE.getType());
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        String authCode = sendAndSaveSmsCode(userAccount, UserCodeType.RESETPWD_CODE.getType());
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):    private String sendAndSaveSmsCode(String mobilePhone, int type) throws AuthCodeSendException {
+---- fetchByUserName Matches (6 in 2 files) ----
+UserCodeService.java (src\main\java\com\sam\yh\service):    public UserCode fetchByUserName(String mobilePhone, int type);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        UserCode userCode = fetchByUserName(mobilePhone, UserCodeType.USER_SALT.getType());
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        UserCode userCode = fetchByUserName(mobilePhone, type);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):    public UserCode fetchByUserName(String mobilePhone, int type) {
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        UserCode userCode = fetchByUserName(userAccount, type);
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        UserCode userCode = fetchByUserName(btyImei, type);
+---- gaobo Matches (1 in 1 files) ----
+UserServiceImpl.java (src\main\java\com\sam\yh\service\impl)://            ///gaobo modify
+---- mobile_phone Matches (34 in 10 files) ----
+ResellerMapper.xml (src\main\resources\com\sam\yh\mapping):		u.mobile_phone as resellerPhone,
+ResellerMapper.xml (target\classes\com\sam\yh\mapping):		u.mobile_phone as resellerPhone,
+ResellerMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):		u.mobile_phone as resellerPhone,
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):    id, mobile_phone, dynamic_code, code_type, send_times, status, send_date, expiry_date
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):    where mobile_phone = #{0,jdbcType=VARCHAR} and code_type = #{1,jdbcType=INTEGER}
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):    insert into user_code (id, mobile_phone, dynamic_code, 
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):        mobile_phone,
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):    set mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):    id, mobile_phone, dynamic_code, code_type, send_times, status, send_date, expiry_date
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):    where mobile_phone = #{0,jdbcType=VARCHAR} and code_type = #{1,jdbcType=INTEGER}
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):    insert into user_code (id, mobile_phone, dynamic_code, 
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):        mobile_phone,
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):    set mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    id, mobile_phone, dynamic_code, code_type, send_times, status, send_date, expiry_date
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    where mobile_phone = #{0,jdbcType=VARCHAR} and code_type = #{1,jdbcType=INTEGER}
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    insert into user_code (id, mobile_phone, dynamic_code, 
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):        mobile_phone,
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    set mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserFollowMapper.xml (src\main\resources\com\sam\yh\mapping):    <!--  u.mobile_phone as followerPhone  -->
+UserFollowMapper.xml (target\classes\com\sam\yh\mapping):    <!--  u.mobile_phone as followerPhone  -->
+UserFollowMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    u.mobile_phone as followerPhone
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    user_id, uuid, user_name, user_type, salt, password, mobile_phone, passport_no, lock_status, 
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):    where mobile_phone = #{mobilePhone,jdbcType=VARCHAR}
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):      salt, password, mobile_phone, 
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):        mobile_phone,
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+UserMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):      mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+---- selectByUserNameAndType Matches (5 in 5 files) ----
+UserCodeMapper.java (src\main\java\com\sam\yh\dao):    UserCode selectByUserNameAndType(String mobilePhone, int type);
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        return userCodeMapper.selectByUserNameAndType(mobilePhone, type);
+---- selectByUserNameAndType Matches (5 in 5 files) ----
+UserCodeMapper.java (src\main\java\com\sam\yh\dao):    UserCode selectByUserNameAndType(String mobilePhone, int type);
+UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
+UserCodeMapper.xml (target\classes\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
+UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
+UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        return userCodeMapper.selectByUserNameAndType(mobilePhone, type);

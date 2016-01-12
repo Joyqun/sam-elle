@@ -16,4 +16,6 @@ public interface UserCodeMapper {
     int updateByPrimaryKey(UserCode record);
 
     UserCode selectByUserNameAndType(String mobilePhone, int type);
+    
+    
 }

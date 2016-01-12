@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="sn" property="sn" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="CHAR" />
+    <result column="bind_mobile" property="bindMobile" jdbcType="VARCHAR" />
     <result column="bty_type" property="btyType" jdbcType="BIT" />
     <result column="pub_sn" property="pubSn" jdbcType="VARCHAR" />
     <result column="imei" property="imei" jdbcType="VARCHAR" />
@@ -23,7 +24,7 @@
     <result column="expiry_date" property="expiryDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, sn, status, bty_type, pub_sn, imei, sim_no, imsi, gsim_no, iccid, reseller_id, sale_status, city_id, 
+    id, sn, status, bind_mobile, bty_type, pub_sn, imei, sim_no, imsi, gsim_no, iccid, reseller_id, sale_status, city_id, 
     lock_longitude, lock_latitude, create_date, sale_date, lock_date, expiry_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -79,7 +80,7 @@
       lock_longitude, lock_latitude, 
       create_date, sale_date, lock_date, 
       expiry_date)
-    values (#{sn,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+    values (#{sn,jdbcType=VARCHAR}, #{status,jdbcType=CHAR},
       #{btyType,jdbcType=BIT}, #{pubSn,jdbcType=VARCHAR}, #{imei,jdbcType=VARCHAR}, #{simNo,jdbcType=VARCHAR}, #{imsi,jdbcType=VARCHAR}, #{gsmSimNo,jdbcType=VARCHAR},
       #{iccid,jdbcType=VARCHAR}, #{resellerId,jdbcType=INTEGER}, #{saleStatus,jdbcType=BIT}, #{cityId,jdbcType=INTEGER}, 
       #{lockLongitude,jdbcType=VARCHAR}, #{lockLatitude,jdbcType=VARCHAR},
@@ -95,6 +96,10 @@
       <if test="status != null" >
         status,
       </if>
+      <!--      <if test="bindMobile != null" >
+        bind_mobile,
+      </if>   -->
+
       <if test="btyType != null" >
         bty_type,
       </if>
@@ -151,6 +156,10 @@
       <if test="status != null" >
         #{status,jdbcType=CHAR},
       </if>
+      <!--       <if test="bind_mobile != null" >
+        #{bindMobile,jdbcType=VARCHAR},
+      </if> -->
+
       <if test="btyType != null" >
         #{btyType,jdbcType=BIT},
       </if>
@@ -210,6 +219,9 @@
       <if test="status != null" >
         status = #{status,jdbcType=CHAR},
       </if>
+      <if test="bindMobile != null" >
+        bind_mobile = #{bindMobile,jdbcType=VARCHAR},
+      </if>
       <if test="btyType != null" >
         bty_type = #{btyType,jdbcType=BIT},
       </if>
@@ -265,6 +277,7 @@
     update battery
     set sn = #{sn,jdbcType=VARCHAR},
       status = #{status,jdbcType=CHAR},
+      bind_mobile = #{bindMobile,jdbcType=VARCHAR},
       bty_type = #{btyType,jdbcType=BIT},
       pub_sn = #{pubSn,jdbcType=VARCHAR},
       imei = #{imei,jdbcType=VARCHAR},

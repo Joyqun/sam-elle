@@ -45,7 +45,7 @@ public class FetchMyBtysTest {
 		// reqObj.setAppName("samyh");
 		// reqObj.setDeviceType("android");
 		// reqObj.setVersion("0.0.1");
-		reqObj.setUserPhone("13900000001");
+	    //	reqObj.setUserPhone("13900000001");
 
 		String jsonReq = JSON.toJSONString(reqObj);
 

@@ -2,25 +2,27 @@ package com.sam.yh.req.bean;
 
 public class BtyShareReq {
 
-    private String userPhone;
+    private String userAccount;
 //    private String btyPubSn;
-    private String friendPhone;
+    private String friendAccount;
     private String deviceImei;
  
-    
-	public String getUserPhone() {
-        return userPhone;
-    }
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
-    
-    public String getFriendPhone() {
-		return friendPhone;
+       
+    public String getUserAccount() {
+		return userAccount;
 	}
 
-	public void setFriendPhone(String friendPhone) {
-		this.friendPhone = friendPhone;
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
+
+
+	public String getFriendAccount() {
+		return friendAccount;
+	}
+
+	public void setFriendAccount(String friendAccount) {
+		this.friendAccount = friendAccount;
 	}
 
 	public String getDeviceImei() {

@@ -2,14 +2,14 @@ package com.sam.yh.req.bean;
 
 public class FetchBtyInfoReq {
 
-    private String userPhone;
+    private String userAccount;
 
-    public String getUserPhone() {
-        return userPhone;
-    }
+	public String getUserAccount() {
+		return userAccount;
+	}
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
 
 }

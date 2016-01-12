@@ -14,7 +14,7 @@ public interface UserCodeService {
     public boolean sendSignupAuthCode(String userAccount,String userName) throws CrudException;
 
     @Transactional
-    public boolean sendResetPwdAuthCode(String mobilePhone) throws CrudException;
+    public boolean sendResetPwdAuthCode(String userAccount) throws CrudException;
 
     @Transactional
     public boolean sendTestAuthCode(String mobilePhone, String content) throws CrudException;
@@ -23,7 +23,7 @@ public interface UserCodeService {
     public UserCode fetchByUserName(String mobilePhone, int type);
 
     @Transactional
-    public boolean verifyAuthCode(String mobilePhone, int type, String authCode) throws CrudException;
+    public boolean verifyAuthCode(String userAccount, int type, String authCode) throws CrudException;
 
     @Transactional
     public boolean sendWarningMsg(String mobilePhone, String btyImei) throws CrudException;

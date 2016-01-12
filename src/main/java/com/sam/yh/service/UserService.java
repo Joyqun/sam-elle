@@ -8,6 +8,8 @@ import com.sam.yh.crud.exception.CrudException;
 import com.sam.yh.enums.UserAccountType;
 import com.sam.yh.model.PubBatteryInfo;
 import com.sam.yh.model.User;
+import com.sam.yh.req.bean.AddDeviceReq;
+import com.sam.yh.req.bean.BindMobilePhoneReq;
 
 public interface UserService {
 
@@ -16,20 +18,28 @@ public interface UserService {
 
     @Transactional
     public User signin(String getUserSigninName, String hassPwd, String deviceInfo) throws CrudException;
-
+  
+    @Transactional
+    public User resetPwd(String userAccount, String authCode, String hassPwd) throws CrudException;
+//  public User resetPwd(String mobilePhone, String authCode, String hassPwd, String deviceInfo) throws CrudException;
     
     @Transactional
-//    public User resetPwd(String mobilePhone, String authCode, String hassPwd, String deviceInfo) throws CrudException;
-    public User resetPwd(String mobilePhone, String authCode, String hassPwd) throws CrudException;
+    public void addDevice(AddDeviceReq addDeviceReq) throws CrudException;
+    
+    @Transactional
+    public void bindMobilePhone(BindMobilePhoneReq bindMobilePhoneReq) throws CrudException;
+    
+    @Transactional
+    public List<PubBatteryInfo> fetchSelfBtyInfo(String userAccount);
 
     @Transactional
-    public List<PubBatteryInfo> fetchSelfBtyInfo(String mobilePhone);
+    public List<PubBatteryInfo> fetchFriendsBtyInfo(String userAccount);
+    
+    @Transactional
+    public User fetchUserByUserName(String userAccount);
 
     @Transactional
-    public List<PubBatteryInfo> fetchFriendsBtyInfo(String mobilePhone);
-
-    @Transactional
-    public User fetchUserByUserAccount(String mobilePhone);
+    public User fetchUserByUserAccount(String userAccount);
 
     @Transactional
     public void followBty(String mobile_Phone, String deviceImei, String btyOwnerPhone) throws CrudException;
@@ -52,4 +62,6 @@ public interface UserService {
     public String getUserType(String mobilePhone) throws CrudException;
     
     public User selectByUserName(String userName) throws CrudException;
+
+
 }

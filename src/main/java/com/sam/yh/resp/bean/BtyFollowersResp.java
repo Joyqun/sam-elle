@@ -15,4 +15,5 @@ public class BtyFollowersResp {
         this.followers = followers;
     }
 
+    
 }

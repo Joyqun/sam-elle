@@ -74,9 +74,9 @@ public class UserCodeServiceImpl implements UserCodeService {
         return result;
     }
 
-    @Override//此时userAccount里面传过来的是邮箱。记录在数据表的device_info里面
+    @Override                     //此时userAccount里面传过来的是邮箱。
     public boolean sendResetPwdAuthCode(String userAccount) throws CrudException {
-        User user = userMapper.selectByUserDeviceInfo(userAccount);
+        User user = userMapper.selectByUserAccount(userAccount);
         if (user == null) {
             throw new UserSignupException("未注册的账号");
         }
@@ -109,7 +109,7 @@ public class UserCodeServiceImpl implements UserCodeService {
         Date now = new Date();
         if (userCode == null) {
             userCode = new UserCode();
-            userCode.setMobilePhone(mobilePhone);
+            userCode.setMobilephone(mobilePhone);
             userCode.setCodeType(UserCodeType.USER_SALT.getType());
             userCode.setDynamicCode(salt);
             userCode.setSendTimes(1);
@@ -133,6 +133,7 @@ public class UserCodeServiceImpl implements UserCodeService {
     /**
      * 短信验证码发送
      */
+            //    sendAndSaveSmsCode(userAccount, UserCodeType.RESETPWD_CODE.getType());
     private String sendAndSaveSmsCode(String mobilePhone, int type) throws AuthCodeSendException {
         UserCode userCode = fetchByUserName(mobilePhone, type);
 
@@ -140,7 +141,7 @@ public class UserCodeServiceImpl implements UserCodeService {
         Date now = new Date();
         if (userCode == null) {
             userCode = new UserCode();
-            userCode.setMobilePhone(mobilePhone);
+            userCode.setMobilephone(mobilePhone);
             userCode.setCodeType(type);
             userCode.setDynamicCode(smsCode);
             userCode.setSendTimes(1);
@@ -177,25 +178,23 @@ public class UserCodeServiceImpl implements UserCodeService {
 
     }
 
+//    @Override
+//    public UserCode fetchByUserName(String mobilePhone, int type) {
+//        return userCodeMapper.selectByUserNameAndType(mobilePhone, type);
+//    }
     @Override
-    public UserCode fetchByUserName(String mobilePhone, int type) {
-        return userCodeMapper.selectByUserNameAndType(mobilePhone, type);
+    public UserCode fetchByUserName(String mobilePhone, int codeType) {
+        return userCodeMapper.selectByUserNameAndType(mobilePhone, codeType);
     }
-
+    
+    
     @Override
-    public boolean verifyAuthCode(String mobilePhone, int type, String authCode) throws CrudException {
-        logger.info("verifyAuthCode pwd, {}", mobilePhone);
+    public boolean verifyAuthCode(String userAccount, int type, String authCode) throws CrudException {
+        logger.info("verifyAuthCode pwd, {}", userAccount);
         logger.info("verifyAuthCode pwd, {}", type);
-        UserCode userCode = fetchByUserName(mobilePhone, type);
+        UserCode userCode = fetchByUserName(userAccount, type);
         Date now = new Date();
 
-//        if (userCode != null && userCode.getStatus() && now.before(userCode.getExpiryDate()) && StringUtils.equals(userCode.getDynamicCode(), authCode)) {
-//            userCode.setStatus(false);
-//            userCodeMapper.updateByPrimaryKey(userCode);
-//            return true;
-//        } else {
-//            throw new AuthCodeVerifyException("验证码错误");
-//        }
         logger.info("verifyAuthCode pwd, {}", userCode);
         logger.info("verifyAuthCode pwd, {}", userCode.getStatus());
         logger.info("verifyAuthCode pwd, {}", now.before(userCode.getExpiryDate()));       
@@ -203,6 +202,7 @@ public class UserCodeServiceImpl implements UserCodeService {
         logger.info("verifyAuthCode pwd, {}", userCode.getDynamicCode());     
         logger.info("verifyAuthCode pwd, {}", authCode);  
         if (userCode != null && userCode.getStatus() && now.before(userCode.getExpiryDate()) && StringUtils.equals(userCode.getDynamicCode(), authCode)) {
+ //         if (userCode != null  && now.before(userCode.getExpiryDate()) && StringUtils.equals(userCode.getDynamicCode(), authCode)) {     	
             userCode.setStatus(false);
             userCodeMapper.updateByPrimaryKey(userCode);
             return true;
@@ -241,7 +241,7 @@ public class UserCodeServiceImpl implements UserCodeService {
         Date now = new Date();
         if (userCode == null) {
             userCode = new UserCode();
-            userCode.setMobilePhone(btyImei);
+            userCode.setMobilephone(btyImei);
             userCode.setCodeType(type);
             userCode.setDynamicCode(mobilePhone);
             userCode.setSendTimes(1);

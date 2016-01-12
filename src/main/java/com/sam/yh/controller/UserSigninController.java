@@ -59,6 +59,9 @@ public class UserSigninController {
             UserInfoResp respData = new UserInfoResp();
             respData.setUserUid(user.getUuid());
             respData.setUserType(user.getUserType());
+            respData.setUserName(user.getUserName());
+            respData.setUserAccount(user.getUserAccount());
+            
 
             logger.info("user signin, req:{}, resp:{}", req, respData);
             return ResponseUtils.getNormalResp(respData);
@@ -101,12 +104,12 @@ public class UserSigninController {
 
     }
 
-    private boolean isAdminAccount(String userAccount) {
-        String[] accounts = StringUtils.split(adminAccounts, ",");
-        if (accounts == null || accounts.length == 0) {
-            logger.error("获取admin account 失败");
-        }
-        Set<String> admins = Sets.newHashSet(accounts);
-        return admins.contains(userAccount);
-    }
+//    private boolean isAdminAccount(String userAccount) {
+//        String[] accounts = StringUtils.split(adminAccounts, ",");
+//        if (accounts == null || accounts.length == 0) {
+//            logger.error("获取admin account 失败");
+//        }
+//        Set<String> admins = Sets.newHashSet(accounts);
+//        return admins.contains(userAccount);
+//    }
 }

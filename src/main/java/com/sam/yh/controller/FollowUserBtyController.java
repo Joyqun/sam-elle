@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.sam.yh.common.EmailUtils;
 import com.sam.yh.common.IllegalParamsException;
 import com.sam.yh.common.MobilePhoneUtils;
 import com.sam.yh.crud.exception.BtyFollowException;
@@ -39,37 +40,55 @@ public class FollowUserBtyController {
         try {
             validateBtyFollowArgs(req);
 
-            userService.followBty(req.getUserPhone(), req.getDeviceImei(), req.getBtyOwnerPhone());
+            userService.followBty(req.getUserAccount(), req.getDeviceImei(), req.getBtyOwnerAccount());
 
             return ResponseUtils.getNormalResp(StringUtils.EMPTY);
         } catch (IllegalParamsException e) {
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (CrudException e) {
-            logger.error("follow bty exception, " + req.getUserPhone(), e);
+            logger.error("follow bty exception, " + req.getUserAccount(), e);
             if (e instanceof BtyFollowException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
             } else {
                 return ResponseUtils.getSysErrorResp();
             }
         } catch (Exception e) {
-            logger.error("follow bty exception, " + req.getUserPhone(), e);
+            logger.error("follow bty exception, " + req.getUserAccount(), e);
             return ResponseUtils.getSysErrorResp();
         }
     }
 
     private void validateBtyFollowArgs(BtyFollowReq btyFollowReq) throws IllegalParamsException {
-        if (!MobilePhoneUtils.isValidPhone(btyFollowReq.getUserPhone())) {
-            throw new IllegalParamsException("请输入正确的手机号码");
+//        if (!MobilePhoneUtils.isValidPhone(btyFollowReq.getUserPhone())) {
+//            throw new IllegalParamsException("请输入正确的手机号码");
+//        }
+//        if (StringUtils.isBlank(btyFollowReq.getDeviceImei())) {
+//            throw new IllegalParamsException("不存在的电池");
+//        }
+//        if (!MobilePhoneUtils.isValidPhone(btyFollowReq.getBtyOwnerPhone())) {
+//            throw new IllegalParamsException("请输入好友正确的手机号码");
+//        }
+//        if (StringUtils.equals(btyFollowReq.getUserPhone(), btyFollowReq.getBtyOwnerPhone())) {
+//            throw new IllegalParamsException("不能关注自己");
+//        }
+//        ////
+        if ( !EmailUtils.isValidEmail(btyFollowReq.getUserAccount())) {
+            throw new IllegalParamsException("请输入正确的电子邮箱");
         }
         if (StringUtils.isBlank(btyFollowReq.getDeviceImei())) {
             throw new IllegalParamsException("不存在的电池");
         }
-        if (!MobilePhoneUtils.isValidPhone(btyFollowReq.getBtyOwnerPhone())) {
-            throw new IllegalParamsException("请输入好友正确的手机号码");
+
+        if ( !EmailUtils.isValidEmail(btyFollowReq.getBtyOwnerAccount())) {
+            throw new IllegalParamsException("请输入好友正确的电子邮箱");
         }
-        if (StringUtils.equals(btyFollowReq.getUserPhone(), btyFollowReq.getBtyOwnerPhone())) {
+       
+        if (StringUtils.equals(btyFollowReq.getUserAccount(), btyFollowReq.getBtyOwnerAccount())) {
             throw new IllegalParamsException("不能关注自己");
         }
+        
+        
+        
     }
 
 }

@@ -18,18 +18,22 @@ import com.google.common.collect.Sets;
 import com.sam.yh.common.PwdUtils;
 import com.sam.yh.common.RandomCodeUtils;
 import com.sam.yh.common.SamConstants;
-import com.sam.yh.controller.UserSignupController;
 import com.sam.yh.crud.exception.BtyFollowException;
 import com.sam.yh.crud.exception.BtyLockException;
 import com.sam.yh.crud.exception.CrudException;
+import com.sam.yh.crud.exception.FetchBtyInfoException;
 import com.sam.yh.crud.exception.PwdResetException;
+import com.sam.yh.crud.exception.AddDeviceException;
+import com.sam.yh.crud.exception.BindMobilePhoneException;
 import com.sam.yh.crud.exception.UserSignupException;
+import com.sam.yh.crud.exception.UserSigninException;
 import com.sam.yh.dao.BatteryInfoMapper;
 import com.sam.yh.dao.BatteryMapper;
 import com.sam.yh.dao.ResellerMapper;
 import com.sam.yh.dao.UserBatteryMapper;
 import com.sam.yh.dao.UserFollowMapper;
 import com.sam.yh.dao.UserMapper;
+import com.sam.yh.dao.UserAttributeMapper;
 import com.sam.yh.enums.BatteryStatus;
 import com.sam.yh.enums.UserAccountType;
 import com.sam.yh.enums.UserCodeType;
@@ -39,10 +43,13 @@ import com.sam.yh.model.BatteryInfo;
 import com.sam.yh.model.PubBatteryInfo;
 import com.sam.yh.model.Reseller;
 import com.sam.yh.model.User;
+import com.sam.yh.model.UserAttribute;
 import com.sam.yh.model.UserBattery;
 import com.sam.yh.model.UserBatteryKey;
 import com.sam.yh.model.UserFollow;
 import com.sam.yh.model.UserFollowKey;
+import com.sam.yh.req.bean.AddDeviceReq;
+import com.sam.yh.req.bean.BindMobilePhoneReq;
 import com.sam.yh.service.BatteryService;
 import com.sam.yh.service.UserBatteryService;
 import com.sam.yh.service.UserCodeService;
@@ -57,10 +64,10 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserBatteryService userBatteryService;
-
+    
     @Resource
     BatteryService batteryService;
-
+    
     @Resource
     private UserMapper userMapper;
 
@@ -78,6 +85,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private ResellerMapper resellerMapper;
+    
+    @Resource
+    private UserAttributeMapper userAttributeMapper;
 
     @Resource
     private String adminAccounts;
@@ -115,8 +125,8 @@ public class UserServiceImpl implements UserService {
             user.setUserType(UserType.NORMAL_USER.getType());
             user.setSalt(salt);
 //            ///gaobo modify
-//            //user.setPassword(PwdUtils.genMd5Pwd(userAccount, salt, hassPwd));
-//            user.setPassword(PwdUtils.genMd5Pwd(userName, salt, hassPwd));
+            user.setPassword(PwdUtils.genMd5Pwd(userAccount, salt, hassPwd));
+//          user.setPassword(PwdUtils.genMd5Pwd(userName, salt, hassPwd));
 //           
 //            user.setDeviceInfo(userAccount); 
 //            user.setUserAccount(userName);  
@@ -159,52 +169,70 @@ public class UserServiceImpl implements UserService {
 //        logger.info("genmd5 pwd, {}", userAccount); 
     	
     	boolean IsUserAccount = true;
+    	String pwdAccount;
+    	String accountName;
         User user = fetchUserByUserAccount(userSigninName);
         if (user == null) {
-             User user1 =  fetchUserByUserAccount(userSigninName);
-             if (user1 == null){
-            	 throw new UserSignupException("用户不存在");     	        	   
+             User user1 =  fetchUserByUserName(userSigninName);
+             if (user1 == null){ 
+            	 throw new UserSigninException("用户不存在");//不存在        	   
           	   }else
-          	   {
-          		 IsUserAccount =false;
-          	   }
+          	   { 
+          		 IsUserAccount =false;                   //用户名
+                 pwdAccount= user1.getUserAccount();
+            	 accountName= userSigninName;         		 
+               }
+        }else{                                           //邮箱
+        	pwdAccount=  userSigninName;
+        	accountName= user.getUserName();
         }
-        String pwsAccount;
+        	
+//       if (!user.getUserType().equals(getUserType(pwdAccount))) {
+//            user.setUserType(getUserType(pwdAccount));
+//        }
+        
         if(IsUserAccount){
-            pwsAccount=userSigninName;
+            if (!StringUtils.equals(user.getPassword(), PwdUtils.genMd5Pwd(pwdAccount, user.getSalt(), hassPwd))) {
+                throw new UserSigninException("用户名或密码错误");
+            }
+            user.setLoginDate(new Date());
+            user.setDeviceInfo(deviceInfo);
+            user.setUserName(accountName);
+            user.setUserAccount(pwdAccount);
+            userMapper.updateByPrimaryKeySelective(user);
+            
+            return user;
         }else{
-        	pwsAccount= user.getUserAccount() ;;
+            User user2 = fetchUserByUserName(userSigninName);
+            
+            if (!StringUtils.equals(user2.getPassword(), PwdUtils.genMd5Pwd(pwdAccount, user2.getSalt(), hassPwd))) {
+                throw new UserSigninException("用户名或密码错误");
+            }
+            user2.setLoginDate(new Date());
+            user2.setDeviceInfo(deviceInfo);
+            user2.setUserName(accountName);
+            user2.setUserAccount(pwdAccount);
+            userMapper.updateByPrimaryKeySelective(user2);
+            
+            return user2;
         }
         
-        if (!StringUtils.equals(user.getPassword(), PwdUtils.genMd5Pwd(pwsAccount, user.getSalt(), hassPwd))) {
-            throw new UserSignupException("用户名或密码错误");
-        }
-        
-
-        if (!user.getUserType().equals(getUserType(pwsAccount))) {
-            user.setUserType(getUserType(pwsAccount));
-        }
-        user.setLoginDate(new Date());
-        user.setDeviceInfo(deviceInfo);
-        userMapper.updateByPrimaryKeySelective(user);
-
-        return user;
     }
 
     @Override
- //   public User resetPwd(String mobilePhone, String authCode, String hassPwd, String deviceInfo) throws CrudException {
-    public User resetPwd(String mobilePhone, String authCode, String hassPwd) throws CrudException {
-        User user = userMapper.selectByUserDeviceInfo(mobilePhone); //fetchUserByUserAccount(mobilePhone);
+    public User resetPwd(String userAccount, String authCode, String hassPwd) throws CrudException {
+//  public User resetPwd(String mobilePhone, String authCode, String hassPwd, String deviceInfo) throws CrudException {
+        User user = fetchUserByUserAccount(userAccount); 
         if (user == null) {
-            throw new PwdResetException("未注册的手机号码");
+            throw new PwdResetException("未注册的账户");
         }
-        boolean auth = userCodeService.verifyAuthCode(mobilePhone, UserCodeType.RESETPWD_CODE.getType(), authCode);
+        boolean auth = userCodeService.verifyAuthCode(userAccount, UserCodeType.RESETPWD_CODE.getType(), authCode);
         if (!auth) {
             throw new PwdResetException("短信验证码错误");
         }
         Date now = new Date();
         String salt = user.getSalt();
-        user.setPassword(PwdUtils.genMd5Pwd(user.getUserName(), salt, hassPwd));
+        user.setPassword(PwdUtils.genMd5Pwd(user.getUserAccount(), salt, hassPwd));
         user.setLockStatus(false);
         user.setLoginDate(now);
 //        user.setDeviceInfo(deviceInfo);
@@ -215,8 +243,50 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<PubBatteryInfo> fetchSelfBtyInfo(String mobilePhone) {
-        User user = fetchUserByUserAccount(mobilePhone);
+    public void addDevice(AddDeviceReq addDeviceReq) throws CrudException {
+        if (batteryService.fetchBtyByIMEI(addDeviceReq.getDeviceImei()) != null) {
+            throw new AddDeviceException("请检查电池IMEI号");//该IMEI号在数据库里已存在
+        }
+            
+        User user = fetchUserByUserAccount(addDeviceReq.getUserAccount());        
+        if (user == null) {
+           throw new AddDeviceException("未注册的账号");
+        }
+    	    	
+        boolean isCloudBty = true;
+
+        Battery battery = addBattery(addDeviceReq.getDeviceImei(),addDeviceReq.getDeviceImei(),addDeviceReq.getDeviceImei(),addDeviceReq.getDeviceImei(),isCloudBty,0,0);
+
+        UserBattery userBattery = new UserBattery();
+        userBattery.setBatteryId(battery.getId());
+        userBattery.setUserId(user.getUserId());
+        userBattery.setBuyDate(new Date());
+
+        userBatteryMapper.insert(userBattery);
+
+      
+    }
+       
+    @Override                   //     deviceImei;  mobilePhone;
+    public void bindMobilePhone(BindMobilePhoneReq bindMobilePhoneReq)throws CrudException {
+
+      Battery battery= batteryMapper.selectByIMEI(bindMobilePhoneReq.getDeviceImei());
+
+      if (battery == null) {
+          throw new BindMobilePhoneException("电池IMEI号不存在");
+      }else{
+        	
+      battery.setBindMobile(bindMobilePhoneReq.getMobilePhone());
+        
+      batteryMapper.updateByPrimaryKeySelective(battery);
+      } 
+     
+  }
+    
+
+    @Override
+    public List<PubBatteryInfo> fetchSelfBtyInfo(String userAccount) {
+        User user = fetchUserByUserAccount(userAccount);
         if (user == null) {
             return Collections.emptyList();
         }
@@ -237,8 +307,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<PubBatteryInfo> fetchFriendsBtyInfo(String mobilePhone) {
-        User user = fetchUserByUserAccount(mobilePhone);
+    public List<PubBatteryInfo> fetchFriendsBtyInfo(String userAccount) {
+        User user = fetchUserByUserAccount(userAccount);
         if (user == null) {
             return Collections.emptyList();
         }
@@ -259,6 +329,11 @@ public class UserServiceImpl implements UserService {
 
         return btyInfo;
     }
+    @Override
+    public User fetchUserByUserName(String userName) {
+        return userMapper.selectByUserName(userName);
+    }
+    
 
     @Override
     public User fetchUserByUserAccount(String userAccount) {
@@ -342,7 +417,7 @@ public class UserServiceImpl implements UserService {
         innerFollow(shareUser, battery);
 
     }
-
+ 
     private void innerFollow(User follower, Battery battery) {
         Date now = new Date();
 
@@ -498,4 +573,26 @@ public class UserServiceImpl implements UserService {
 	public User selectByUserName(String userName) throws CrudException {
 		return userMapper.selectByUserName(userName);
 	}
+    private Battery addBattery(String btySn, String imei, String simNo, String iccid, boolean isCloudBty, int resellerId, int cityId) {
+        Date now = new Date();
+        Battery battery = new Battery();
+        battery.setSn(btySn);
+        battery.setPubSn(RandomCodeUtils.genBtyPubSn());
+        battery.setImei(imei);
+        battery.setIccid(iccid);
+        battery.setSimNo(simNo);
+        battery.setBtyType(isCloudBty);
+        battery.setStatus(BatteryStatus.NORMAL.getStatus());
+        battery.setResellerId(resellerId);
+        battery.setCityId(cityId);
+        battery.setSaleStatus(true);
+        battery.setCreateDate(now);
+        battery.setSaleDate(now);
+//        battery.setBindmobile(bindmobile);
+
+        return batteryService.addBattery(battery);
+    }
+
 }
+
+

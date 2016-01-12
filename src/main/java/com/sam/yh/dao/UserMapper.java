@@ -18,7 +18,7 @@ public interface UserMapper {
     User selectByUserName(String userName);  
         
 
-    User selectByUserAccount(String mobilePhone);  
+    User selectByUserAccount(String userAccount);  
        
     User selectByUserDeviceInfo(String mobilePhone);//Joy modify
 

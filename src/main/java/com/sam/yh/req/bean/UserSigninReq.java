@@ -10,10 +10,11 @@ public class UserSigninReq implements Serializable {
     private static final long serialVersionUID = 1L;
 
 //    private String userAccount;
+    private String userSigninName;
     private String accountType;
     private String password;
     private String deviceInfo;
-    private String userSigninName;
+    
 
 //    public String getUserAccount() {
 //        return userAccount;
@@ -28,8 +29,6 @@ public class UserSigninReq implements Serializable {
 	public String getUserSigninName() {
 		return userSigninName;
 	}
-
-
 
 	public void setUserSigninName(String userSigninName) {
 		this.userSigninName = userSigninName;

@@ -83,9 +83,11 @@ public class AuthCodeController {
     }
 
     private void validateSmsArgs(SmsAuthCodeReq smsAuthCodeReq) throws IllegalParamsException {
-        if (StringUtils.isBlank(smsAuthCodeReq.getUserName())) {
+    	if(Integer.valueOf(smsAuthCodeReq.getAuthType())==1){
+            if (StringUtils.isBlank(smsAuthCodeReq.getUserName())) {
             throw new IllegalParamsException("请输入正确的用户名");
-        }
+            }
+    	}
         if (!MobilePhoneUtils.isValidPhone(smsAuthCodeReq.getUserAccount()) && !EmailUtils.isValidEmail(smsAuthCodeReq.getUserAccount())) {
             throw new IllegalParamsException("请输入正确的账户名");
         }

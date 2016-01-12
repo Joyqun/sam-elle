@@ -3,7 +3,7 @@ package com.sam.yh.resp.bean;
 public class BtyFollower {
 
     private String followerName;
-    private String followerPhone;
+    private String followerAccount;
 
     public String getFollowerName() {
         return followerName;
@@ -13,12 +13,14 @@ public class BtyFollower {
         this.followerName = followerName;
     }
 
-    public String getFollowerPhone() {
-        return followerPhone;
-    }
+	public String getFollowerAccount() {
+		return followerAccount;
+	}
 
-    public void setFollowerPhone(String followerPhone) {
-        this.followerPhone = followerPhone;
-    }
+	public void setFollowerAccount(String followerAccount) {
+		this.followerAccount = followerAccount;
+	}
+
+
 
 }

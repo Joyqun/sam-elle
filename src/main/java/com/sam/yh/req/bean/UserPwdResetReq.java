@@ -2,21 +2,23 @@ package com.sam.yh.req.bean;
 
 public class UserPwdResetReq {
 
-    private String userPhone;
+    private String userAccount;
     private String authCode;
     private String password1;
     private String password2;
     private String deviceInfo;
 
-    public String getUserPhone() {
-        return userPhone;
-    }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
 
-    public String getAuthCode() {
+    public String getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
+
+	public String getAuthCode() {
         return authCode;
     }
 

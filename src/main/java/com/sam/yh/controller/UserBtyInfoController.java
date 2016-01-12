@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.sam.yh.common.EmailUtils;
 import com.sam.yh.common.IllegalParamsException;
 import com.sam.yh.common.MobilePhoneUtils;
 import com.sam.yh.common.SamConstants;
@@ -51,16 +52,16 @@ public class UserBtyInfoController {
         FetchBtyInfoReq req = JSON.parseObject(jsonReq, FetchBtyInfoReq.class);
 
         try {
-            validateUserArgs(req.getUserPhone());
+            validateUserArgs(req.getUserAccount());
 
             UserBtyInfoResp respData = new UserBtyInfoResp();
 
-            List<PubBatteryInfo> selfBtys = userService.fetchSelfBtyInfo(req.getUserPhone());
+            List<PubBatteryInfo> selfBtys = userService.fetchSelfBtyInfo(req.getUserAccount());
             for (PubBatteryInfo batteryInfo : selfBtys) {
                 respData.getSelfBtyInfo().add(convertToUserBtyInfo(batteryInfo));
             }
 
-            List<PubBatteryInfo> friendBtys = userService.fetchFriendsBtyInfo(req.getUserPhone());
+            List<PubBatteryInfo> friendBtys = userService.fetchFriendsBtyInfo(req.getUserAccount());
             for (PubBatteryInfo batteryInfo : friendBtys) {
                 respData.getFriendsBtyInfo().add(convertToUserBtyInfo(batteryInfo));
             }
@@ -69,7 +70,7 @@ public class UserBtyInfoController {
         } catch (IllegalParamsException e) {
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (Exception e) {
-            logger.error("fetch bty info exception, " + req.getUserPhone(), e);
+            logger.error("fetch bty info exception, " + req.getUserAccount(), e);
             return ResponseUtils.getSysErrorResp();
         }
 
@@ -83,13 +84,13 @@ public class UserBtyInfoController {
         FetchBtyInfoReq req = JSON.parseObject(jsonReq, FetchBtyInfoReq.class);
 
         try {
-            validateUserArgs(req.getUserPhone());
+            validateUserArgs(req.getUserAccount());
 
-            for (PubBatteryInfo batteryInfo : userService.fetchSelfBtyInfo(req.getUserPhone())) {
+            for (PubBatteryInfo batteryInfo : userService.fetchSelfBtyInfo(req.getUserAccount())) {
                 sendReq(batteryInfo.getBytImei());
             }
 
-            for (PubBatteryInfo batteryInfo : userService.fetchFriendsBtyInfo(req.getUserPhone())) {
+            for (PubBatteryInfo batteryInfo : userService.fetchFriendsBtyInfo(req.getUserAccount())) {
                 sendReq(batteryInfo.getBytImei());
             }
 
@@ -97,12 +98,12 @@ public class UserBtyInfoController {
 
             UserBtyInfoResp respData = new UserBtyInfoResp();
 
-            List<PubBatteryInfo> selfBtys = userService.fetchSelfBtyInfo(req.getUserPhone());
+            List<PubBatteryInfo> selfBtys = userService.fetchSelfBtyInfo(req.getUserAccount());
             for (PubBatteryInfo batteryInfo : selfBtys) {
                 respData.getSelfBtyInfo().add(convertToUserBtyInfo(batteryInfo));
             }
 
-            List<PubBatteryInfo> friendBtys = userService.fetchFriendsBtyInfo(req.getUserPhone());
+            List<PubBatteryInfo> friendBtys = userService.fetchFriendsBtyInfo(req.getUserAccount());
             for (PubBatteryInfo batteryInfo : friendBtys) {
                 respData.getFriendsBtyInfo().add(convertToUserBtyInfo(batteryInfo));
             }
@@ -111,15 +112,15 @@ public class UserBtyInfoController {
         } catch (IllegalParamsException e) {
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (Exception e) {
-            logger.error("fetch bty info exception, " + req.getUserPhone(), e);
+            logger.error("fetch bty info exception, " + req.getUserAccount(), e);
             return ResponseUtils.getSysErrorResp();
         }
 
     }
 
-    private void validateUserArgs(String userPhone) throws IllegalParamsException {
-        if (!MobilePhoneUtils.isValidPhone(userPhone)) {
-            throw new IllegalParamsException("请输入正确的手机号码");
+    private void validateUserArgs(String userAccount) throws IllegalParamsException {
+        if ( !EmailUtils.isValidEmail(userAccount)) {
+            throw new IllegalParamsException("请输入正确的电子邮箱");
         }
 
     }

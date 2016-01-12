@@ -2,18 +2,19 @@ package com.sam.yh.req.bean;
 
 public class ListFollowersReq {
 
-    private String userPhone;
-//    private String btyPubSn;
+    private String userAccount;
     private String deviceImei;
     
-	public String getUserPhone() {
-        return userPhone;
-    }
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
 
-    public String getDeviceImei() {
+    public String getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
+
+	public String getDeviceImei() {
 		return deviceImei;
 	}
 

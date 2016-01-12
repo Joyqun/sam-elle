@@ -2,9 +2,9 @@ package com.sam.yh.req.bean;
 
 public class BtyFollowReq {
 
-    private String userPhone;
+    private String userAccount;
 //    private String btyPubSn;
-    private String btyOwnerPhone;
+    private String btyOwnerAccount;
     private String deviceImei;
 
     public String getDeviceImei() {
@@ -15,20 +15,21 @@ public class BtyFollowReq {
 		this.deviceImei = deviceImei;
 	}
 
-	public String getUserPhone() {
-        return userPhone;
-    }
+	public String getUserAccount() {
+		return userAccount;
+	}
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
 
-    public String getBtyOwnerPhone() {
-        return btyOwnerPhone;
-    }
+	public String getBtyOwnerAccount() {
+		return btyOwnerAccount;
+	}
 
-    public void setBtyOwnerPhone(String btyOwnerPhone) {
-        this.btyOwnerPhone = btyOwnerPhone;
-    }
+	public void setBtyOwnerAccount(String btyOwnerAccount) {
+		this.btyOwnerAccount = btyOwnerAccount;
+	}
+
 
 }

@@ -3,11 +3,14 @@ package com.sam.yh.model;
 import java.util.Date;
 
 public class UserAttribute extends UserAttributeKey {
+
     private String attrValue;
 
     private Date createTime;
 
     private Date updateTime;
+    
+    
 
     public String getAttrValue() {
         return attrValue;

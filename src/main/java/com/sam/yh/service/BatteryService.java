@@ -11,7 +11,7 @@ public interface BatteryService {
 
     @Transactional
     public Battery uploadBatteryInfo(BatteryInfoReq batteryInfoReqVo) throws CrudException;
-
+    
     @Transactional
     public Battery addBattery(Battery battery);
 

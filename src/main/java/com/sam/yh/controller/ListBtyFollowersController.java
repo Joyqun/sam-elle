@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.sam.yh.common.EmailUtils;
 import com.sam.yh.common.IllegalParamsException;
 import com.sam.yh.common.MobilePhoneUtils;
 import com.sam.yh.crud.exception.CrudException;
@@ -43,7 +44,7 @@ public class ListBtyFollowersController {
         try {
             validateUserBtyArgs(req);
 
-            List<BtyFollower> followers = userBatteryService.fetchBtyFollowers(req.getUserPhone().trim(), req.getDeviceImei().trim());
+            List<BtyFollower> followers = userBatteryService.fetchBtyFollowers(req.getUserAccount().trim(), req.getDeviceImei().trim());
             BtyFollowersResp respData = new BtyFollowersResp();
             respData.setFollowers(followers);
 
@@ -51,21 +52,21 @@ public class ListBtyFollowersController {
         } catch (IllegalParamsException e) {
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (CrudException e) {
-            logger.error("fetch my byt followers exception, " + req.getUserPhone(), e);
+            logger.error("fetch my byt followers exception, " + req.getUserAccount(), e);
             if (e instanceof FetchFollowerException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
             } else {
                 return ResponseUtils.getSysErrorResp();
             }
         } catch (Exception e) {
-            logger.error("fetch my byt followers exception, " + req.getUserPhone(), e);
+            logger.error("fetch my byt followers exception, " + req.getUserAccount(), e);
             return ResponseUtils.getSysErrorResp();
         }
     }
 
     private void validateUserBtyArgs(ListFollowersReq listFollowersReq) throws IllegalParamsException {
-        if (!MobilePhoneUtils.isValidPhone(listFollowersReq.getUserPhone())) {
-            throw new IllegalParamsException("请输入正确的手机号码");
+        if ( !EmailUtils.isValidEmail(listFollowersReq.getUserAccount())) {
+            throw new IllegalParamsException("请输入正确的电子邮箱");
         }
         if (StringUtils.isBlank(listFollowersReq.getDeviceImei())) {
             throw new IllegalParamsException("不存在的电池");

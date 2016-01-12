@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.sam.yh.common.EmailUtils;
 import com.sam.yh.common.IllegalParamsException;
 import com.sam.yh.common.MobilePhoneUtils;
 import com.sam.yh.crud.exception.CrudException;
@@ -40,35 +41,35 @@ public class ListUserBtysController {
         FetchBtyInfoReq req = JSON.parseObject(jsonReq, FetchBtyInfoReq.class);
 
         try {
-            validateUserArgs(req.getUserPhone());
+            validateUserArgs(req.getUserAccount());
 
             UserBtysResp respData = new UserBtysResp();
 
-            List<PubBattery> myBtys = userBatteryService.fetchMyBtys(req.getUserPhone());
+            List<PubBattery> myBtys = userBatteryService.fetchMyBtys(req.getUserAccount());
             respData.setMyBtys(myBtys);
 
-            List<PubBattery> friendBtys = userBatteryService.fetchfriendBtys(req.getUserPhone());
+            List<PubBattery> friendBtys = userBatteryService.fetchfriendBtys(req.getUserAccount());
             respData.setFriendBtys(friendBtys);
 
             return ResponseUtils.getNormalResp(respData);
         } catch (IllegalParamsException e) {
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (CrudException e) {
-            logger.error("fetch my btys exception, " + req.getUserPhone(), e);
+            logger.error("fetch my btys exception, " + req.getUserAccount(), e);
             if (e instanceof FetchBtysException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
             } else {
                 return ResponseUtils.getSysErrorResp();
             }
         } catch (Exception e) {
-            logger.error("fetch my byts exception, " + req.getUserPhone(), e);
+            logger.error("fetch my byts exception, " + req.getUserAccount(), e);
             return ResponseUtils.getSysErrorResp();
         }
     }
 
-    private void validateUserArgs(String userPhone) throws IllegalParamsException {
-        if (!MobilePhoneUtils.isValidPhone(userPhone)) {
-            throw new IllegalParamsException("请输入正确的手机号码");
+    private void validateUserArgs(String userAccount) throws IllegalParamsException {
+        if ( !EmailUtils.isValidEmail(userAccount)) {
+            throw new IllegalParamsException("请输入正确的电子邮箱");
         }
 
     }

@@ -59,7 +59,7 @@
     select 
     u.user_name as followerName,
     <!--  u.mobile_phone as followerPhone  -->
-    u.user_name as followerPhone
+    u.user_account as followerAccount
     from user_follow f
     inner join
     user u

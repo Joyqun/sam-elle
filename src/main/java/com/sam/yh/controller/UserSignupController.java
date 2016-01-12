@@ -93,9 +93,9 @@ public class UserSignupController {
 //        if (UserAccountType.EMAIL.equals(userAccountType) && !EmailUtils.isValidEmail(userSignupReq.getUserAccount())) {
 //            throw new IllegalParamsException("请输入正确的电子邮箱");
 //        }
-        if (!MobilePhoneUtils.isValidPhone(userSignupReq.getUserName())) {
-            throw new IllegalParamsException("请输入正确的手机号码");
-        }
+//        if (!MobilePhoneUtils.isValidPhone(userSignupReq.getUserName())) {
+//            throw new IllegalParamsException("请输入正确的手机号码");
+//        }
 
         if ( !EmailUtils.isValidEmail(userSignupReq.getUserAccount())) {
             throw new IllegalParamsException("请输入正确的电子邮箱");

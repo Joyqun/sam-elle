@@ -147,7 +147,7 @@ public class BatteryServiceImpl implements BatteryService {
         batteryMapper.insertSelective(battery);
         return battery;
     }
-
+   
     @Override
     public Battery fetchBtyByIMEI(String imei) {
         return batteryMapper.selectByIMEI(imei);

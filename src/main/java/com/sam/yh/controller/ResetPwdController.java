@@ -43,13 +43,13 @@ public class ResetPwdController {
             validatePwdResetArgs(req);
 
 //            userService.resetPwd(req.getUserPhone(), req.getAuthCode(), req.getPassword1(), req.getDeviceInfo());
-            userService.resetPwd(req.getUserPhone(), req.getAuthCode(), req.getPassword1());
+            userService.resetPwd(req.getUserAccount(), req.getAuthCode(), req.getPassword1());
 
             return ResponseUtils.getNormalResp(StringUtils.EMPTY);
         } catch (IllegalParamsException e) {
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (CrudException e) {
-            logger.error("reset user password exception, " + req.getUserPhone(), e);
+            logger.error("reset user password exception, " + req.getUserAccount(), e);
             if (e instanceof UserSignupException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
             } else if (e instanceof AuthCodeVerifyException) {
@@ -58,7 +58,7 @@ public class ResetPwdController {
                 return ResponseUtils.getSysErrorResp();
             }
         } catch (Exception e) {
-            logger.error("reset user password exception, " + req.getUserPhone(), e);
+            logger.error("reset user password exception, " + req.getUserAccount(), e);
             return ResponseUtils.getSysErrorResp();
         }
 

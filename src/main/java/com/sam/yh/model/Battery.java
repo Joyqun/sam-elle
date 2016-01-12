@@ -8,6 +8,8 @@ public class Battery {
     private String sn;
 
     private String status;
+    
+    private String bindMobile;
 
     private Boolean btyType;
 
@@ -64,8 +66,18 @@ public class Battery {
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
     }
+    
+   
 
-    public Boolean getBtyType() {
+	public String getBindMobile() {
+		return bindMobile;
+	}
+
+	public void setBindMobile(String bindMobile) {
+		this.bindMobile = bindMobile;
+	}
+
+	public Boolean getBtyType() {
         return btyType;
     }
 
