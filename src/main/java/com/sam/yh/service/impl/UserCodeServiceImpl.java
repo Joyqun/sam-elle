@@ -134,14 +134,14 @@ public class UserCodeServiceImpl implements UserCodeService {
      * 短信验证码发送
      */
             //    sendAndSaveSmsCode(userAccount, UserCodeType.RESETPWD_CODE.getType());
-    private String sendAndSaveSmsCode(String mobilePhone, int type) throws AuthCodeSendException {
-        UserCode userCode = fetchByUserName(mobilePhone, type);
+    private String sendAndSaveSmsCode(String userAccount, int type) throws AuthCodeSendException {
+        UserCode userCode = fetchByUserName(userAccount, type);
 
         String smsCode = RandomCodeUtils.genSmsCode();
         Date now = new Date();
         if (userCode == null) {
             userCode = new UserCode();
-            userCode.setMobilephone(mobilePhone);
+            userCode.setMobilephone(userAccount);
             userCode.setCodeType(type);
             userCode.setDynamicCode(smsCode);
             userCode.setSendTimes(1);
