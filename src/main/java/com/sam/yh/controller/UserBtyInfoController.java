@@ -5,6 +5,7 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.util.AttributeKey;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -134,6 +135,9 @@ public class UserBtyInfoController {
         userBtyInfo.setLatitude(pubBatteryInfo.getLatitude());
         userBtyInfo.setTemperature(pubBatteryInfo.getTemperature());
         userBtyInfo.setVoltage(pubBatteryInfo.getVoltage());
+        userBtyInfo.setLockStatus(pubBatteryInfo.getLockStatus());
+        userBtyInfo.setExtension(pubBatteryInfo.getExtension());
+        
         return userBtyInfo;
     }
 

@@ -42,7 +42,7 @@ public interface UserService {
     public User fetchUserByUserAccount(String userAccount);
 
     @Transactional
-    public void followBty(String mobile_Phone, String deviceImei, String btyOwnerPhone) throws CrudException;
+    public void followBty(String userAccount, String deviceImei, String btyOwnerAccount) throws CrudException;
 
     @Transactional
     public void shareBty(String mobilePhone, String deviceImei, String friendPhone) throws CrudException;

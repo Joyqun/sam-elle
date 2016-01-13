@@ -1,6 +1,7 @@
 package com.sam.yh.req.bean;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class BatteryInfoReq implements Serializable {
 
@@ -14,6 +15,7 @@ public class BatteryInfoReq implements Serializable {
     private String voltage;
     private String lockstatus;
     private String extension;
+//    private Map<String, String> extension;
 
 
 
@@ -32,12 +34,21 @@ public class BatteryInfoReq implements Serializable {
 	public void setExtension(String extension) {
 		this.extension = extension;
 	}
+	
 
+//    public Map<String, String> getExtension() {
+//		return extension;
+//	}
+//
+//	public void setExtension(Map<String, String> extension) {
+//		this.extension = extension;
+//	}
+	
 	public String getImei() {
         return imei;
     }
 
-    public void setImei(String imei) {
+	public void setImei(String imei) {
         this.imei = imei;
     }
 

@@ -53,8 +53,8 @@ public class UserBatteryServiceImpl implements UserBatteryService {
     }
 
     @Override
-    public List<PubBattery> fetchMyBtys(String mobilePhone) throws CrudException {
-        User user = userMapper.selectByUserAccount(mobilePhone);
+    public List<PubBattery> fetchMyBtys(String userAccount) throws CrudException {
+        User user = userMapper.selectByUserAccount(userAccount);
         if (user == null) {
             throw new FetchBtysException("用户不存在");
         }
@@ -64,8 +64,8 @@ public class UserBatteryServiceImpl implements UserBatteryService {
     }
 
     @Override
-    public List<PubBattery> fetchfriendBtys(String mobilePhone) throws CrudException {
-        User user = userMapper.selectByUserAccount(mobilePhone);
+    public List<PubBattery> fetchfriendBtys(String userAccount) throws CrudException {
+        User user = userMapper.selectByUserAccount(userAccount);
         if (user == null) {
             throw new FetchBtysException("用户不存在");
         }

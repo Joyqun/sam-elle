@@ -1,6 +1,11 @@
 package com.sam.yh.model;
 
 import java.util.Date;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.alibaba.fastjson.JSON;
 
 public class PubBatteryInfo {
     private Long id;
@@ -26,6 +31,10 @@ public class PubBatteryInfo {
     private Date receiveDate;
 
     private Date sampleDate;
+    
+    private String lockStatus;
+    
+    private Map<String, String> extension;
 
     public PubBatteryInfo() {
         super();
@@ -41,6 +50,10 @@ public class PubBatteryInfo {
         this.status = batteryInfo.getStatus();
         this.receiveDate = batteryInfo.getReceiveDate();
         this.sampleDate = batteryInfo.getSampleDate();
+        this.lockStatus = batteryInfo.getLockStatus();
+        
+        this.extension =(Map<String, String>)JSON.parse(batteryInfo.getExtension());   
+        
     }
 
     public Long getId() {
@@ -138,4 +151,21 @@ public class PubBatteryInfo {
     public void setSampleDate(Date sampleDate) {
         this.sampleDate = sampleDate;
     }
+
+	public String getLockStatus() {
+		return lockStatus;
+	}
+
+	public void setLockStatus(String lockStatus) {
+		this.lockStatus = lockStatus;
+	}
+
+	public Map<String, String> getExtension() {
+		return extension;
+	}
+
+	public void setExtension(Map<String, String> extension) {
+		this.extension = extension;
+	}
+    
 }

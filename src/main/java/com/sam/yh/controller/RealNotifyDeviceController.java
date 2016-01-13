@@ -75,6 +75,7 @@ public class RealNotifyDeviceController {
             	 ext = (Map<String, String>)JSON.parse(info.getExtension());
             }
             respData.setExtension(ext);
+ //           respData.setExtension(info.getExtension());
 
             respData.setLastestDate(DateFormatUtils.format(info.getReceiveDate(), "yyyy-MM-dd HH:mm:ss"));
 

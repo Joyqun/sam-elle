@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Sets;
 import com.sam.yh.common.PwdUtils;
 import com.sam.yh.common.RandomCodeUtils;
@@ -299,6 +301,10 @@ public class UserServiceImpl implements UserService {
                 pubInfo.setBtyPubSn(userBattery.getBtyPubSn());
                 pubInfo.setBytImei(userBattery.getBytImei());
                 pubInfo.setOwnerPhone(user.getUserAccount());
+                ///Joy modify
+                pubInfo.setLockStatus(info.getLockStatus());
+                pubInfo.setExtension((Map<String, String>)JSON.parse(info.getExtension()));
+                ///Joy modify end
                 btyInfo.add(pubInfo);
             }
         }
@@ -323,6 +329,12 @@ public class UserServiceImpl implements UserService {
                 pubInfo.setBtyPubSn(userFollow.getBtyPubSn());
                 pubInfo.setBytImei(userFollow.getBytImei());
                 pubInfo.setOwnerPhone(owner.getUserAccount());
+                ///Joy
+                pubInfo.setLockStatus(info.getLockStatus());
+ //               pubInfo.setExtension(info.getExtension());
+                pubInfo.setExtension((Map<String, String>)JSON.parse(info.getExtension()));
+
+                ///JOy end
                 btyInfo.add(pubInfo);
             }
         }
@@ -340,14 +352,14 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectByUserAccount(userAccount);
     }
 
-    @Override
-    public void followBty(String mobilePhone, String deviceImei, String btyOwnerPhone) throws CrudException {
-        User user = fetchUserByUserAccount(mobilePhone);
+    @Override  //(String userAccount, String deviceImei, String btyOwnerAccount)
+    public void followBty(String userAccount, String deviceImei, String btyOwnerAccount) throws CrudException {
+        User user = fetchUserByUserAccount(userAccount);
         if (user == null) {
             throw new BtyFollowException("用户不存在");
         }
 
-        User btyOwner = fetchUserByUserAccount(btyOwnerPhone);
+        User btyOwner = fetchUserByUserAccount(btyOwnerAccount);
         if (btyOwner == null) {
             throw new BtyFollowException("用户不存在");
         }

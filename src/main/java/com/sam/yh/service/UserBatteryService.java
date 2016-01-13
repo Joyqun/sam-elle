@@ -22,10 +22,10 @@ public interface UserBatteryService {
     public UserBattery fetchUserByBtyId(int batteryId);
 
     @Transactional
-    public List<PubBattery> fetchMyBtys(String mobilePhone) throws CrudException;
+    public List<PubBattery> fetchMyBtys(String userAccount) throws CrudException;
 
     @Transactional
-    public List<PubBattery> fetchfriendBtys(String mobilePhone) throws CrudException;
+    public List<PubBattery> fetchfriendBtys(String userAccount) throws CrudException;
 
     @Transactional
     public List<BtyFollower> fetchBtyFollowers(String userName, String deviceImei) throws CrudException;

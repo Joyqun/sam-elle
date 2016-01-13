@@ -1,5 +1,7 @@
 package com.sam.yh.resp.bean;
 
+import java.util.Map;
+
 public class UserBtyInfo {
 
     private String btyPubSn;
@@ -9,6 +11,8 @@ public class UserBtyInfo {
     private String latitude;
     private String temperature;
     private String voltage;
+    private String lockStatus;//Joy
+    private Map<String, String> extension;//Joy   
 
     public String getBtyPubSn() {
         return btyPubSn;
@@ -65,5 +69,23 @@ public class UserBtyInfo {
     public void setVoltage(String voltage) {
         this.voltage = voltage;
     }
+
+	public String getLockStatus() {
+		return lockStatus;
+	}
+
+	public void setLockStatus(String lockStatus) {
+		this.lockStatus = lockStatus;
+	}
+
+	public Map<String, String> getExtension() {
+		return extension;
+	}
+
+	public void setExtension(Map<String, String> extension) {
+		this.extension = extension;
+	}
+    
+    
 
 }

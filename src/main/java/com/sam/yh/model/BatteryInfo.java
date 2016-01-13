@@ -1,6 +1,7 @@
 package com.sam.yh.model;
 
 import java.util.Date;
+import java.util.Map;
 
 public class BatteryInfo {
     private Long id;
@@ -24,6 +25,10 @@ public class BatteryInfo {
     private Date receiveDate;
 
     private Date sampleDate;
+    
+//    private Map<String, String> extension;
+
+   
 
     public Long getId() {
         return id;
@@ -80,6 +85,10 @@ public class BatteryInfo {
 	public void setLockStatus(String lockStatus) {
 		this.lockStatus = lockStatus == null ? lockStatus : lockStatus.trim();
 	}
+	
+	public String getStatus() {
+        return status;
+    }
 
 	public String getExtension() {
 		return extension;
@@ -89,11 +98,16 @@ public class BatteryInfo {
 		this.extension = extension == null ? null : extension.trim();
 	}
 
-	public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
+//    public Map<String, String> getExtension() {
+//		return extension;
+//	}
+//
+//	public void setExtension(Map<String, String> extension) {
+//		this.extension = extension;
+//	}
+
+	public void setStatus(String status) {
         this.status = status;
     }
 

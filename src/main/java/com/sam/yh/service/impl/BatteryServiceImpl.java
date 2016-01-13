@@ -78,6 +78,7 @@ public class BatteryServiceImpl implements BatteryService {
         info.setVoltage(convertAdcToVo(batteryInfoReqVo.getVoltage()));
         //joy
         info.setLockStatus(batteryInfoReqVo.getLockstatus());
+//        info.setExtension(batteryInfoReqVo.getExtension().get("gsensor"));  
         info.setExtension(batteryInfoReqVo.getExtension());
         // TODO
         // info.setSampleDate(batteryInfoReqVo.getSampleDate());
