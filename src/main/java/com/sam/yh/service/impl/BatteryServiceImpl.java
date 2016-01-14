@@ -61,24 +61,30 @@ public class BatteryServiceImpl implements BatteryService {
         if (battery == null) {
             return null;
         }
-        if (battery.getImsi() == null || battery.getGsmSimNo() == null) {
-            if (batteryInfoReqVo.getImsi() != null) {
-                battery.setImsi(batteryInfoReqVo.getImsi());
-            }
-            if (batteryInfoReqVo.getPhonenumber() != null) {
-                battery.setGsmSimNo(batteryInfoReqVo.getPhonenumber());
-            }
-            batteryMapper.updateByPrimaryKeySelective(battery);
-        }
+//        if (battery.getImsi() == null || battery.getGsmSimNo() == null) {
+//            if (batteryInfoReqVo.getImsi() != null) {
+//                battery.setImsi(batteryInfoReqVo.getImsi());
+//            }
+//            if (batteryInfoReqVo.getPhonenumber() != null) {
+//                battery.setGsmSimNo(batteryInfoReqVo.getPhonenumber());
+//            }
+//            batteryMapper.updateByPrimaryKeySelective(battery);
+//        }
         BatteryInfo info = new BatteryInfo();
         info.setBatteryId(battery.getId());
         info.setLongitude(batteryInfoReqVo.getLongitude());
-        info.setLatitude(batteryInfoReqVo.getLatitude());
-        info.setTemperature(convertAdcToTemp(batteryInfoReqVo.getTemperature()));
+        info.setLatitude(batteryInfoReqVo.getLatitude());  
+//      info.setTemperature(convertAdcToTemp(batteryInfoReqVo.getTemperature()));
+//      info.setTemperature(batteryInfoReqVo.getTemperature()== null ? null : convertAdcToTemp(batteryInfoReqVo.getTemperature()));
+//        if(batteryInfoReqVo.getTemperature()== null){
+//        	  info.setTemperature(null);
+//        }
+//        else{ 
+//        	  info.setTemperature(convertAdcToTemp(batteryInfoReqVo.getTemperature()));
+//        	}
+        info.setTemperature(batteryInfoReqVo.getTemperature());
         info.setVoltage(convertAdcToVo(batteryInfoReqVo.getVoltage()));
-        //joy
-        info.setLockStatus(batteryInfoReqVo.getLockstatus());
-//        info.setExtension(batteryInfoReqVo.getExtension().get("gsensor"));  
+        info.setLockStatus(batteryInfoReqVo.getLockstatus()); //Joy
         info.setExtension(batteryInfoReqVo.getExtension());
         // TODO
         // info.setSampleDate(batteryInfoReqVo.getSampleDate());
@@ -117,6 +123,8 @@ public class BatteryServiceImpl implements BatteryService {
     private BatteryStatus getBatteryStatus(BatteryInfoReq batteryInfoReqVo) {
         BatteryStatus status = BatteryStatus.NORMAL;
         String adcTmp = batteryInfoReqVo.getTemperature();
+		if(adcTmp==null)
+			adcTmp="200";
         if (TempUtils.isWarning(adcTmp)) {
             status = BatteryStatus.T_ABNORMAL;
         }

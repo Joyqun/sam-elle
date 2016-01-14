@@ -45,7 +45,7 @@ public class UserResetPwdTest {
 		// reqObj.setAppName("samyh");
 		// reqObj.setDeviceType("android");
 		// reqObj.setVersion("0.0.1");
-		reqObj.setUserAccount("13900000013");
+		reqObj.setUserAccount("976660338@qq.com");
 		reqObj.setPassword1("123456789a");
 		reqObj.setPassword2("123456789a");
 		reqObj.setAuthCode("289123");

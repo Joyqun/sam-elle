@@ -56,5 +56,5 @@ public class EmailSendServiceImpl implements EmailSendService {
 
         logger.info("successfully send mail");
 	}
-
+	
 }

@@ -45,7 +45,7 @@ public class FetchMyBtyInfosTest {
 		// reqObj.setAppName("samyh");
 		// reqObj.setDeviceType("android");
 		// reqObj.setVersion("0.0.1");
-		//reqObj.setUserPhone("13900000001");
+		reqObj.setUserAccount("976660338@qq.com");
 
 		String jsonReq = JSON.toJSONString(reqObj);
 

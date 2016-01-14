@@ -522,3 +522,18 @@ UserCodeMapper.xml (src\main\resources\com\sam\yh\mapping):  <select id="selectB
 UserCodeMapper.xml (target\classes\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
 UserCodeMapper.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes\com\sam\yh\mapping):  <select id="selectByUserNameAndType" resultMap="BaseResultMap" >
 UserCodeServiceImpl.java (src\main\java\com\sam\yh\service\impl):        return userCodeMapper.selectByUserNameAndType(mobilePhone, type);
+---- mailHost Matches (7 in 5 files) ----
+EmailSendServiceImpl.java (src\main\java\com\sam\yh\common\msg):    private String mailHost;
+EmailSendServiceImpl.java (src\main\java\com\sam\yh\common\msg):        senderImpl.setHost(mailHost);
+FetchReplaySmsTask.java (src\main\java\com\sam\yh\common\msg):    private String mailHost;
+FetchReplaySmsTask.java (src\main\java\com\sam\yh\common\msg):            senderImpl.setHost(mailHost);
+Spring-context.xml (src\main\resources):	<bean id="mailHost" class="java.lang.String">
+Spring-context.xml (target\classes):	<bean id="mailHost" class="java.lang.String">
+Spring-context.xml (target\sam-elle-0.0.1-snapshot\web-inf\classes):	<bean id="mailHost" class="java.lang.String">
+---- setHost Matches (2 in 2 files) ----
+EmailSendServiceImpl.java (src\main\java\com\sam\yh\common\msg):        senderImpl.setHost(mailHost);
+FetchReplaySmsTask.java (src\main\java\com\sam\yh\common\msg):            senderImpl.setHost(mailHost);
+---- boole Matches (0 in 0 files) ----
+---- 126 Matches (0 in 0 files) ----
+---- Snippet.java Matches (0 in 0 files) ----
+---- Snippet Matches (0 in 0 files) ----

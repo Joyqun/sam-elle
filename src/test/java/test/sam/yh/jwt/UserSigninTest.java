@@ -44,7 +44,7 @@ public class UserSigninTest {
 		server.setHandler(context);
 		server.start();
 	}
-
+//{"userSigninName":"chenjiajun","accountType":"2","password":"123456789"}
 	@Test
 	public void testSigninService() {
 

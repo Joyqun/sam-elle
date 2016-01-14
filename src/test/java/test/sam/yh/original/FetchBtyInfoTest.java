@@ -45,8 +45,8 @@ public class FetchBtyInfoTest {
 		// reqObj.setAppName("samyh");
 		// reqObj.setDeviceType("android");
 		// reqObj.setVersion("0.0.1");
-//		reqObj.setDeviceSimNo("15200000005");
-
+		reqObj.setDeviceImei("01111415");
+		
 		String jsonReq = JSON.toJSONString(reqObj);
 
 		logger.info("Reuqest json String:" + jsonReq);

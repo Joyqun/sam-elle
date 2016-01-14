@@ -45,7 +45,7 @@ public class UserSigninTest {
 		// reqObj.setAppName("samyh");
 		// reqObj.setDeviceType("android");
 		// reqObj.setVersion("0.0.1");
-//		reqObj.setUserPhone("13900000025");
+		reqObj.setUserSigninName("976660338@qq.com");
 		reqObj.setPassword("95021181");
 		reqObj.setDeviceInfo("XXXXXXXXXXX");
 

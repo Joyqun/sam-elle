@@ -45,7 +45,6 @@ public class SignupTest {
 		// reqObj.setAppName("samyh");
 		// reqObj.setDeviceType("android");
 		// reqObj.setVersion("0.0.1");
-//		reqObj.setUserPhone("13900000014");
 		reqObj.setUserAccount("xiequn0830@163.com");
 		reqObj.setAccountType("2");
 		reqObj.setAuthCode("364296");
