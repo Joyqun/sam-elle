@@ -15,12 +15,58 @@ public class BatteryInfoReq implements Serializable {
     private String voltage;
     private String lockstatus;
     private String extension;
+    private String mcc;
+    private String mnc;
+    private String lac;
+    private String ci;
+    private String isGps;
+ 
 //    private Map<String, String> extension;
 
 
-
+    
 	public String getLockstatus() {
 		return lockstatus;
+	}
+
+	public String getMcc() {
+		return mcc;
+	}
+
+	public void setMcc(String mcc) {
+		this.mcc = mcc;
+	}
+
+	public String getMnc() {
+		return mnc;
+	}
+
+	public void setMnc(String mnc) {
+		this.mnc = mnc;
+	}
+
+	public String getLac() {
+		return lac;
+	}
+
+	public void setLac(String lac) {
+		this.lac = lac;
+	}
+
+	public String getCi() {
+		return ci;
+	}
+
+	public void setCi(String ci) {
+		this.ci = ci;
+	}
+
+	public String getIsGps() {
+		return isGps;
+	}
+
+	public void setIsGps(String isGps) {
+		this.isGps = isGps;
 	}
 
 	public void setLockstatus(String lockstatus) {

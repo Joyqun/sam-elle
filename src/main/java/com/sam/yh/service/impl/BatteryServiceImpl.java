@@ -1,18 +1,31 @@
 package com.sam.yh.service.impl;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.ctc.smscloud.xml.webservice.utils.WebServiceXmlClientUtil;
 import com.sam.yh.common.DistanceUtils;
 import com.sam.yh.common.TempUtils;
+import com.sam.yh.common.msg.SmsSendResp;
 import com.sam.yh.crud.exception.CrudException;
 import com.sam.yh.crud.exception.FetchBtyInfoException;
 import com.sam.yh.dao.BatteryInfoMapper;
@@ -21,17 +34,26 @@ import com.sam.yh.dao.UserMapper;
 import com.sam.yh.enums.BatteryStatus;
 import com.sam.yh.model.Battery;
 import com.sam.yh.model.BatteryInfo;
+//import com.sam.yh.model.LocalBasic;
 import com.sam.yh.model.User;
 import com.sam.yh.model.UserBattery;
 import com.sam.yh.req.bean.BatteryInfoReq;
+import com.sam.yh.req.bean.LatLonReq;
+import com.sam.yh.req.bean.LbsInfoReq;
 import com.sam.yh.service.BatteryService;
+import com.sam.yh.service.LocalBasicService;
 import com.sam.yh.service.UserBatteryService;
 import com.sam.yh.service.UserCodeService;
+
+import io.netty.handler.codec.http.HttpResponse;
 
 @Service
 public class BatteryServiceImpl implements BatteryService {
 
     private static final Logger logger = LoggerFactory.getLogger(BatteryServiceImpl.class);
+    
+    @Resource
+    private LocalBasicService localBasicService;
 
     @Resource
     private BatteryMapper batteryMapper;
@@ -56,34 +78,18 @@ public class BatteryServiceImpl implements BatteryService {
         if (batteryInfoReqVo == null) {
             return null;
         }
-        logger.info("Upload battery info request:" + batteryInfoReqVo);
+        
+        logger.info("Upload battery info request:22" + batteryInfoReqVo);
         Battery battery = fetchBtyByIMEI(batteryInfoReqVo.getImei());
         if (battery == null) {
             return null;
         }
-//        if (battery.getImsi() == null || battery.getGsmSimNo() == null) {
-//            if (batteryInfoReqVo.getImsi() != null) {
-//                battery.setImsi(batteryInfoReqVo.getImsi());
-//            }
-//            if (batteryInfoReqVo.getPhonenumber() != null) {
-//                battery.setGsmSimNo(batteryInfoReqVo.getPhonenumber());
-//            }
-//            batteryMapper.updateByPrimaryKeySelective(battery);
-//        }
+        LatLonReq latLonReq=new LatLonReq();
         BatteryInfo info = new BatteryInfo();
         info.setBatteryId(battery.getId());
-        info.setLongitude(batteryInfoReqVo.getLongitude());
-        info.setLatitude(batteryInfoReqVo.getLatitude());  
-//      info.setTemperature(convertAdcToTemp(batteryInfoReqVo.getTemperature()));
-//      info.setTemperature(batteryInfoReqVo.getTemperature()== null ? null : convertAdcToTemp(batteryInfoReqVo.getTemperature()));
-//        if(batteryInfoReqVo.getTemperature()== null){
-//        	  info.setTemperature(null);
-//        }
-//        else{ 
-//        	  info.setTemperature(convertAdcToTemp(batteryInfoReqVo.getTemperature()));
-//        	}
-        info.setTemperature(batteryInfoReqVo.getTemperature());
+        info.setTemperature(convertAdcToTemp(batteryInfoReqVo.getTemperature()));
         info.setVoltage(convertAdcToVo(batteryInfoReqVo.getVoltage()));
+        info.setVoltage(batteryInfoReqVo.getVoltage());
         info.setLockStatus(batteryInfoReqVo.getLockstatus()); //Joy
         info.setExtension(batteryInfoReqVo.getExtension());
         // TODO
@@ -92,25 +98,51 @@ public class BatteryServiceImpl implements BatteryService {
         BatteryStatus status = getBatteryStatus(batteryInfoReqVo);
         info.setStatus(status.getStatus());
         info.setReceiveDate(new Date());
+        logger.info("IsGps???" +batteryInfoReqVo.getIsGps());
+    
+        if(batteryInfoReqVo.getIsGps().equals("0"))
+        {
+            logger.info("getIsGps()==0");
 
+        	latLonReq=localBasicService.uploadLbsInfo(batteryInfoReqVo.getMcc(),batteryInfoReqVo.getMnc(),batteryInfoReqVo.getLac(),batteryInfoReqVo.getCi());
+            logger.info("getIsGps()==00" + latLonReq);
+            
+            logger.info("info.getLatitude"+latLonReq.getLon());
+            logger.info("info.getLongitude"+latLonReq.getLat());
+        	 info.setLongitude(latLonReq.getLon());
+             info.setLatitude(latLonReq.getLat());  
+            
+        }
+        else{
+            info.setLongitude(batteryInfoReqVo.getLongitude());
+            info.setLatitude(batteryInfoReqVo.getLatitude());  
+        }
+        
+        logger.info("info.getLatitude"+info.getLatitude());
+        logger.info("info.getLongitude"+info.getLongitude());
         batteryInfoMapper.insert(info);
 
         if (BatteryStatus.T_ABNORMAL.getStatus().equals(status.getStatus()) || BatteryStatus.V_ABNORMAL.getStatus().equals(status.getStatus())) {
-            sendWarningMsg(battery);
+            logger.info("T_ABNORMAL or V_ABNORMAL" );
+        	sendWarningMsg(battery);
+            
+ 
         }
 
-        if (BatteryStatus.LOCKED.getStatus().equals(battery.getStatus())) {
-            long moveDis = (long) DistanceUtils.GetDistance(batteryInfoReqVo.getLongitude(), batteryInfoReqVo.getLatitude(), battery.getLockLongitude(),
-                    battery.getLockLatitude());
-            if (moveDis > MoveDis) {
-                sendMovingMsg(battery);
-            }
-        }
+//        if (BatteryStatus.LOCKED.getStatus().equals(battery.getStatus())) {
+//            long moveDis = (long) DistanceUtils.GetDistance(batteryInfoReqVo.getLongitude(), batteryInfoReqVo.getLatitude(), battery.getLockLongitude(),
+//                    battery.getLockLatitude());
+//            if (moveDis > MoveDis) {
+//                sendMovingMsg(battery);
+//            }
+//        }
 
         return battery;
     }
-
-    private String convertAdcToTemp(String adc) {
+    
+    
+    
+   private String convertAdcToTemp(String adc) {
         return TempUtils.isWarning(adc) ? adc : TempUtils.getTemp(adc);
     }
 
