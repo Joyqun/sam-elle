@@ -3,6 +3,9 @@ package com.sam.yh.req.bean;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class LatLonReq implements Serializable{
 	 private static final long serialVersionUID = 1L;
 //     private String errcode;
@@ -51,10 +54,17 @@ public void setLon(String lon) {
 //}
 //"errcode":0, "lat":"40.004944", "lon":"116.482315", "radius":"265", "address":"鍖椾含甯傛湞闃冲尯宕斿悇搴勫湴鍖烘邯闃充笢璺?鏈涗含涓滆矾涓庢邯闃充笢璺矾鍙ｄ笢鍖?0绫?}
 
+@Override
+public String toString() {
+	return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+}
+
 //@Override
 //public String toString() {
 //	 
 //    return  errcode + ", " + lat + ","+ lon+", "+ radius + "," + address ;
 //}
+
+
 
 }

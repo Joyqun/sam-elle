@@ -28,7 +28,7 @@ import com.sam.yh.dao.BatteryMapper;
 import com.sam.yh.dao.BatteryInfoMapper;
 import com.sam.yh.service.LocalBasicService;
 
-@Service("LocalBasicService")
+@Service
 public class LocalBasicServiceImp implements LocalBasicService {
     private static final Logger logger = LoggerFactory.getLogger(BatteryServiceImpl.class);
     @Resource
@@ -109,7 +109,7 @@ public class LocalBasicServiceImp implements LocalBasicService {
             }
             // 定义 BufferedReader输入流来读取URL的响应
             in = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream()));
+                    connection.getInputStream(), "utf-8"));
             String line;
             while ((line = in.readLine()) != null) {
                 result += line;
