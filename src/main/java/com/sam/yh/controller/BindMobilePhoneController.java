@@ -16,12 +16,18 @@ import com.sam.yh.common.IllegalParamsException;
 import com.sam.yh.common.MobilePhoneUtils;
 import com.sam.yh.crud.exception.CrudException;
 import com.sam.yh.crud.exception.M2mEditTermalException;
+import com.sam.yh.model.Battery;
 //import com.sam.yh.crud.exception.SubmitBtySpecException;
 import com.sam.yh.crud.exception.BindMobilePhoneException;
 import com.sam.yh.req.bean.BindMobilePhoneReq;
 import com.sam.yh.resp.bean.ResponseUtils;
 import com.sam.yh.resp.bean.SamResponse;
 import com.sam.yh.service.UserService;
+import com.sam.yh.service.socket.SamBtyDataHandler;
+
+import io.netty.channel.Channel;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.util.AttributeKey;
 
 @RestController
 @RequestMapping("/user")
@@ -40,6 +46,8 @@ public class BindMobilePhoneController {
 
         try {
             validatebindmobilephoneArgs(req);
+            
+            sendReq(req.getMobilePhone());
 
             userService.bindMobilePhone(req);
 
@@ -75,6 +83,19 @@ public class BindMobilePhoneController {
 //      if (!MobilePhoneUtils.isValidPhone(submitBtySpecReq.getUserPhone())) {
 //      throw new IllegalParamsException("请输入购买人正确的手机号码");
 //        }
+    }
+    
+    private void sendReq(String phonenumber) {
+
+        ChannelGroup channelGroup = SamBtyDataHandler.getChannels();
+        for (Channel c : channelGroup) {
+       
+            String msg = "phone"+ phonenumber + "\n";
+            
+        	c.writeAndFlush(msg);
+       
+        }
+         	
     }
 
 }
