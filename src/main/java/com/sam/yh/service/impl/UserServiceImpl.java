@@ -247,7 +247,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addDevice(AddDeviceReq addDeviceReq) throws CrudException {
         if (batteryService.fetchBtyByIMEI(addDeviceReq.getDeviceImei()) != null) {
-            throw new AddDeviceException("请检查电池IMEI号");//该IMEI号在数据库里已存在
+            throw new AddDeviceException("该IMEI号已存在");//该IMEI号在数据库里已存在
         }
             
         User user = fetchUserByUserAccount(addDeviceReq.getUserAccount());        
@@ -421,7 +421,7 @@ public class UserServiceImpl implements UserService {
         for (UserFollow userFollow : userFollowBtyList) {
             if (StringUtils.equals(userFollow.getBytImei(), deviceImei) && userFollow.getFollowStatus()) {
 //                throw new BtyFollowException("您已关注了该电池"); Joy modify
-                throw new BtyFollowException("您的好友已关注了该电池");
+                throw new BtyFollowException("您的好友已关注了该设备");
 
             }
         }

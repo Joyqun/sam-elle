@@ -21,7 +21,7 @@ import com.sam.yh.common.IllegalParamsException;
 import com.sam.yh.common.MobilePhoneUtils;
 import com.sam.yh.common.PwdUtils;
 import com.sam.yh.crud.exception.CrudException;
-import com.sam.yh.crud.exception.UserSignupException;
+import com.sam.yh.crud.exception.UserSigninException;
 import com.sam.yh.enums.UserAccountType;
 import com.sam.yh.model.User;
 import com.sam.yh.req.bean.UserSigninReq;
@@ -70,7 +70,7 @@ public class UserSigninController {
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (CrudException e) {
             logger.error("signin exception", e);
-            if (e instanceof UserSignupException) {
+            if (e instanceof UserSigninException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
             } else {
                 return ResponseUtils.getSysErrorResp();
@@ -99,7 +99,7 @@ public class UserSigninController {
 //        }
 
         if (!PwdUtils.isValidPwd(userSigninReq.getPassword())) {
-            throw new IllegalParamsException("密码长度为8-20位字符");
+            throw new IllegalParamsException("密码为8-20位字母、数字和下划线的组合");
         }
 
     }

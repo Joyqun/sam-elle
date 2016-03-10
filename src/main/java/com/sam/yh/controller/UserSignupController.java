@@ -106,7 +106,7 @@ public class UserSignupController {
         }
 
         if (!PwdUtils.isValidPwd(userSignupReq.getPassword1())) {
-            throw new IllegalParamsException("密码长度为8-20位字符");
+            throw new IllegalParamsException("密码为8-20位字母、数字和下划线的组合");
         }
 
         if (!StringUtils.equals(userSignupReq.getPassword1(), userSignupReq.getPassword2())) {

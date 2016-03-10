@@ -18,7 +18,7 @@ import com.sam.yh.common.MobilePhoneUtils;
 import com.sam.yh.common.PwdUtils;
 import com.sam.yh.crud.exception.AuthCodeVerifyException;
 import com.sam.yh.crud.exception.CrudException;
-import com.sam.yh.crud.exception.UserSignupException;
+import com.sam.yh.crud.exception.UserSigninException;
 import com.sam.yh.req.bean.UserPwdResetReq;
 import com.sam.yh.resp.bean.ResponseUtils;
 import com.sam.yh.resp.bean.SamResponse;
@@ -51,7 +51,7 @@ public class ResetPwdController {
             return ResponseUtils.getParamsErrorResp(e.getMessage());
         } catch (CrudException e) {
             logger.error("reset user password exception, " + req.getUserAccount(), e);
-            if (e instanceof UserSignupException) {
+            if (e instanceof UserSigninException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
             } else if (e instanceof AuthCodeVerifyException) {
                 return ResponseUtils.getServiceErrorResp(e.getMessage());
@@ -75,7 +75,7 @@ public class ResetPwdController {
         }
 
         if (!PwdUtils.isValidPwd(userPwdResetReq.getPassword1())) {
-            throw new IllegalParamsException("密码长度为8-20位字符");
+            throw new IllegalParamsException("密码为8-20位字母、数字和下划线的组合");
         }
 
         if (!StringUtils.equals(userPwdResetReq.getPassword1(), userPwdResetReq.getPassword2())) {

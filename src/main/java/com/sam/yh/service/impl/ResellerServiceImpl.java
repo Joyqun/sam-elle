@@ -73,7 +73,7 @@ public class ResellerServiceImpl implements ResellerService {
     @Override
     public void submitBtySpec(SubmitBtySpecReq submitBtySpecReq) throws CrudException {
         if (batteryService.fetchBtyByIMEI(submitBtySpecReq.getDeviceImei()) != null) {
-            throw new SubmitBtySpecException("请检查电池IMEI号");//该IMEI号在数据库里已存在
+            throw new SubmitBtySpecException("该IMEI号已存在");//该IMEI号在数据库里已存在
         }
 //        if (batteryService.fetchBtyBySimNo(submitBtySpecReq.getBtySimNo()) != null) {
 //            throw new SubmitBtySpecException("请检查电池sim卡号");

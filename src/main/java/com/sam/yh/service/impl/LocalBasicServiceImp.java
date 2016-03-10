@@ -46,18 +46,11 @@ public class LocalBasicServiceImp implements LocalBasicService {
 		System.out.println(message);
 		logger.info("message::" + message);
 		LatLonReq req=new LatLonReq();
-//		JSON.parse(message);
-//		LatLonReq req = JSON.parseObject(message, LatLonReq.class);
-
 	    String lat=ReadXml(message, "lat");
 	    String lon=ReadXml(message, "lon");
-		logger.info(";;:" + lat);
-		logger.info("///:" + lon);
 	    req.setLat(lat);
 	    req.setLon(lon);
-		logger.info("req.getLat:" + req.getLat());
-		logger.info("req.getLon" +req.getLon());
-	    
+   
 	    return req;
 	}	
   

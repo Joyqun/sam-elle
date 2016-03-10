@@ -243,7 +243,7 @@ public class UserCodeServiceImpl implements UserCodeService {
             userCode = new UserCode();
             userCode.setUserAccount(btyImei);
             userCode.setCodeType(type);
-            userCode.setDynamicCode(mobilePhone);
+            userCode.setDynamicCode(btyImei);
             userCode.setSendTimes(1);
             userCode.setStatus(true);
             userCode.setSendDate(now);
@@ -255,7 +255,9 @@ public class UserCodeServiceImpl implements UserCodeService {
 
         int sendTimes = DateUtils.isSameDay(now, userCode.getSendDate()) ? (userCode.getSendTimes() + 1) : 1;
         if (now.after(userCode.getExpiryDate()) && sendTimes <= SamConstants.MXA_WARNING_SEND_TIME) {
-            userCode.setSendTimes(userCode.getSendTimes() + 1);
+         //   userCode.setSendTimes(userCode.getSendTimes() + 1);
+            userCode.setSendTimes(sendTimes);
+
             userCode.setSendDate(now);
             userCode.setExpiryDate(DateUtils.addMinutes(now, SamConstants.EXPIRY_TIME));
 

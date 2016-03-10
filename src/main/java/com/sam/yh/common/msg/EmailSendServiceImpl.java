@@ -40,7 +40,7 @@ public class EmailSendServiceImpl implements EmailSendService {
 
         Properties prop = new Properties();
         // 将这个参数设为true，让服务器进行认证,认证用户名和密码是否正确
-        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.auth", "login");
         prop.put("mail.smtp.timeout", "25000");// milliseconds
         senderImpl.setJavaMailProperties(prop);
         // 建立邮件消息
@@ -48,7 +48,7 @@ public class EmailSendServiceImpl implements EmailSendService {
 
         mailMessage.setTo(email);
         mailMessage.setFrom(mailSender);
-        mailMessage.setSubject("sam验证码");
+        mailMessage.setSubject("S-Lock验证码");
         mailMessage.setText(content);
 
         // 发送邮件
