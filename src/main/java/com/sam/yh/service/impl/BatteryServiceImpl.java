@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -34,12 +35,14 @@ import com.sam.yh.dao.UserMapper;
 import com.sam.yh.enums.BatteryStatus;
 import com.sam.yh.model.Battery;
 import com.sam.yh.model.BatteryInfo;
+import com.sam.yh.model.PubBatteryInfo;
 //import com.sam.yh.model.LocalBasic;
 import com.sam.yh.model.User;
 import com.sam.yh.model.UserBattery;
 import com.sam.yh.req.bean.BatteryInfoReq;
 import com.sam.yh.req.bean.LatLonReq;
 import com.sam.yh.req.bean.LbsInfoReq;
+import com.sam.yh.resp.bean.BtyInfoRespVo;
 import com.sam.yh.service.BatteryService;
 import com.sam.yh.service.LocalBasicService;
 import com.sam.yh.service.UserBatteryService;
@@ -51,7 +54,7 @@ import io.netty.handler.codec.http.HttpResponse;
 public class BatteryServiceImpl implements BatteryService {
 
     private static final Logger logger = LoggerFactory.getLogger(BatteryServiceImpl.class);
-    
+       
     @Resource
     private LocalBasicService localBasicService;
 
@@ -72,6 +75,8 @@ public class BatteryServiceImpl implements BatteryService {
 
     @Resource
     private Long MoveDis;
+    
+
 
     @Override
     public Battery uploadBatteryInfo(BatteryInfoReq batteryInfoReqVo) throws CrudException {
@@ -84,42 +89,43 @@ public class BatteryServiceImpl implements BatteryService {
         if (battery == null) {
             return null;
         }
+        //get the longitude and latitude of the last time
+        BatteryInfo lastinfo = fetchBtyInfo(batteryInfoReqVo.getImei());
+        String lastlon=lastinfo.getLongitude();
+        String lastlat=lastinfo.getLatitude();
+        logger.info("0lastlon0" + lastlon);
+        logger.info("0lastlat0" + lastlat);
+   
+        
+ 
         LatLonReq latLonReq=new LatLonReq();
         BatteryInfo info = new BatteryInfo();
         info.setBatteryId(battery.getId());
         info.setTemperature(convertAdcToTemp(batteryInfoReqVo.getTemperature()));
         info.setVoltage(convertAdcToVo(batteryInfoReqVo.getVoltage()));
-        info.setVoltage(batteryInfoReqVo.getVoltage());
-        info.setLockStatus(batteryInfoReqVo.getLockstatus()); //Joy
+        info.setLockStatus(batteryInfoReqVo.getLockstatus()); 
         info.setExtension(batteryInfoReqVo.getExtension());
         // TODO
         // info.setSampleDate(batteryInfoReqVo.getSampleDate());
         info.setSampleDate(new Date());
         BatteryStatus status = getBatteryStatus(batteryInfoReqVo);
         info.setStatus(status.getStatus());
-        info.setReceiveDate(new Date());
-        logger.info("IsGps???" +batteryInfoReqVo.getIsGps());
-    
-        if(batteryInfoReqVo.getIsGps().equals("0"))
-        {
-            logger.info("getIsGps()==0");
-
-        	latLonReq=localBasicService.uploadLbsInfo(batteryInfoReqVo.getMcc(),batteryInfoReqVo.getMnc(),batteryInfoReqVo.getLac(),batteryInfoReqVo.getCi());
-            logger.info("getIsGps()==00" + latLonReq);
-            
-            logger.info("info.getLatitude"+latLonReq.getLon());
-            logger.info("info.getLongitude"+latLonReq.getLat());
-        	 info.setLongitude(latLonReq.getLon());
-             info.setLatitude(latLonReq.getLat());  
-            
-        }
-        else{
-            info.setLongitude(batteryInfoReqVo.getLongitude());
-            info.setLatitude(batteryInfoReqVo.getLatitude());  
-        }
+        info.setReceiveDate(new Date());      
+        if(((int)((double)Double.valueOf(batteryInfoReqVo.getLongitude()))==0) && ((int)((double)Double.valueOf(batteryInfoReqVo.getLongitude()))==0)){
+        	latLonReq=localBasicService.uploadLbsInfo(batteryInfoReqVo.getMcc(),batteryInfoReqVo.getMnc(),batteryInfoReqVo.getLac(),batteryInfoReqVo.getCi());           
+        	String lon = latLonReq.getLon().equals("") ? lastlon : latLonReq.getLon();
+            String lat = latLonReq.getLat().equals("") ? lastlat : latLonReq.getLat();
+            logger.info("1lastlon0" + lastlon);
+            logger.info("1lastlat0" + lastlat);
+            info.setLongitude(lon);
+            info.setLatitude(lat);   
+        }else{
+            String lon =  batteryInfoReqVo.getLongitude();
+            String lat =  batteryInfoReqVo.getLatitude();
+            info.setLongitude(lon);
+            info.setLatitude(lat);  
+         }
         
-        logger.info("info.getLatitude"+info.getLatitude());
-        logger.info("info.getLongitude"+info.getLongitude());
         batteryInfoMapper.insert(info);
 
         if (BatteryStatus.T_ABNORMAL.getStatus().equals(status.getStatus()) || BatteryStatus.V_ABNORMAL.getStatus().equals(status.getStatus())) {
@@ -148,7 +154,8 @@ public class BatteryServiceImpl implements BatteryService {
 
     private String convertAdcToVo(String adc) {
         float tem = Float.valueOf(adc);
-        float vol = (float) ((int) ((tem / 10.73) * 10)) / 10;
+//        float vol = (float) ((int) ((tem / 10.73) * 10)) / 10;
+        float vol = (float) (tem/1000000.0);
         return String.valueOf(vol);
     }
 
