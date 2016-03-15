@@ -57,8 +57,7 @@ public class RealNotifyDeviceController {
             // 发送实时命令
  //         boolean hasConnect = deviceChatService.chat(request.getDeviceSimNo(), DeviceChatType.LASTEST_INFO.getChatType());
  //Joy  modify 
-            boolean hasConnect = deviceChatService.chat(request.getDeviceImei(), DeviceChatType.LASTEST_INFO.getChatType());
-
+            boolean hasConnect = deviceChatService.chat(request.getDeviceImei(), request.getChatType());
             if (hasConnect) {
                 TimeUnit.SECONDS.sleep(maxWaitTime);
             }

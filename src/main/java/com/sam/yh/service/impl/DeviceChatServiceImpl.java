@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.sam.yh.enums.DeviceChatType;
 import com.sam.yh.model.Battery;
 import com.sam.yh.service.BatteryService;
 import com.sam.yh.service.DeviceChatService;
@@ -52,19 +53,34 @@ public class DeviceChatServiceImpl implements DeviceChatService {
     
     @Override
     public boolean chat(String deviceImei, String chatType) {
+    	
         Battery battery = batteryService.fetchBtyByIMEI(deviceImei);
         if (battery == null) {
-            logger.error("数据库中设备不存在, 设备Imei卡号:{}", deviceImei);
+            logger.info("数据库中设备不存在, 设备Imei卡号:{}", deviceImei);
             return false;
         }
         boolean hasConn = false;
         ChannelGroup channelGroup = SamBtyDataHandler.getChannels();
         for (Channel c : channelGroup) {
             String imei = (String) c.attr(AttributeKey.valueOf("IMEI")).get();
-            logger.info("已经连接设备的imei：{}", imei);
+        //    logger.info("已经连接设备的imei：{}", imei);
+       	logger.error("chatType is "+ chatType);
             if (imei != null && imei.equals(battery.getImei())) {
-                String msg = chatType + imei + "\n";
-                c.writeAndFlush(msg);
+                switch(chatType)
+                {
+                case "1":
+                	chatType=DeviceChatType.LASTEST_INFO.getChatType();break;
+                case "2":
+                	chatType= DeviceChatType.LOCK_DEVICE.getChatType(); break;
+                case "3":
+                	chatType= DeviceChatType.UNLOCK_DEVICE.getChatType(); break;
+                default:
+                    break;
+                }
+            	
+                    String msg = chatType + imei + "\n";
+    
+            	c.writeAndFlush(msg);
                 hasConn = true;
             }
 
