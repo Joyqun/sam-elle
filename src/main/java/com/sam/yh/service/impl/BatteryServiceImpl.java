@@ -53,7 +53,6 @@ import io.netty.handler.codec.http.HttpResponse;
 @Service
 public class BatteryServiceImpl implements BatteryService {
 
-	private Map<String, String> extensionMap;
 	
     private static final Logger logger = LoggerFactory.getLogger(BatteryServiceImpl.class);
        
@@ -94,8 +93,17 @@ public class BatteryServiceImpl implements BatteryService {
         }
         //get the longitude and latitude of the last time
         BatteryInfo lastinfo = fetchBtyInfo(batteryInfoReqVo.getImei());
-        String lastlon=lastinfo.getLongitude();
-        String lastlat=lastinfo.getLatitude();
+        String lastlon;
+        String lastlat;
+
+        if(lastinfo == null){
+          lastlon="0";
+          lastlat="0";
+        }else{
+           lastlon=lastinfo.getLongitude();
+           lastlat=lastinfo.getLatitude();	
+        }
+
         logger.info("0lastlon0" + lastlon);
         logger.info("0lastlat0" + lastlat);
 
@@ -254,10 +262,9 @@ public class BatteryServiceImpl implements BatteryService {
 
         BatteryInfo info = batteryInfoMapper.selectByBtyId(battery.getId());
 
-        if (info == null) {
-            throw new FetchBtyInfoException("未接收到此电池发送的信息");
-        }
-
+//        if (info == null) {
+//            throw new FetchBtyInfoException("未接收到此电池发送的信息");
+//        }    
         return info;
     }
 

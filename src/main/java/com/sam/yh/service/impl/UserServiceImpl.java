@@ -262,7 +262,7 @@ public class UserServiceImpl implements UserService {
         UserBattery userBattery = new UserBattery();
         userBattery.setBatteryId(battery.getId());
         userBattery.setUserId(user.getUserId());
-        userBattery.setBuyDate(new Date());
+        userBattery.setBuyDate(new Date());    
 
         userBatteryMapper.insert(userBattery);
 
