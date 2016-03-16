@@ -53,6 +53,8 @@ import io.netty.handler.codec.http.HttpResponse;
 @Service
 public class BatteryServiceImpl implements BatteryService {
 
+	private Map<String, String> extensionMap;
+	
     private static final Logger logger = LoggerFactory.getLogger(BatteryServiceImpl.class);
        
     @Resource
@@ -80,6 +82,7 @@ public class BatteryServiceImpl implements BatteryService {
 
     @Override
     public Battery uploadBatteryInfo(BatteryInfoReq batteryInfoReqVo) throws CrudException {
+    	
         if (batteryInfoReqVo == null) {
             return null;
         }
@@ -95,8 +98,7 @@ public class BatteryServiceImpl implements BatteryService {
         String lastlat=lastinfo.getLatitude();
         logger.info("0lastlon0" + lastlon);
         logger.info("0lastlat0" + lastlat);
-   
-        
+
  
         LatLonReq latLonReq=new LatLonReq();
         BatteryInfo info = new BatteryInfo();
@@ -104,7 +106,6 @@ public class BatteryServiceImpl implements BatteryService {
         info.setTemperature(convertAdcToTemp(batteryInfoReqVo.getTemperature()));
         info.setVoltage(convertAdcToVo(batteryInfoReqVo.getVoltage()));
         info.setLockStatus(batteryInfoReqVo.getLockstatus()); 
-        info.setExtension(batteryInfoReqVo.getExtension());
         // TODO
         // info.setSampleDate(batteryInfoReqVo.getSampleDate());
         info.setSampleDate(new Date());
@@ -115,15 +116,18 @@ public class BatteryServiceImpl implements BatteryService {
         	latLonReq=localBasicService.uploadLbsInfo(batteryInfoReqVo.getMcc(),batteryInfoReqVo.getMnc(),batteryInfoReqVo.getLac(),batteryInfoReqVo.getCi());           
         	String lon = latLonReq.getLon().equals("") ? lastlon : latLonReq.getLon();
             String lat = latLonReq.getLat().equals("") ? lastlat : latLonReq.getLat();
-            logger.info("1lastlon0" + lastlon);
-            logger.info("1lastlat0" + lastlat);
+            
             info.setLongitude(lon);
-            info.setLatitude(lat);   
+            info.setLatitude(lat); 
+            String s="{\"isGps\":\"0\"}";
+            info.setExtension(s);
         }else{
             String lon =  batteryInfoReqVo.getLongitude();
             String lat =  batteryInfoReqVo.getLatitude();
             info.setLongitude(lon);
             info.setLatitude(lat);  
+            String s="{\"isGps\":\"1\"}";
+            info.setExtension(s);
          }
         
         batteryInfoMapper.insert(info);
