@@ -122,19 +122,38 @@ public class BatteryServiceImpl implements BatteryService {
         info.setReceiveDate(new Date());      
         if(((int)((double)Double.valueOf(batteryInfoReqVo.getLongitude()))==0) && ((int)((double)Double.valueOf(batteryInfoReqVo.getLongitude()))==0)){
         	latLonReq=localBasicService.uploadLbsInfo(batteryInfoReqVo.getMcc(),batteryInfoReqVo.getMnc(),batteryInfoReqVo.getLac(),batteryInfoReqVo.getCi());           
-        	String lon = latLonReq.getLon().equals("") ? lastlon : latLonReq.getLon();
-            String lat = latLonReq.getLat().equals("") ? lastlat : latLonReq.getLat();
-            
-            info.setLongitude(lon);
-            info.setLatitude(lat); 
-            String s="{\"isGps\":\"0\"}";
-            info.setExtension(s);
-        }else{
-            String lon =  batteryInfoReqVo.getLongitude();
+
+ /*      	  String lon = latLonReq.getLon().equals("") ? lastlon : latLonReq.getLon();
+ *            String lat = latLonReq.getLat().equals("") ? lastlat : latLonReq.getLat();
+ * 
+ *            info.setLongitude(lon);
+ *            info.setLatitude(lat); 
+ *            String s="{\"isGps\":\"0\"}"; //if get the lat&lon by LBS or old data,set the "isGps" 0. 
+ *            info.setExtension(s);        */
+ 
+        	String lon = latLonReq.getLon();
+        	String lat = latLonReq.getLat();
+        	if(lon.equals("")){
+        		lon = lastlon;
+        		lat = lastlat;
+                logger.info("isGps" + "2");
+                String s="{\"isGps\":\"2\"}";//if reserve old data,set the "isGps" 2 
+                info.setExtension(s);
+          	}else{
+          		logger.info("isGps" + "0");
+                String s="{\"isGps\":\"0\"}";//if get the lat&lon by LBS,set the "isGps" 0;
+                info.setExtension(s);     	
+          	}
+          info.setLongitude(lon);
+          info.setLatitude(lat); 
+
+        }else{    
+        	String lon =  batteryInfoReqVo.getLongitude();
             String lat =  batteryInfoReqVo.getLatitude();
             info.setLongitude(lon);
             info.setLatitude(lat);  
-            String s="{\"isGps\":\"1\"}";
+            logger.info("isGps" + "1");
+            String s="{\"isGps\":\"1\"}"; //if get the lat&lon by GPS,set the "isGps" 1;
             info.setExtension(s);
          }
         
